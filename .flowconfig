@@ -1,6 +1,8 @@
 [ignore]
-.*/node_modules
+.*/client/node_modules/.*
+
 [include]
+./client/node_modules/
 
 [libs]
 
