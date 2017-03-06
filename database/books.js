@@ -39,7 +39,7 @@ function validateBook(conn, book_id: number) {
 export default {
     findAll(offset: number, count: number): Bluebird {
         return Bluebird.using(connection(), (conn) => {
-            return conn.query('SELECT * FROM `Book` ORDER BY publish_date LIMIT ?,?', [offset, count])
+            return conn.query('SELECT * FROM Book ORDER BY publish_date LIMIT ?,?', [offset, count])
                 .then((results: any[]) => {
                     return Bluebird.all(
                         results
@@ -49,6 +49,20 @@ export default {
                     );
                 })
         })
+    },
+
+    findAllByAuthor(author_id: number, offset: number, count: number) {
+        return Bluebird.using(connection(), conn => {
+            return conn.query('SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY publish_date LIMIT ?,?', [author_id, offset, count])
+                .then((results: any[]) => {
+                    return Bluebird.all(
+                        results
+                            .map(res => new Book(res))
+                            .map(book => populateTags(conn, book))
+                            .map(promise => promise.then(book => populateAuthors(conn, book)))
+                    );
+                });
+        });
     },
 
     findOne(id: number) {
@@ -88,7 +102,7 @@ export default {
                         .then((tag_id: number) => {
                             return conn.query('SELECT * FROM HasTag WHERE book_id = ? AND tag_id = ?', [book_id, tag_id])
                                 .then((results: any[]) => {
-                                    if(results.length == 0) {
+                                    if (results.length == 0) {
                                         return tag_id;
                                     } else {
                                         throw "Book already has tag " + JSON.stringify(tag);
