@@ -29,7 +29,19 @@ route.get('/', (req: express.Request, res: express.Response) => {
 });
 
 route.get('/:id', (req: express.Request, res: express.Response) => {
-    res.json({});
+    const id: number = parseInt(req.params.id);
+
+    console.log(req.params);
+    console.log(id);
+
+    if(isNaN(id)) {
+        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        return;
+    }
+
+    books.findOne(id)
+        .then(results => res.json(results))
+        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
 });
 
 route.get('/:id/full-text', (req: express.Request, res: express.Response) => {

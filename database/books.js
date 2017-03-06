@@ -13,6 +13,7 @@ function populateTags(conn, book: Book) {
             book.genres = genres.map(tag => tag.value);
             book.series = series.map(tag => tag.value);
             book.tags = generic;
+            console.log(book);
             return book;
         })
 }
@@ -21,6 +22,7 @@ function populateAuthors(conn, book: Book) {
     return conn.query('SELECT id, name FROM Author INNER JOIN AuthoredBy ON Author.id = AuthoredBy.author_id WHERE AuthoredBy.book_id = ?', [book.id])
         .then((results: any[]) => {
             book.authors = results.map(res => new Author(res));
+            console.log(book);
             return book;
         });
 }
@@ -38,5 +40,19 @@ export default {
                     );
                 })
         })
+    },
+
+    findOne(id: number) {
+        return Bluebird.using(connection(), (conn) => {
+            return conn.query("SELECT * FROM Book WHERE id = ?", [id])
+                .then((res: any[]) => {
+                    if(res.length != 1) {
+                        throw "Invalid Book id";
+                    }
+                    return new Book(res[0])
+                })
+                .then(book => populateTags(conn, book))
+                .then(book => populateAuthors(conn, book));
+        });
     }
 }
