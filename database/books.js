@@ -1,5 +1,4 @@
 // @flow
-import mysql from 'mysql'
 import Bluebird from 'bluebird'
 import connection from './mysql'
 import {Book, Tag, Author} from '../model'
