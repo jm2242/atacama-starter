@@ -2,6 +2,7 @@
 import Bluebird from 'bluebird'
 import connection from './mysql'
 import {Book, Tag, Author} from '../model'
+import {NotFound, NotModified} from "../errors";
 
 function populateTags(conn, book: Book) {
     return conn.query('SELECT id, type, value FROM Tag INNER JOIN HasTag ON Tag.id = HasTag.tag_id WHERE HasTag.book_id = ?', [book.id])
@@ -29,7 +30,7 @@ function validateBook(conn, book_id: number) {
     return conn.query('SELECT id, tag_id FROM Book LEFT JOIN HasTag ON Book.id = HasTag.book_id WHERE id = ?', [book_id])
         .then((results: any[]) => {
             if (results.length == 0) {
-                throw "Invalid book id";
+                throw new NotFound(`Book id ${book_id} not found`);
             }
 
             return book_id;
@@ -70,7 +71,7 @@ export default {
             return conn.query("SELECT * FROM Book WHERE id = ?", [id])
                 .then((res: any[]) => {
                     if (res.length != 1) {
-                        throw "Invalid Book id";
+                        throw new NotFound(`Book id ${id} not found`);
                     }
                     return new Book(res[0])
                 })
@@ -105,7 +106,7 @@ export default {
                                     if (results.length == 0) {
                                         return tag_id;
                                     } else {
-                                        throw "Book already has tag " + JSON.stringify(tag);
+                                        throw new NotModified(`${tag.type} => ${tag.value} already exists on book ${book_id}`);
                                     }
                                 });
                         })

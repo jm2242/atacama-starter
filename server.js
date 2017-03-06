@@ -23,6 +23,16 @@ app.use('/api/food', foodRoute);
 app.use('/api/books', books);
 app.use('/api/authors', authors);
 
+app.use((err, req: express.Request, res: express.Response, next) => {
+    if (res.headersSent) {
+        return next(err)
+    }
+
+    console.log(err);
+
+    res.status(err.status || 500).json(err);
+});
+
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
 

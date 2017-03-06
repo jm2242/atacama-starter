@@ -2,81 +2,82 @@
 import express from 'express'
 import books from '../database/books'
 import {Tag} from "../model";
+import {BadRequest} from "../errors";
 
 const route = express.Router();
 
-route.get('/', (req: express.Request, res: express.Response) => {
+route.get('/', (req: express.Request, res: express.Response, next) => {
     const offset: number = parseInt(req.query.offset || 0);
     const count: number = parseInt(req.query.count || 25);
 
     if(isNaN(count) || isNaN(offset)) {
-        res.status(400).json({message: 'If present, both count and offset must be numeric'});
+        next(new BadRequest(`Both count and offset must be numeric if present`));
         return;
     }
 
     if(count <= 0 || count >= 500) {
-        res.status(400).json({message: 'Count must be greater than 0 and less than 500'});
+        next(new BadRequest(`Count must be greater than 0 and less than 500`));
         return;
     }
 
     if(offset < 0) {
-        res.status(400).json({message: 'Offset must be greater than or equal to 0'});
+        next(new BadRequest(`Offset must be greater than or equal to 0`));
         return;
     }
 
     books.findAll(offset, count)
         .then((results) => res.json(results))
-        .catch(error => res.status(500).json({message: "Couldn't fetch data from the database", error}));
+        .catch(error => next(error));
 });
 
-route.get('/:id', (req: express.Request, res: express.Response) => {
+route.get('/:id', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 
     if(isNaN(id)) {
-        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        next(new BadRequest(`The ID parameter must be numeric`));
         return;
     }
 
     books.findOne(id)
         .then(results => res.json(results))
-        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
+        .catch(error => next(error));
 });
 
-route.get('/:id/full-text', (req: express.Request, res: express.Response) => {
+route.get('/:id/full-text', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 
     if(isNaN(id)) {
-        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        next(new BadRequest(`The ID parameter must be numeric`));
         return;
     }
 
     res.status(204).end();
 });
 
-route.get('/:id/tags', (req: express.Request, res: express.Response) => {
+route.get('/:id/tags', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 
     if(isNaN(id)) {
-        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        next(new BadRequest(`The ID parameter must be numeric`));
         return;
     }
 
     books.findTags(id)
         .then(results => res.json(results))
-        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
+        .catch(error => next(error));
 });
 
-route.post('/:id/tags', (req: express.Request, res: express.Response) => {
+route.post('/:id/tags', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 
     if(isNaN(id)) {
-        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        next(new BadRequest(`The ID parameter must be numeric`));
         return;
     }
 
     books.addTag(id, new Tag(req.body))
         .then(results => res.json(results))
-        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
+        .catch(error => next(error));
 });
 
 export default route;
