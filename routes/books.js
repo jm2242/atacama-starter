@@ -1,6 +1,7 @@
 // @flow
 import express from 'express'
 import books from '../database/books'
+import {Tag} from "../model";
 
 const route = express.Router();
 
@@ -31,9 +32,6 @@ route.get('/', (req: express.Request, res: express.Response) => {
 route.get('/:id', (req: express.Request, res: express.Response) => {
     const id: number = parseInt(req.params.id);
 
-    console.log(req.params);
-    console.log(id);
-
     if(isNaN(id)) {
         res.status(400).json({message: 'The ID must be a valid book identifier'});
         return;
@@ -45,15 +43,40 @@ route.get('/:id', (req: express.Request, res: express.Response) => {
 });
 
 route.get('/:id/full-text', (req: express.Request, res: express.Response) => {
-    res.json([]);
+    const id: number = parseInt(req.params.id);
+
+    if(isNaN(id)) {
+        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        return;
+    }
+
+    res.status(204).end();
 });
 
 route.get('/:id/tags', (req: express.Request, res: express.Response) => {
-    res.json([]);
+    const id: number = parseInt(req.params.id);
+
+    if(isNaN(id)) {
+        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        return;
+    }
+
+    books.findTags(id)
+        .then(results => res.json(results))
+        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
 });
 
 route.post('/:id/tags', (req: express.Request, res: express.Response) => {
-    res.json([]);
+    const id: number = parseInt(req.params.id);
+
+    if(isNaN(id)) {
+        res.status(400).json({message: 'The ID must be a valid book identifier'});
+        return;
+    }
+
+    books.addTag(id, new Tag(req.body))
+        .then(results => res.json(results))
+        .catch(error => res.status(500).json({message: "Error while fetching data from the database", error}));
 });
 
 export default route;

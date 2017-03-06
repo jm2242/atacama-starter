@@ -17,8 +17,8 @@ export class Tag {
 
     constructor(db_data: any) {
         this.id = db_data.id;
-        this.type = db_data.type;
-        this.value = db_data.value;
+        this.type = (db_data.type || '').toLowerCase() ;
+        this.value = (db_data.value || '').toLowerCase();
     }
 }
 
