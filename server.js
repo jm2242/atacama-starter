@@ -5,11 +5,13 @@ import logger from 'morgan'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import foodRoute from './routes/food'
+import books from './routes/books'
+import authors from './routes/authors'
 
 const app = express();
 
 app.use(logger('dev'));
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Express only serves static assets in production
@@ -18,6 +20,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/api/food', foodRoute);
+app.use('/api/books', books);
+app.use('/api/authors', authors);
 
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);

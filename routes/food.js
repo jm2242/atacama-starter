@@ -1,6 +1,6 @@
 // @flow
 import express from 'express'
-import {search} from '../db.js'
+import {search} from "../db";
 
 const route = express.Router();
 
