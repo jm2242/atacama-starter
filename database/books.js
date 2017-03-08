@@ -52,7 +52,7 @@ export default {
         })
     },
 
-    findAllByAuthor(author_id: number, offset: number, count: number) {
+    findAllByAuthor(author_id: number, offset: number, count: number): Bluebird {
         return Bluebird.using(connection(), conn => {
             return conn.query('SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?', [author_id, offset, count])
                 .then((results: any[]) => {
@@ -66,7 +66,7 @@ export default {
         });
     },
 
-    findOne(id: number) {
+    findOne(id: number): Bluebird {
         return Bluebird.using(connection(), (conn) => {
             return conn.query("SELECT * FROM Book WHERE id = ?", [id])
                 .then((res: any[]) => {
@@ -80,14 +80,14 @@ export default {
         });
     },
 
-    findTags(bookId: number) {
+    findTags(bookId: number): Bluebird {
         return Bluebird.using(connection(), conn => {
             return conn.query("select type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", bookId)
                 .then((results: any[]) => results.map(res => new Tag(res)));
         });
     },
 
-    addTag(book_id: number, tag: Tag) {
+    addTag(book_id: number, tag: Tag): Bluebird {
         return Bluebird.using(connection(), conn => {
             return validateBook(conn, book_id)
                 .then(() => {
