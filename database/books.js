@@ -5,7 +5,7 @@ import {Book, Tag, Author} from '../model'
 import {NotFound, NotModified} from "../errors";
 
 function populateTags(conn, book: Book) {
-    return conn.query("select book_id, id, type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND book_id = '?'", [book.id])
+    return conn.query("select id, type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", [book.id])
         .then((results: any[]) => {
             let tags = results.map(res => new Tag(res));
             let genres = tags.filter(tag => tag.type == 'genre');
@@ -19,7 +19,7 @@ function populateTags(conn, book: Book) {
 }
 
 function populateAuthors(conn, book: Book) {
-    return conn.query('SELECT id, name FROM Author LEFT JOIN AuthoredBy ON Author.id = AuthoredBy.author_id WHERE AuthoredBy.book_id = ?', [book.id])
+    return conn.query('SELECT id, name FROM Author LEFT JOIN AuthoredBy ON Author.id = AuthoredBy.author_id AND AuthoredBy.book_id = ?', [book.id])
         .then((results: any[]) => {
             book.authors = results.map(res => new Author(res));
             return book;
@@ -54,7 +54,7 @@ export default {
 
     findAllByAuthor(author_id: number, offset: number, count: number) {
         return Bluebird.using(connection(), conn => {
-            return conn.query('SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY publish_date LIMIT ?,?', [author_id, offset, count])
+            return conn.query('SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?', [author_id, offset, count])
                 .then((results: any[]) => {
                     return Bluebird.all(
                         results
@@ -82,7 +82,7 @@ export default {
 
     findTags(bookId: number) {
         return Bluebird.using(connection(), conn => {
-            return conn.query("select book_id, type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND book_id = '?'", bookId)
+            return conn.query("select type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", bookId)
                 .then((results: any[]) => results.map(res => new Tag(res)));
         });
     },
@@ -104,7 +104,7 @@ export default {
                             }
                         })
                         .then((tag: Tag) => {
-                            return conn.query('SELECT * FROM HasTag WHERE book_id = ? AND tag_id = ?', [book_id, tag.id])
+                            return conn.query('SELECT * FROM HasTag WHERE HasTag.book_id = ? AND HasTag.tag_id = ?', [book_id, tag.id])
                                 .then((results: any[]) => {
                                     if (results.length != 0) {
                                         return tag;
