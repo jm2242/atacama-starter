@@ -10,6 +10,10 @@ import authors from './routes/authors'
 
 const app = express();
 
+if(process.NODE_ENV != "production") {
+    app.set('json spaces', 2);
+}
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
