@@ -10,13 +10,11 @@ const Main = React.createClass({
     return (
       <div>
         <NavBar />
-        <h1>
-          <Link to="/">Atacama</Link>
-        </h1>
-        <RaisedButton label="Default" />
+
         {/* Do we need this?  */}
         {/* We use cloneElement here so we can auto pass down props */}
-        {/* { React.cloneElement(this.props.children, this.props) } */}
+        { React.cloneElement(this.props.children, this.props) }
+
       </div>
     );
   }

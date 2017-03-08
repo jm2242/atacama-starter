@@ -10,11 +10,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'babel-polyfill'
 
+// import flexboxgrid for all components to use
+import './styles/flexboxgrid.css'
+
 
 /*
   Import Components
 */
 import App from './components/App';
+import Home from './components/Home'
 // import Single from './components/Single';
 // import PhotoGrid from './components/PhotoGrid';
 
@@ -38,6 +42,7 @@ ReactDOM.render(
     { /* Tell the Router to use our enhanced history */ }
     <Router history={history}>
       <Route path="/" component={App}>
+        <IndexRoute component={Home} />
       </Route>
     </Router>
   </Provider>
