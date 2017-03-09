@@ -5,7 +5,7 @@ import {Book, Tag, Author} from '../model'
 import {NotFound, NotModified} from "../errors";
 
 function populateTags(conn, book: Book) {
-    return conn.query("select id, type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", [book.id])
+    return conn.query("select id, type, value from HasTag RIGHT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", [book.id])
         .then((results: any[]) => {
             let tags = results.map(res => new Tag(res));
             let genres = tags.filter(tag => tag.type == 'genre');
@@ -19,7 +19,7 @@ function populateTags(conn, book: Book) {
 }
 
 function populateAuthors(conn, book: Book) {
-    return conn.query('SELECT id, name FROM Author LEFT JOIN AuthoredBy ON Author.id = AuthoredBy.author_id AND AuthoredBy.book_id = ?', [book.id])
+    return conn.query('SELECT Author.id, Author.name FROM AuthoredBy INNER JOIN Author ON Author.id = AuthoredBy.author_id AND AuthoredBy.book_id = ?', [book.id])
         .then((results: any[]) => {
             book.authors = results.map(res => new Author(res));
             return book;
