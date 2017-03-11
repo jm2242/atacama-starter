@@ -6,7 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducers/index';
 import books from './data/books';
-
+import thunk from 'redux-thunk'
 /*
   Store
 
@@ -18,11 +18,12 @@ const defaultState = {
   books
 }
 
+// not sure what this?
 const enhancers = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
-const store = createStore(rootReducer, defaultState, enhancers);
+const store = createStore(rootReducer, defaultState, applyMiddleware(thunk));
 
 // we export history because we need it in `reduxstagram.js` to feed into <Router>
 export const history = syncHistoryWithStore(browserHistory, store);
