@@ -70,6 +70,11 @@ route.get('/user', ensureAuthenticated, function(req: express.Request, res: expr
     res.json(req.user);
 });
 
+route.get('/logout', ensureAuthenticated, function(req: express.Request, res: express.Response) {
+    req.logout();
+    res.redirect('/');
+});
+
 export default route;
 
 export function ensureAuthenticated(req, res, next) {
