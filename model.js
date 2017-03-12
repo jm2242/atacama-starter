@@ -39,3 +39,23 @@ export class Book {
         this.published = db_data.publish_date;
     }
 }
+
+export class User {
+    id: number;
+    name: string;
+    email: string;
+    photo: string;
+
+    constructor(db_data: any) {
+        this.id = db_data.id;
+        this.name = db_data.name;
+        this.email = db_data.email;
+        this.photo = db_data.photo;
+    }
+
+    copyWithNewId(id: number) {
+        const other = new User(this);
+        other.id = id;
+        return other;
+    }
+}
