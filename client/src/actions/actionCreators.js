@@ -1,3 +1,4 @@
+//@flow
 /**
   Action Creators
 
@@ -12,9 +13,15 @@
 
 */
 
+// Action type constants
+const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
+const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
+const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
+
+// Action creators
 export function booksHasErrored(bool) {
   return {
-    type: 'BOOKS_HAS_ERRORED',
+    type: BOOKS_HAS_ERRORED,
     hasErrored: bool
   }
 }
@@ -22,14 +29,14 @@ export function booksHasErrored(bool) {
 
 export function booksIsLoading(bool) {
   return {
-    type: 'BOOKS_IS_LOADING',
+    type: BOOKS_IS_LOADING,
     isLoading: bool
   }
 }
 
 export function booksFetchDataSuccess(books) {
   return {
-    type: 'BOOKS_FETCH_DATA_SUCCESS',
+    type: BOOKS_FETCH_DATA_SUCCESS,
     books
   }
 }
