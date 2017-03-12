@@ -32,3 +32,9 @@ export class BadRequest extends HttpError {
         super(msg, 400);
     }
 }
+
+export class Forbidden extends HttpError {
+    constructor(msg) {
+        super(msg, 403);
+    }
+}
