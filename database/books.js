@@ -2,7 +2,7 @@
 import Bluebird from 'bluebird'
 import connection from './mysql'
 import {Book, Tag, Author, User} from '../model'
-import {NotFound, NotModified} from "../errors";
+import {NotFound, NotModified, Forbidden} from "../errors";
 
 function populateTags(conn, book: Book) {
     return conn.query("select id, type, value from HasTag INNER JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", [book.id])
@@ -57,7 +57,7 @@ export default {
         return Bluebird.using(connection(), (conn) => {
             const query = user == null ?
                 'SELECT *, FALSE AS saved FROM Book ORDER BY publish_date LIMIT ?,?' :
-                'SELECT * FROM Book LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id LEFT JOIN (SELECT COUNT(*) AS saved, book_id FROM Saved WHERE user_id = ? GROUP BY book_id) AS saved ON Book.id = saved.book_id ORDER BY Book.publish_date LIMIT ?,?';
+                'SELECT Book.*, saved, viewed.date FROM Book LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id LEFT JOIN (SELECT COUNT(*) AS saved, book_id FROM Saved WHERE user_id = ? GROUP BY book_id) AS saved ON Book.id = saved.book_id ORDER BY Book.publish_date LIMIT ?,?';
             const params = user == null ? [offset, count] : [user.id, user.id, offset, count];
             return conn.query(query, params)
                 .then((results: any[]) => {
@@ -74,8 +74,44 @@ export default {
     findAllByAuthor(author_id: number, offset: number, count: number, user: User): Bluebird {
         const query = user == null ?
             'SELECT *, FALSE AS saved FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?' :
-            'SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? GROUP BY user_id ORDER BY date DESC) AS viewed ON Book.id = viewed.book_id LEFT JOIN (SELECT COUNT(*) AS saved, book_id FROM Saved WHERE user_id = ? GROUP BY book_id) AS saved ON Book.id = saved.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?';
+            'SELECT Book.*, saved, viewed.date FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? GROUP BY user_id ORDER BY date DESC) AS viewed ON Book.id = viewed.book_id LEFT JOIN (SELECT COUNT(*) AS saved, book_id FROM Saved WHERE user_id = ? GROUP BY book_id) AS saved ON Book.id = saved.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?';
         const params = user == null ? [author_id, offset, count] : [user.id, user.id, author_id, offset, count];
+        return Bluebird.using(connection(), conn => {
+            return conn.query(query, params)
+                .then((results: any[]) => {
+                    return Bluebird.all(
+                        results
+                            .map(res => new Book(res))
+                            .map(book => populateTags(conn, book))
+                            .map(promise => promise.then(book => populateAuthors(conn, book)))
+                    );
+                });
+        });
+    },
+
+    findAllInBookList(book_list_id: number, offset: number, count: number, user: User): Bluebird {
+        if(!user) {
+            throw new Forbidden("You must be logged in to view this");
+        }
+        const query =
+            'SELECT Book.*, saved, viewed.date ' +
+            'FROM Book ' +
+            '  INNER JOIN Contains ON Book.id = Contains.book_id ' +
+            '  INNER JOIN BookList ON Contains.book_list_id = BookList.id AND BookList.owner = ?' +
+            '  LEFT JOIN (' +
+            '    SELECT book_id, date ' +
+            '    FROM Viewed WHERE user_id = ? ' +
+            '    GROUP BY user_id ORDER BY date DESC' +
+            '  ) AS viewed ON Book.id = viewed.book_id ' +
+            '  LEFT JOIN (' +
+            '    SELECT COUNT(*) AS saved, book_id ' +
+            '    FROM Saved WHERE user_id = ? ' +
+            '    GROUP BY book_id' +
+            '  ) AS saved ON Book.id = saved.book_id ' +
+            'WHERE Contains.book_list_id = ? ' +
+            'ORDER BY Book.publish_date ' +
+            'LIMIT ?,?';
+        const params = [user.id, user.id, user.id, book_list_id, offset, count];
         return Bluebird.using(connection(), conn => {
             return conn.query(query, params)
                 .then((results: any[]) => {
@@ -93,7 +129,7 @@ export default {
         return Bluebird.using(connection(), (conn) => {
             const query = user == null ?
                 "SELECT *, FALSE AS saved FROM Book WHERE id = ?" :
-                "SELECT *, EXISTS (SELECT * FROM Saved WHERE book_id = ? AND user_id = ?) as saved FROM Book LEFT JOIN (SELECT book_id, date from Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id WHERE Book.id = ?";
+                "SELECT Book.*, viewed.date, EXISTS (SELECT * FROM Saved WHERE book_id = ? AND user_id = ?) as saved FROM Book LEFT JOIN (SELECT book_id, date from Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id WHERE Book.id = ?";
             const params = user == null ? [id] : [id, user.id, user.id, id];
             return conn.query(query, params)
                 .then((res: any[]) => {
