@@ -20,6 +20,11 @@ export class Tag {
         this.type = (db_data.type || '').toLowerCase() ;
         this.value = (db_data.value || '').toLowerCase();
     }
+
+    withId(id: number) {
+        this.id = id;
+        return this;
+    }
 }
 
 export class Book {
@@ -28,7 +33,7 @@ export class Book {
     published: Date;
     genres: string[];
     series: string[];
-    viewed: boolean;
+    viewed: Date;
     saved: boolean;
     tags: Tag[];
     authors: Author[];
@@ -37,6 +42,22 @@ export class Book {
         this.id = db_data.id;
         this.title = db_data.title;
         this.published = db_data.publish_date;
+        this.viewed = db_data.date;
+        this.saved = !!db_data.saved;
+    }
+}
+
+export class BookList {
+    id: number;
+    name: string;
+    description: string;
+    created: Date;
+
+    constructor(db_data: any) {
+        this.id = db_data.id;
+        this.name = db_data.name;
+        this.description = db_data.description;
+        this.created = db_data.created;
     }
 }
 

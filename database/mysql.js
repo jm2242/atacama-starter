@@ -7,7 +7,7 @@ const user = process.env.ATACAMA_DB_USER || '';
 const password = process.env.ATACAMA_DB_PASSWORD || '';
 const database = process.env.ATACAMA_DB_SCHEMA || '';
 
-const pool = mysql.createPool({
+export const pool = mysql.createPool({
     host,
     port,
     user,
@@ -24,3 +24,4 @@ export function getConnection() {
 }
 
 export default getConnection;
+

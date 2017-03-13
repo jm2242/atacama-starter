@@ -68,7 +68,7 @@ route.get('/:id/books', (req: express.Request, res: express.Response, next) => {
         return;
     }
 
-    books.findAllByAuthor(id, offset, count)
+    books.findAllByAuthor(id, offset, count, req.user)
         .then((results) => res.json(results))
         .catch(error => next(error));
 });
