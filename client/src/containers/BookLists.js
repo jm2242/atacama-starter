@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router';
 
 
-const BookList = React.createClass({
+const BookLists = React.createClass({
 
   render() {
     // Then we go ahead and return some JSX
     return (
       <div>
         <h1 className="row center-xs">
-          <Link to="/">Book List</Link>
+          Book Lists
         </h1>
       </div>
     );
@@ -17,4 +17,4 @@ const BookList = React.createClass({
 
 });
 
-export default BookList;
+export default BookLists;
