@@ -21,8 +21,7 @@
     "mysql": "^2.13.0",
     "passport": "^0.3.2",
     "passport-google-oauth2": "^0.1.6",
-    "promise-mysql": "^3.0.0",
-    "sql.js": "0.3.2"
+    "promise-mysql": "^3.0.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
