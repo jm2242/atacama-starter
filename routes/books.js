@@ -25,7 +25,7 @@ route.get('/', (req: express.Request, res: express.Response, next) => {
         return;
     }
 
-    books.findAll(offset, count)
+    books.findAll(offset, count, req.user)
         .then((results) => res.json(results))
         .catch(error => next(error));
 });
@@ -38,7 +38,7 @@ route.get('/:id', (req: express.Request, res: express.Response, next) => {
         return;
     }
 
-    books.findOne(id)
+    books.findOne(id, req.user)
         .then(results => res.json(results))
         .catch(error => next(error));
 });

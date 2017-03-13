@@ -42,6 +42,7 @@ export class Book {
         this.id = db_data.id;
         this.title = db_data.title;
         this.published = db_data.publish_date;
+        this.viewed = db_data.date;
     }
 }
 

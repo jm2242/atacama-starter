@@ -1,7 +1,7 @@
 // @flow
 import Bluebird from 'bluebird'
 import connection from './mysql'
-import {Book, Tag, Author} from '../model'
+import {Book, Tag, Author, User} from '../model'
 import {NotFound, NotModified} from "../errors";
 
 function populateTags(conn, book: Book) {
@@ -37,10 +37,29 @@ function validateBook(conn, book_id: number) {
         });
 }
 
+
+function viewed(conn, book: Book, user: User) {
+    if (user && book) {
+        book.viewed = new Date(); // Force updated viewed date
+        return conn
+            .query('INSERT INTO Viewed SET ?', {
+                user_id: user.id,
+                book_id: book.id
+            })
+            .then(() => book);
+    } else {
+        return book;
+    }
+}
+
 export default {
-    findAll(offset: number, count: number): Bluebird {
+    findAll(offset: number, count: number, user: User): Bluebird {
         return Bluebird.using(connection(), (conn) => {
-            return conn.query('SELECT * FROM Book ORDER BY publish_date LIMIT ?,?', [offset, count])
+            const query = user == null ?
+                'SELECT * FROM Book ORDER BY publish_date LIMIT ?,?' :
+                'SELECT * FROM Book LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id ORDER BY Book.publish_date LIMIT ?,?';
+            const params = user == null ? [offset, count] : [user.id, offset, count];
+            return conn.query(query, params)
                 .then((results: any[]) => {
                     return Bluebird.all(
                         results
@@ -52,9 +71,13 @@ export default {
         })
     },
 
-    findAllByAuthor(author_id: number, offset: number, count: number): Bluebird {
+    findAllByAuthor(author_id: number, offset: number, count: number, user: User): Bluebird {
+        const query = user == null ?
+            'SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?' :
+            'SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id LEFT JOIN (SELECT book_id, date FROM Viewed WHERE user_id = ? GROUP BY user_id ORDER BY date DESC) AS viewed ON Book.id = viewed.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?';
+        const params = user == null ? [author_id, offset, count] : [user.id, author_id, offset, count];
         return Bluebird.using(connection(), conn => {
-            return conn.query('SELECT * FROM Book INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id WHERE AuthoredBy.author_id = ? ORDER BY Book.publish_date LIMIT ?,?', [author_id, offset, count])
+            return conn.query(query, params)
                 .then((results: any[]) => {
                     return Bluebird.all(
                         results
@@ -66,15 +89,20 @@ export default {
         });
     },
 
-    findOne(id: number): Bluebird {
+    findOne(id: number, user: User): Bluebird {
         return Bluebird.using(connection(), (conn) => {
-            return conn.query("SELECT * FROM Book WHERE id = ?", [id])
+            const query = user == null ?
+                "SELECT * FROM Book WHERE id = ?" :
+                "SELECT * FROM Book LEFT JOIN (SELECT book_id, date from Viewed WHERE user_id = ? ORDER BY date DESC LIMIT 1) AS viewed ON Book.id = viewed.book_id WHERE Book.id = ?";
+            const params = user == null ? [id] : [user.id, id];
+            return conn.query(query, params)
                 .then((res: any[]) => {
                     if (res.length != 1) {
                         throw new NotFound(`Book id ${id} not found`);
                     }
                     return new Book(res[0])
                 })
+                .then(book => viewed(conn, book, user))
                 .then(book => populateTags(conn, book))
                 .then(book => populateAuthors(conn, book));
         });
