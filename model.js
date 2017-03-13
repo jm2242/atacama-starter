@@ -20,6 +20,11 @@ export class Tag {
         this.type = (db_data.type || '').toLowerCase() ;
         this.value = (db_data.value || '').toLowerCase();
     }
+
+    withId(id: number) {
+        this.id = id;
+        return this;
+    }
 }
 
 export class Book {

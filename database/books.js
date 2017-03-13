@@ -81,39 +81,37 @@ export default {
     },
 
     findTags(bookId: number): Bluebird {
-        return Bluebird.using(connection(), conn => {
-            return conn.query("select type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", bookId)
-                .then((results: any[]) => results.map(res => new Tag(res)));
-        });
+        return Bluebird.using(connection(), conn =>
+            conn.query("select type, value from HasTag LEFT JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", bookId))
+            .then((results: any[]) => results.map(res => new Tag(res)));
     },
 
     addTag(book_id: number, tag: Tag): Bluebird {
         return Bluebird.using(connection(), conn => {
             return validateBook(conn, book_id)
-                .then(() => {
-                    return conn.query('SELECT * FROM Tag WHERE type = ? AND value = ?', [tag.type, tag.value])
-                        .then((results: any[]) => {
-                            if (results.length != 0) {
-                                return new Tag(results[0]);
-                            } else {
-                                return conn.query('INSERT INTO Tag SET ? ', {type: tag.type, value: tag.value})
-                                    .then(results => {
-                                        tag.id = results.insertedId;
-                                        return tag;
-                                    });
-                            }
-                        })
-                        .then((tag: Tag) => {
-                            return conn.query('SELECT * FROM HasTag WHERE HasTag.book_id = ? AND HasTag.tag_id = ?', [book_id, tag.id])
-                                .then((results: any[]) => {
-                                    if (results.length != 0) {
-                                        return tag;
-                                    } else {
-                                        return conn.query('INSERT INTO HasTag SET ?', {tag_id: tag.id, book_id}).then(() => tag);
-                                    }
-                                });
-                        })
-                })
+                .then(() => conn.query('SELECT * FROM Tag WHERE type = ? AND value = ?', [tag.type, tag.value])
+                    .then((results: any[]) => {
+                        if (results.length != 0) {
+                            return new Tag(results[0]);
+                        } else {
+                            return conn.query('INSERT INTO Tag SET ? ', {type: tag.type, value: tag.value})
+                                .then(results => tag.withId(resutls.insertId));
+                        }
+                    })
+                    .then((tag: Tag) => {
+                        return conn.query('SELECT * FROM HasTag WHERE HasTag.book_id = ? AND HasTag.tag_id = ?', [book_id, tag.id])
+                            .then((results: any[]) => {
+                                if (results.length != 0) {
+                                    return tag;
+                                } else {
+                                    return conn.query('INSERT INTO HasTag SET ?', {
+                                        tag_id: tag.id,
+                                        book_id
+                                    }).then(() => tag);
+                                }
+                            });
+                    })
+                )
 
         });
     }
