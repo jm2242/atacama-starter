@@ -77,7 +77,7 @@ route.get('/logout', ensureAuthenticated, function(req: express.Request, res: ex
 
 export default route;
 
-export function ensureAuthenticated(req, res, next) {
+export function ensureAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction) {
     if(req.isAuthenticated()) {
         next();
     }
