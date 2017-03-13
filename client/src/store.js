@@ -18,12 +18,13 @@ const defaultState = {
   books
 }
 
-// not sure what this?
+// need this to use the redux devtools extension
 const enhancers = compose(
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
-const store = createStore(rootReducer, defaultState, applyMiddleware(thunk));
+const store = createStore(rootReducer, defaultState, enhancers);
 
 // we export history because we need it in `reduxstagram.js` to feed into <Router>
 export const history = syncHistoryWithStore(browserHistory, store);
