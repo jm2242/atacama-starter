@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux'; // we need this for react-router
+
+import { books, booksHasErrored, booksIsLoading } from './books'
 
 /*
   Reducers
@@ -10,10 +13,9 @@ import { combineReducers } from 'redux';
 
 */
 
-import { routerReducer } from 'react-router-redux'; // we need this for react-router
-import books from './books'
 
-// empty for now
-const rootReducer = combineReducers({books, routing: routerReducer });
+
+// ES6 shorthand when passing in reducers ex would be books: books, booksHasErrored: booksHasErrored
+const rootReducer = combineReducers({books, booksHasErrored, booksIsLoading, routing: routerReducer });
 
 export default rootReducer;

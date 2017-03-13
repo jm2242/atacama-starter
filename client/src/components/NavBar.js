@@ -1,5 +1,6 @@
 import React from 'react'
 import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -8,7 +9,7 @@ import AppBar from 'material-ui/AppBar';
 const NavBar = () => (
   <AppBar
     title="Atacama"
-    iconClassNameRight="muidocs-icon-navigation-expand-more"
+    iconElementRight={<FlatButton href="/auth/google" label="Login" />}
   />
 );
 

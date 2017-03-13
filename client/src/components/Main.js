@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
-import { Link } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
+//import { Link } from 'react-router';
+
 import NavBar from './NavBar'
 const Main = React.createClass({
 

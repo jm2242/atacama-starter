@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute } from 'react-router'
+import { Router, Route, IndexRoute, Redirect } from 'react-router'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'babel-polyfill'
@@ -19,8 +19,7 @@ import './styles/flexboxgrid.css'
 */
 import App from './components/App';
 import Home from './components/Home'
-// import Single from './components/Single';
-// import PhotoGrid from './components/PhotoGrid';
+import NotFoundPage from './components/NotFoundPage'
 
 /* Import CSS */
 // import css from  './styles/style.styl';
@@ -43,6 +42,9 @@ ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
+        {/* <Redirect from="login" to="/auth/google" /> */}
+        {/* Catch all routes that don't match  */}
+        {/* <Route path='*' component={NotFoundPage}/> */}
       </Route>
     </Router>
   </Provider>

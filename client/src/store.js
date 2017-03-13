@@ -6,7 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducers/index';
 import books from './data/books';
-
+import thunk from 'redux-thunk'
 /*
   Store
 
@@ -18,7 +18,9 @@ const defaultState = {
   books
 }
 
+// need this to use the redux devtools extension
 const enhancers = compose(
+  applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
