@@ -84,7 +84,7 @@ export default {
         );
     },
 
-    delete(id: number, user: User) {
+    remove(id: number, user: User) {
         if (!user) {
             throw new Forbidden("You must be logged in to view this page");
         }

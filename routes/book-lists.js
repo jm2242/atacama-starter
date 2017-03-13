@@ -48,6 +48,11 @@ route.get('/:id/books', (req: express.Request, res: express.Response, next) => {
     const count: number = parseInt(req.query.count || 25);
     const id: number = parseInt(req.params.id);
 
+    if(isNaN(id)) {
+        next(new BadRequest(`The ID parameter must be numeric`));
+        return;
+    }
+
     if(isNaN(count) || isNaN(offset)) {
         next(new BadRequest(`Both count and offset must be numeric if present`));
         return;
@@ -72,5 +77,25 @@ route.get('/:id/books', (req: express.Request, res: express.Response, next) => {
         .then((results) => res.json(results))
         .catch(error => next(error));
 });
+/*
+route.post('/:id/books/:book', (req: express.Request, res: express.Response, next) => {
+    const id: number = parseInt(req.params.id);
+    const bookId: number = parseInt(req.params.book);
 
+    if(isNaN(id)) {
+        next(new BadRequest(`The ID parameter must be numeric`));
+        return;
+    }
+
+
+    if(isNaN(bookId)) {
+        next(new BadRequest(`The book parameter must be numeric`));
+        return;
+    }
+
+    lists.addBookToList(id, bookId, req.user)
+        .then(() => res.status(200).end())
+        .catch(err -> next(error));
+});
+*/
 export default route;
