@@ -4,7 +4,6 @@ import http from 'http'
 import logger from 'morgan'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
-import foodRoute from './routes/food'
 import books from './routes/books'
 import authors from './routes/authors'
 import auth from './routes/auth'
@@ -37,7 +36,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/food', foodRoute);
 app.use('/api/books', books);
 app.use('/api/authors', authors);
 app.use('/auth', auth);

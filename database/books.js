@@ -123,7 +123,7 @@ export default {
                             return new Tag(results[0]);
                         } else {
                             return conn.query('INSERT INTO Tag SET ? ', {type: tag.type, value: tag.value})
-                                .then(results => tag.withId(resutls.insertId));
+                                .then(results => tag.withId(results.insertId));
                         }
                     })
                     .then((tag: Tag) => {
