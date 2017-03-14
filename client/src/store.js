@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducers/index';
-import bookLists from './data/book-lists';
+import books from './data/books';
 import thunk from 'redux-thunk'
 /*
   Store
@@ -15,7 +15,7 @@ import thunk from 'redux-thunk'
   2. An optional starting state - similar to React's getInitialState
 */
 const defaultState = {
-  bookLists
+  books
 }
 
 // need this to use the redux devtools extension

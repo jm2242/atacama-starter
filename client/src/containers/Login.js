@@ -1,25 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
 import GoogleLogin from 'react-google-login';
+import { loginPost } from '../actions/loginActions'
 
-const responseGoogle = (response) => {
+
+const failureGoogle = (response) => {
   console.log(response);
 }
 
-const Login = React.createClass({
 
+class Login extends Component {
+
+  // responseGoogle(response) {
+  //   console.log(response)
+  //   this.props.authenticateLogin(response)
+  // }
 
   render() {
     return (
       <GoogleLogin
         clientId="103157729265-1jg5dl3i55urmdjskuiul00stqttc9a2.apps.googleusercontent.com"
         buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
+        onSuccess={this.props.authenticateLogin}
+        onFailure={failureGoogle}
       />
     )
   }
-})
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -31,7 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchData: (url) => dispatch(booksFetchData(url))
+      authenticateLogin: (response) => dispatch(loginPost(response))
   };
 };
 

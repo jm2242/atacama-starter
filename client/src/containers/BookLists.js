@@ -7,9 +7,9 @@ import BookList from '../components/BookList'
 
 const BookLists = React.createClass({
 
-  // componentDidMount() {
-  //   this.props.fetchData('../data/book-lists')
-  // },
+  componentDidMount() {
+    this.props.fetchData('api/book-lists')
+  },
   render() {
     const firstBookList = this.props.bookLists[0]
 
@@ -28,7 +28,7 @@ const BookLists = React.createClass({
           Book Lists
         </h1>
         {/* For some reason we need the ...this.props to get book list  */}
-        <BookList {...this.props} bookList={firstBookList} />
+        {/* <BookList {...this.props} bookList={firstBookList} /> */}
       </div>
     );
   }
