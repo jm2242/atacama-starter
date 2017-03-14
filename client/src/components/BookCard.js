@@ -8,7 +8,7 @@ const BookCard = React.createClass({
 
   render() {
     const { book } = this.props
-    const bookId = book.id
+    //const bookId = book.id
     return (
       <Card className="col-xs-2">
         <CardHeader
@@ -19,7 +19,7 @@ const BookCard = React.createClass({
         <CardMedia
           overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
         >
-          <img src={book_stock_small} />
+          <img src={book_stock_small} alt="stock" />
         </CardMedia>
         <CardTitle title={book.title} subtitle={book.authors[0].name} />
         <CardText>
@@ -29,7 +29,7 @@ const BookCard = React.createClass({
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton onClick={this.props.addBookToBookList.bind(null, bookId)} label="Save to booklist" />
+          <FlatButton onClick={this.props.addBookToBookList.bind(null, book)} label="Save to booklist" />
         </CardActions>
       </Card>
     )

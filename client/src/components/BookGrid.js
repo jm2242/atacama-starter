@@ -5,7 +5,13 @@ import { booksFetchData } from '../actions/actionCreators'
 const BookGrid = React.createClass({
 
   componentDidMount() {
-    this.props.fetchData('/api/books')
+
+    if (this.props.books.length > 0) {
+      console.log('we already have books')
+    } else {
+      console.log('making an api call to get books')
+      this.props.fetchData('/api/books')
+    }
   },
 
 
@@ -20,7 +26,7 @@ const BookGrid = React.createClass({
       }
       return (
       <div className="row">
-        {this.props.books.map((book,i) => <BookCard key={i} i={i} book={book} />)}
+        {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
       </div>
     );
   }

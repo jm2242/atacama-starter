@@ -1,9 +1,9 @@
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
+//import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+//import Divider from 'material-ui/Divider';
+//import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 import MobileTearSheet from './MobileTearSheet'
 
@@ -12,7 +12,8 @@ class BookList extends React.Component {
   render() {
 
     const bookList = this.props.bookLists[0]
-    console.log(bookList)
+
+
     if (bookList) {
       return (
           <MobileTearSheet>

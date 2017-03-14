@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-// Stolen from the docs 
+// Stolen from the docs
 
 class MobileTearSheet extends Component {
 
@@ -48,7 +48,7 @@ class MobileTearSheet extends Component {
         <div style={prepareStyles(styles.container)}>
           {this.props.children}
         </div>
-        <img style={prepareStyles(styles.bottomTear)} src="images/bottom-tear.svg" />
+        {/* <img style={prepareStyles(styles.bottomTear)} src="images/bottom-tear.svg" /> */}
       </div>
     );
   }

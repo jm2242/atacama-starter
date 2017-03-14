@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router';
 import { bookListsFetchData } from '../actions/bookListActions'
 import BookList from '../components/BookList'
 
@@ -8,11 +7,14 @@ import BookList from '../components/BookList'
 const BookLists = React.createClass({
 
   componentDidMount() {
-    this.props.fetchData('/api/book-lists')
+    if (this.props.bookLists.length > 0) {
+      console.log('we already have a book list')
+    } else {
+      console.log('making an api call to get book lists')
+      this.props.fetchData('/api/book-lists')
+    }
   },
   render() {
-    const firstBookList = this.props.bookLists[0]
-
 
     if (this.props.hasErrored) {
       return <p> Sorry! There was an error getting items </p>

@@ -18,17 +18,15 @@ const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
 
-
-export function addBookToBookList(bookId) {
+// Book list actions
+export function addBookToBookList(book) {
   return {
-    type: 'ADD_BOOK_TO_BOOK_LIST',
-    bookId
+    type: ADD_BOOK_TO_BOOK_LIST,
+    book
   }
 }
-
-
-
 
 
 
@@ -85,7 +83,11 @@ export function booksFetchData(url) {
             })
             .then((response) => response.json())
             .then((books) => dispatch(booksFetchDataSuccess(books)))
-            .catch(() => dispatch(booksHasErrored(true)));
+            .catch(function (err) {
+              console.log(err);
+              dispatch(booksHasErrored(true));
+            }
+          );
     };
 }
 //------- END GET BOOKS ACTION CREATORS --------
