@@ -75,6 +75,41 @@ export function postBooktoBookList(book, bookListId) {
     };
 }
 
+// BEGIN POST LIST name
+
+export function postBookListName(listName, bookListId) {
+    return (dispatch) => {
+        console.log(bookListId)
+        const url = 'api/book-lists/' + bookListId;
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'name': listName
+          })
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                //dispatch(booksIsLoading(false));
+                return response;
+            })
+            .then((response) => response.json())
+            //.then((res) => dispatch(addBookToBookListSuccess(res)))
+            .catch(function (err) {
+              console.log(err);
+              //dispatch(addBookToBookListErrored(true));
+            }
+          );
+    };
+}
+
+
+
+
 
 //------- BEGIN GET BOOKS ACTION CREATORS --------
 

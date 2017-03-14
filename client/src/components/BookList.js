@@ -1,13 +1,17 @@
 import React from 'react';
+
+
+import BookListNameForm from './BookListNameForm'
+
+// Material UI imports
 //import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import MobileTearSheet from './MobileTearSheet'
+
 //import Divider from 'material-ui/Divider';
 //import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
-import MobileTearSheet from './MobileTearSheet'
 
 class BookList extends React.Component {
 
@@ -31,12 +35,13 @@ class BookList extends React.Component {
                 )}
               </List>
             </MobileTearSheet>
-            <span>
+            {/* <span>
               <TextField hintText="Change Book List Name" />
             </span>
             <span>
               <RaisedButton label="save" primary={true}/>
-            </span>
+            </span> */}
+            <BookListNameForm bookListId={bookList.id} />
 
         </div>
       )
