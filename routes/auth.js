@@ -58,8 +58,8 @@ passport.use(new GoogleStrategy({
         .then(user => {
             return done(null, user);
         })
-        .catch(err => {
-            return done(err);
+        .catch(() => {
+            return done(null, null);
         });
 }));
 
@@ -70,7 +70,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (id, done) {
     users.findOne(id)
         .then(user => done(null, user))
-        .catch(err => done(err));
+        .catch(err => done(null, new User({email: 'nobody@nowhere.com', name: 'Anonymous'})));
 });
 
 const route = express.Router();
@@ -100,9 +100,9 @@ route.get('/logout', ensureAuthenticated, (req: express.Request, res: express.Re
 export default route;
 
 export function ensureAuthenticated(req: express.Request, res: express.Response, next) {
-    if (req.isAuthenticated()) {
-        return next();
+    if (!req.isAuthenticated()) {
+        req.user = new User({name: 'Anonymous', id: 0});
     }
 
-    return next(new Forbidden("You must be logged in to view this page"));
+    return next();
 }
