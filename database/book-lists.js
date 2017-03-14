@@ -79,7 +79,7 @@ export default {
                 .then(() => conn.query('SELECT * FROM Contains WHERE book_id = ? and book_list_id = ?', [book_id, list_id]))
                 .then((results: any[]) => {
                     if (results.length == 0) {
-                        conn.query('INSERT INTO Contains SET ?', {book_id, book_list_id: list_id})
+                        return conn.query('INSERT INTO Contains SET ?', {book_id, book_list_id: list_id})
                     }
                 })
         );
