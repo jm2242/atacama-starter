@@ -35,6 +35,7 @@ const BookGrid = React.createClass({
 const mapStateToProps = (state) => {
     return {
         books: state.books,
+        bookLists: state.bookLists,
         hasErrored: state.booksHasErrored,
         isLoading: state.booksIsLoading
     };

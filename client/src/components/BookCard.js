@@ -1,13 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import book_stock_small from '../images/book_stock_small.jpeg'
+
+import { postBooktoBookList } from '../actions/actionCreators'
+
 
 const BookCard = React.createClass({
 
 
   render() {
     const { book } = this.props
+    let bookListId = undefined
+    if (this.props.bookLists && this.props.bookLists[0]) {
+      bookListId = this.props.bookLists[0].id
+      console.log(bookListId)
+    }
     //const bookId = book.id
     return (
       <Card className="col-xs-2">
@@ -29,11 +38,24 @@ const BookCard = React.createClass({
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton onClick={this.props.addBookToBookList.bind(null, book)} label="Save to booklist" />
+          <FlatButton onClick={this.props.postBook.bind(null, book, bookListId)} label="Save to booklist" />
         </CardActions>
       </Card>
     )
   }
 })
 
-export default BookCard;
+const mapStateToProps = (state) => {
+    return {
+        hasErrored: state.postBookHasErrored,
+    };
+};
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postBook: (book, bookListId) => dispatch(postBooktoBookList(book, bookListId)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookCard);
