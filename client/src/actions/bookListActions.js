@@ -55,6 +55,10 @@ export function bookListsFetchData(url) {
             })
             .then((response) => response.json())
             .then((books) => dispatch(bookListsFetchDataSuccess(books)))
-            .catch(() => dispatch(bookListsHasErrored(true)));
+            .catch(function(err) {
+              console.log(err);
+              dispatch(bookListsHasErrored(true));
+            }
+            );
     };
 }

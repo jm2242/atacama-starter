@@ -7,29 +7,35 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 
 import MobileTearSheet from './MobileTearSheet'
 
-const BookList = React.createClass({
-
+class BookList extends React.Component {
 
   render() {
-    const { name } =  this.props.bookList
-    const { books } = this.props.bookList
-    return (
-        <MobileTearSheet>
-          <List>
-            <Subheader>{name}</Subheader>
 
-            {/* List out the books in the book list  */}
-            {books.map((book,i) => <ListItem
-                key={i}
-                primaryText={book.title}
-              />
-            )}
-          </List>
-        </MobileTearSheet>
-    )
+    const bookList = this.props.bookLists[0]
+    console.log(bookList)
+    if (bookList) {
+      return (
+          <MobileTearSheet>
+            <List>
+              <Subheader>{bookList.name}</Subheader>
+
+              {/* List out the books in the book list  */}
+              {bookList.books.map((book,i) => <ListItem
+                  key={i}
+                  primaryText={book.title}
+                />
+              )}
+            </List>
+          </MobileTearSheet>
+      )
+    }
+    return <div></div>
+
+
+
   }
 
 
-})
+}
 
 export default BookList

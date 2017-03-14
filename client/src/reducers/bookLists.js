@@ -17,7 +17,7 @@ export function bookListsIsLoading(state = false, action) {
 export function bookLists(state = [], action) {
     switch (action.type) {
         case 'BOOK_LISTS_FETCH_DATA_SUCCESS':
-            return action.books;
+            return action.bookLists;
         default:
             return state;
     }

@@ -28,7 +28,7 @@ const BookLists = React.createClass({
           Book Lists
         </h1>
         {/* For some reason we need the ...this.props to get book list  */}
-        {/* <BookList {...this.props} bookList={firstBookList} /> */}
+        <BookList {...this.props} />
       </div>
     );
   }
