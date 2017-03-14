@@ -88,21 +88,21 @@ route.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/',
 }));
 
-route.get('/user', ensureAuthenticated, function (req: express.Request, res: express.Response) {
+route.get('/user', ensureAuthenticated, (req: express.Request, res: express.Response) => {
     res.json(req.user);
 });
 
-route.get('/logout', ensureAuthenticated, function (req: express.Request, res: express.Response) {
+route.get('/logout', ensureAuthenticated, (req: express.Request, res: express.Response) => {
     req.logout();
     res.redirect('/');
 });
 
 export default route;
 
-export function ensureAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function ensureAuthenticated(req: express.Request, res: express.Response, next) {
     if (req.isAuthenticated()) {
-        next();
+        return next();
     }
 
-    next(new Forbidden("You must be logged in to view this page"));
+    return next(new Forbidden("You must be logged in to view this page"));
 }
