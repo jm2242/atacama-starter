@@ -132,7 +132,7 @@ export default {
     findByTitleLike(title: string, user: User) {
         return Bluebird
             .using(connection(), conn =>
-                conn.query("SELECT *, FALSE AS saved FROM Book WHERE title LIKE ? ORDER BY name", [`%${title}%`])
+                conn.query("SELECT *, FALSE AS saved FROM Book WHERE title LIKE ? ORDER BY title", [`%${title}%`])
                     .then((results: any[]) => {
                         return Bluebird.all(
                             results
