@@ -12,6 +12,7 @@ import session from 'express-session'
 import passport from 'passport'
 import {pool} from './database/mysql'
 import MySQLSessionStore from 'express-mysql-session'
+import {ensureAuthenticated} from './routes/auth'
 
 const MySQLStore = MySQLSessionStore(session);
 const store = new MySQLStore({}, pool.pool);
@@ -43,11 +44,12 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/auth', auth);
+app.use(ensureAuthenticated);
 
 app.use('/api/books', books);
 app.use('/api/book-lists', bookLists);
 app.use('/api/authors', authors);
-app.use('/auth', auth);
 
 app.use((err, req: express.Request, res: express.Response, next) => {
     if (res.headersSent) {
