@@ -16,6 +16,7 @@
     "express": "4.13.3",
     "express-mysql-session": "^1.2.0",
     "express-session": "^1.15.1",
+    "extend": "^3.0.0",
     "fs": "0.0.2",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
