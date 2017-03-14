@@ -32,8 +32,12 @@ const Logged = (props) => (
   >
     <MenuItem
       primaryText="Book List"
-      containerElement={<Link to="/booklist">Book List</Link>} />
-    {/* <MenuItem primaryText="Help" /> */}
+      containerElement={<Link to="/booklist">Book List</Link>}
+    />
+    <MenuItem
+      primaryText="Sign In"
+      containerElement={<Link to="/auth/google">Book List</Link>}
+    />
     <MenuItem primaryText="Sign out" />
   </IconMenu>
 );

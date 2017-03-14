@@ -18,7 +18,9 @@ const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+
 //------- BEGIN GET BOOKS ACTION CREATORS --------
+
 
 // Action creators
 export function booksHasErrored(bool) {

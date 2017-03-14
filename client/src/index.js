@@ -20,7 +20,7 @@ import './styles/flexboxgrid.css'
 import App from './components/App';
 import Home from './components/Home'
 import NotFoundPage from './components/NotFoundPage'
-import BookList from './containers/BookList'
+import BookLists from './containers/BookLists'
 
 /* Import CSS */
 // import css from  './styles/style.styl';
@@ -43,10 +43,11 @@ ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
-        <Route path="/booklist" component={BookList} />
-        {/* <Redirect from="login" to="/auth/google" /> */}
+        <Route path="/booklist" component={BookLists} />
+        <Redirect from="/auth/google/*" to="/" />
         {/* Catch all routes that don't match  */}
-        {/* <Route path='*' component={NotFoundPage}/> */}
+
+        <Route path='*' component={NotFoundPage}/>
       </Route>
     </Router>
   </Provider>

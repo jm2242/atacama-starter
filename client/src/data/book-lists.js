@@ -1,0 +1,4 @@
+const bookLists = [{"id":2,"name":"Jonathan's List","description":"This is a test list","created":"2017-03-13T22:13:18.000Z","books":[{"id":28,"title":"Parliamentary Debates, House of Lords, Bound Volumes, 1992-93","published":"1993-12-01T00:00:00.000Z","viewed":null,"saved":false,"genres":[],"series":[],"tags":[],"authors":[{"id":107,"name":"HMSO Books"}]},{"id":29,"title":"Parliamentary Debates, House of Lords, 1997-98","published":"1999-01-01T00:00:00.000Z","viewed":null,"saved":false,"genres":[],"series":[],"tags":[],"authors":[{"id":109,"name":"Tso"}]},{"id":1,"title":"Test title","published":"2017-03-01T00:00:00.000Z","viewed":null,"saved":false,"genres":["science fiction","fiction","another genre","and another genre"],"series":[],"tags":[],"authors":[{"id":1,"name":"Robert Jordan"},{"id":2,"name":"Brandon Sanderson"}]}]}]
+
+
+export default bookLists
