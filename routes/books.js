@@ -30,6 +30,14 @@ route.get('/', (req: express.Request, res: express.Response, next) => {
         .catch(error => next(error));
 });
 
+route.get('/search', (req: express.Request, res: express.Response, next) => {
+    const title = req.query.q;
+
+    books.findByTitleLike(title, req.user)
+        .then(books => res.json(books))
+        .catch(err => next(err));
+});
+
 route.get('/:id', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 

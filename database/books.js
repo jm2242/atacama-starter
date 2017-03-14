@@ -57,7 +57,7 @@ function viewed(conn, book: Book, user: User) {
 }
 
 function _findAllInBookListWithConnection(conn: mysql.Connection, book_list_id: number, user: User): Bluebird {
-    if(!user) {
+    if (!user) {
         throw new Forbidden("You must be logged in to view this");
     }
     const query =
@@ -127,6 +127,21 @@ export default {
                     );
                 })
         })
+    },
+
+    findByTitleLike(title: string, user: User) {
+        return Bluebird
+            .using(connection(), conn =>
+                conn.query("SELECT *, FALSE AS saved FROM Book WHERE title LIKE ? ORDER BY name", [`%${title}%`])
+                    .then((results: any[]) => {
+                        return Bluebird.all(
+                            results
+                                .map((res) => new Book(res))
+                                .map((book) => populateTags(conn, book))
+                                .map((promise) => promise.then((book) => populateAuthors(conn, book)))
+                        );
+                    })
+            );
     },
 
     findAllByAuthor(author_id: number, offset: number, count: number, user: User): Bluebird {
