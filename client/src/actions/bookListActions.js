@@ -3,6 +3,18 @@ const BOOK_LISTS_HAS_ERRORED = 'BOOK_LISTS_HAS_ERRORED'
 const BOOK_LISTS_IS_LOADING = 'BOOK_LISTS_IS_LOADING'
 const BOOK_LISTS_FETCH_DATA_SUCCESS = 'BOOK_LISTS_FETCH_DATA_SUCCESS'
 
+const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
+
+// add a book to a book list
+export function add_book_to_book_list(bookId) {
+  return {
+    type: ADD_BOOK_TO_BOOK_LIST,
+    bookId
+  }
+}
+
+
+
 
 export function bookListsHasErrored(bool) {
   return {

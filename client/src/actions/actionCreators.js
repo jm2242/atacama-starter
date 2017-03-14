@@ -19,6 +19,19 @@ const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
 
+
+export function addBookToBookList(bookId) {
+  return {
+    type: 'ADD_BOOK_TO_BOOK_LIST',
+    bookId
+  }
+}
+
+
+
+
+
+
 //------- BEGIN GET BOOKS ACTION CREATORS --------
 
 

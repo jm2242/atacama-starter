@@ -5,9 +5,10 @@ import book_stock_small from '../images/book_stock_small.jpeg'
 
 const BookCard = React.createClass({
 
+
   render() {
     const { book } = this.props
-
+    const bookId = book.id
     return (
       <Card className="col-xs-2">
         <CardHeader
@@ -28,7 +29,7 @@ const BookCard = React.createClass({
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton label="Save to booklist" />
+          <FlatButton onClick={this.props.addBookToBookList.bind(null, bookId)} label="Save to booklist" />
         </CardActions>
       </Card>
     )
