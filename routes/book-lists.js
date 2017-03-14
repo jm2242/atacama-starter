@@ -95,7 +95,7 @@ route.post('/:id/books/:book', (req: express.Request, res: express.Response, nex
     }
 
     lists.addBookToBookList(id, bookId, req.user)
-        .then(() => lists.findOne(list_id, req.user))
+        .then(() => lists.findOne(id, req.user))
         .then(list => res.json(list))
         .catch(error => next(error));
 });
@@ -116,7 +116,7 @@ route.delete('/:id/books/:book', (req: express.Request, res: express.Response, n
     }
 
     lists.removeBookFromBookList(id, bookId, req.user)
-        .then(() => lists.findOne(list_id, req.user))
+        .then(() => lists.findOne(id, req.user))
         .then(list => res.json(list))
         .catch(error => next(error));
 });
