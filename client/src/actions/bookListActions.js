@@ -40,12 +40,14 @@ export function bookListsFetchData(url) {
     return (dispatch) => {
         dispatch(bookListsIsLoading(true));
         fetch(url, {
+          credentials: 'same-origin',
           headers: {
             Accept: 'application/json',
           },
           })
             .then((response) => {
                 if (!response.ok) {
+                    console.log('something went wrong');
                     throw Error(response.statusText);
                 }
                 dispatch(bookListsIsLoading(false));

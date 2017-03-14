@@ -8,7 +8,7 @@ import BookList from '../components/BookList'
 const BookLists = React.createClass({
 
   componentDidMount() {
-    this.props.fetchData('api/book-lists')
+    this.props.fetchData('/api/book-lists')
   },
   render() {
     const firstBookList = this.props.bookLists[0]
