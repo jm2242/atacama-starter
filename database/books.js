@@ -1,6 +1,7 @@
 // @flow
 import Bluebird from 'bluebird'
 import connection from './mysql'
+import mysql from 'promise-mysql'
 import {Book, Tag, Author, User} from '../model'
 import {NotFound, NotModified, Forbidden} from "../errors";
 
@@ -53,6 +54,41 @@ function viewed(conn, book: Book, user: User) {
     } else {
         return book;
     }
+}
+
+function _findAllInBookListWithConnection(conn: mysql.Connection, book_list_id: number, user: User): Bluebird {
+    if(!user) {
+        throw new Forbidden("You must be logged in to view this");
+    }
+    const query =
+        'SELECT Book.*, saved, viewed.date ' +
+        'FROM Book ' +
+        '  INNER JOIN Contains ON Book.id = Contains.book_id ' +
+        '  INNER JOIN BookList ON Contains.book_list_id = BookList.id AND BookList.owner = ?' +
+        '  LEFT JOIN (' +
+        '    SELECT book_id, date ' +
+        '    FROM Viewed WHERE user_id = ? ' +
+        '    GROUP BY user_id ORDER BY date DESC' +
+        '  ) AS viewed ON Book.id = viewed.book_id ' +
+        '  LEFT JOIN (' +
+        '    SELECT COUNT(*) AS saved, book_id ' +
+        '    FROM Saved WHERE user_id = ? ' +
+        '    GROUP BY book_id' +
+        '  ) AS saved ON Book.id = saved.book_id ' +
+        'WHERE Contains.book_list_id = ? ' +
+        'ORDER BY Book.publish_date ';
+    const params = [user.id, user.id, user.id, book_list_id];
+
+    return conn.query(query, params)
+        .then((results: any[]) => {
+            return Bluebird.all(
+                results
+                    .map(res => new Book(res))
+                    .map(book => populateTags(conn, book))
+                    .map(promise => promise.then(book => populateAuthors(conn, book)))
+            );
+        });
+
 }
 
 export default {
@@ -134,40 +170,12 @@ export default {
         });
     },
 
+    findAllInBookListWithConnection(conn: mysql.Connection, book_list_id: number, user: User): Bluebird {
+        return _findAllInBookListWithConnection(conn, book_list_id, user);
+    },
+
     findAllInBookList(book_list_id: number, offset: number, count: number, user: User): Bluebird {
-        if(!user) {
-            throw new Forbidden("You must be logged in to view this");
-        }
-        const query =
-            'SELECT Book.*, saved, viewed.date ' +
-            'FROM Book ' +
-            '  INNER JOIN Contains ON Book.id = Contains.book_id ' +
-            '  INNER JOIN BookList ON Contains.book_list_id = BookList.id AND BookList.owner = ?' +
-            '  LEFT JOIN (' +
-            '    SELECT book_id, date ' +
-            '    FROM Viewed WHERE user_id = ? ' +
-            '    GROUP BY user_id ORDER BY date DESC' +
-            '  ) AS viewed ON Book.id = viewed.book_id ' +
-            '  LEFT JOIN (' +
-            '    SELECT COUNT(*) AS saved, book_id ' +
-            '    FROM Saved WHERE user_id = ? ' +
-            '    GROUP BY book_id' +
-            '  ) AS saved ON Book.id = saved.book_id ' +
-            'WHERE Contains.book_list_id = ? ' +
-            'ORDER BY Book.publish_date ' +
-            'LIMIT ?,?';
-        const params = [user.id, user.id, user.id, book_list_id, offset, count];
-        return Bluebird.using(connection(), conn => {
-            return conn.query(query, params)
-                .then((results: any[]) => {
-                    return Bluebird.all(
-                        results
-                            .map(res => new Book(res))
-                            .map(book => populateTags(conn, book))
-                            .map(promise => promise.then(book => populateAuthors(conn, book)))
-                    );
-                });
-        });
+        return Bluebird.using(connection(), conn => _findAllInBookListWithConnection(conn, book_list_id, user));
     },
 
     findOne(id: number, user: User): Bluebird {

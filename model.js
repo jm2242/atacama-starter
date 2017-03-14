@@ -52,6 +52,7 @@ export class BookList {
     name: string;
     description: string;
     created: Date;
+    books: Book[];
 
     constructor(db_data: any) {
         this.id = db_data.id;
@@ -59,7 +60,13 @@ export class BookList {
         this.description = db_data.description;
         this.created = db_data.created;
     }
+
+    withBooks(books: Book[]): BookList {
+        this.books = books;
+        return this;
+    }
 }
+
 
 export class User {
     id: number;

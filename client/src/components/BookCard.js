@@ -13,7 +13,7 @@ const BookCard = React.createClass({
         <CardHeader
           title="URL Avatar"
           subtitle="Subtitle"
-          avatar="images/jsa-128.jpg"
+          //avatar="images/jsa-128.jpg"
         />
         <CardMedia
           overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
@@ -28,8 +28,7 @@ const BookCard = React.createClass({
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
         <CardActions>
-          <FlatButton label="Save" />
-          <FlatButton label="Action2" />
+          <FlatButton label="Save to booklist" />
         </CardActions>
       </Card>
     )

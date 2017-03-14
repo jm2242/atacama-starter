@@ -57,8 +57,7 @@ passport.deserializeUser(function (id, done) {
 const route = express.Router();
 
 route.get('/google', passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/plus.login',
-        'https://www.googleapis.com/auth/plus.profile.emails.read']
+    scope: ['profile', 'email']
 }));
 
 route.get('/google/callback', passport.authenticate('google', {
@@ -77,7 +76,7 @@ route.get('/logout', ensureAuthenticated, function(req: express.Request, res: ex
 
 export default route;
 
-export function ensureAuthenticated(req, res, next) {
+export function ensureAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction) {
     if(req.isAuthenticated()) {
         next();
     }

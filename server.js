@@ -10,6 +10,11 @@ import authors from './routes/authors'
 import auth from './routes/auth'
 import session from 'express-session'
 import passport from 'passport'
+import {pool} from './database/mysql'
+import MySQLSessionStore from 'express-mysql-session'
+
+const MySQLStore = MySQLSessionStore(session);
+const store = new MySQLStore({}, pool.pool);
 
 const app = express();
 
@@ -31,6 +36,8 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(session({
     secret: 'keyboard cat person being',
+    key: 'session_cookie_name',
+    store: store,
     resave: true,
     saveUninitialized: true
 }));
