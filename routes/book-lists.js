@@ -3,6 +3,7 @@ import express from 'express'
 import lists from '../database/book-lists'
 import books from "../database/books";
 import {BadRequest} from "../errors";
+import Bluebird from 'bluebird'
 
 const route = express.Router();
 
@@ -94,7 +95,8 @@ route.post('/:id/books/:book', (req: express.Request, res: express.Response, nex
     }
 
     lists.addBookToBookList(id, bookId, req.user)
-        .then(() => res.status(204).end())
+        .then(() => lists.findOne(list_id, req.user))
+        .then(list => res.json(list))
         .catch(error => next(error));
 });
 
@@ -114,7 +116,18 @@ route.delete('/:id/books/:book', (req: express.Request, res: express.Response, n
     }
 
     lists.removeBookFromBookList(id, bookId, req.user)
-        .then(() => res.status(200).end())
+        .then(() => lists.findOne(list_id, req.user))
+        .then(list => res.json(list))
+        .catch(error => next(error));
+});
+
+route.post('/:id/books', (req: express.Request, res: express.Response, next) => {
+    const ids = req.body.ids;
+    const list_id: number = parseInt(req.params.id);
+
+    Bluebird.all(ids.map(id => lists.addBookToBookList(list_id, id, req.user)))
+        .then(() => lists.findOne(list_id, req.user))
+        .then(list => res.json(list))
         .catch(error => next(error));
 });
 
