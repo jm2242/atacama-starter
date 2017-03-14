@@ -16,12 +16,16 @@
     "express": "4.13.3",
     "express-mysql-session": "^1.2.0",
     "express-session": "^1.15.1",
+    "extend": "^3.0.0",
     "fs": "0.0.2",
     "morgan": "^1.8.1",
     "mysql": "^2.13.0",
     "passport": "^0.3.2",
     "passport-google-oauth2": "^0.1.6",
-    "promise-mysql": "^3.0.0"
+    "passport-http-bearer": "^1.0.1",
+    "promise-mysql": "^3.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.1.1"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",

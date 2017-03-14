@@ -3,11 +3,14 @@ import express from 'express'
 import passport from 'passport';
 import googleOauth from 'passport-google-oauth2'
 import users from '../database/users'
+import bearer from 'passport-http-bearer'
+import request from 'request-promise'
 
 import {User} from "../model";
 import {Forbidden} from "../errors";
 
 const GoogleStrategy = googleOauth.Strategy;
+const BearerStrategy = bearer.Strategy;
 
 let callback = "http://localhost:3000/auth/google/callback";
 
@@ -24,6 +27,22 @@ function getImageUrlFromProfile(profile) {
 
     return profile.photos[0].value;
 }
+
+passport.use(new BearerStrategy(
+    (token, done) => {
+        request({
+            uri: "https://www.googleapis.com/oauth2/v3/tokeninfo",
+            qs: {
+                id_token: token
+            }
+        })
+            .then(body => JSON.parse(body))
+            .then(user => new User({email: user.email, name: user.name, photo: user.picture}))
+            .then(user => users.findOrCreate(user))
+            .then(user => done(null, user))
+            .catch(err => done(err));
+    }
+));
 
 passport.use(new GoogleStrategy({
     clientID: process.env.ATACAMA_OAUTH_ID,
@@ -56,6 +75,10 @@ passport.deserializeUser(function (id, done) {
 
 const route = express.Router();
 
+route.get('/bearer', passport.authenticate('bearer', {}), (req: express.Request, res: express.Response) => {
+    res.json(req.user);
+});
+
 route.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
@@ -65,21 +88,21 @@ route.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/',
 }));
 
-route.get('/user', ensureAuthenticated, function(req: express.Request, res: express.Response) {
+route.get('/user', ensureAuthenticated, (req: express.Request, res: express.Response) => {
     res.json(req.user);
 });
 
-route.get('/logout', ensureAuthenticated, function(req: express.Request, res: express.Response) {
+route.get('/logout', ensureAuthenticated, (req: express.Request, res: express.Response) => {
     req.logout();
     res.redirect('/');
 });
 
 export default route;
 
-export function ensureAuthenticated(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if(req.isAuthenticated()) {
-        next();
+export function ensureAuthenticated(req: express.Request, res: express.Response, next) {
+    if (req.isAuthenticated()) {
+        return next();
     }
 
-    next(new Forbidden("You must be logged in to view this page"));
+    return next(new Forbidden("You must be logged in to view this page"));
 }

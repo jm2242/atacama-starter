@@ -5,6 +5,7 @@ import {Book, Tag, Author, BookList, User} from '../model'
 import {NotFound, Forbidden} from "../errors";
 import books from './books'
 import mysql from 'promise-mysql'
+import extend from 'extend'
 
 function addBooksToBookList(conn: mysql.Connection, list: BookList, user: User) {
     return books.findAllInBookListWithConnection(conn, list.id, user).then((books: Book[]) => list.withBooks(books))
@@ -103,11 +104,11 @@ export default {
         const params = {};
 
         if (data.name) {
-            Object.extend(params, {name: data.name});
+            extend(params, {name: data.name});
         }
 
         if (data.description) {
-            Object.extend(params, {description: data.description});
+            extend(params, {description: data.description});
         }
 
         return Bluebird.using(connection(), conn =>

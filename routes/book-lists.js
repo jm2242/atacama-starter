@@ -93,9 +93,9 @@ route.post('/:id/books/:book', (req: express.Request, res: express.Response, nex
         return;
     }
 
-    lists.addBookToList(id, bookId, req.user)
+    lists.addBookToBookList(id, bookId, req.user)
         .then(() => res.status(204).end())
-        .catch(err => next(error));
+        .catch(error => next(error));
 });
 
 route.delete('/:id/books/:book', (req: express.Request, res: express.Response, next) => {
@@ -113,9 +113,9 @@ route.delete('/:id/books/:book', (req: express.Request, res: express.Response, n
         return;
     }
 
-    lists.removeBookFromlist(id, bookId, req.user)
+    lists.removeBookFromBookList(id, bookId, req.user)
         .then(() => res.status(200).end())
-        .catch(err => next(error));
+        .catch(error => next(error));
 });
 
 route.post('/', (req: express.Request, res: express.Response, next) => {
