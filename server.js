@@ -51,6 +51,10 @@ app.use('/api/books', books);
 app.use('/api/book-lists', bookLists);
 app.use('/api/authors', authors);
 
+app.all('/*', (req: express.Request, res: express.Response, next) => {
+    res.sendfile('index.html', { root: 'client/build' })
+});
+
 app.use((err, req: express.Request, res: express.Response, next) => {
     if (res.headersSent) {
         return next(err);
