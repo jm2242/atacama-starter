@@ -63,6 +63,38 @@ export default {
             });
     },
 
+    addBookToBookList(list_id: number, book_id: number, user: User) {
+        if (!user) {
+            throw new Forbidden("You must be logged in to view this page");
+        }
+
+        return Bluebird.using(connection(), conn =>
+            conn.query('SELECT id FROM BookList WHERE id = ? AND owner = ?', [list_id, user.id])
+                .then((results: any[]) => {
+                    if (results.length == 0) {
+                        throw new Forbidden(`You do not own book list ${list_id}`);
+                    }
+                })
+                .then(() => conn.query('INSERT INTO Contains SET ?', {book_id, book_list_id: list_id}))
+        );
+    },
+
+    removeBookFromBookList(list_id: number, book_id: number, user: User) {
+        if (!user) {
+            throw new Forbidden("You must be logged in to view this page");
+        }
+
+        return Bluebird.using(connection(), conn =>
+            conn.query('SELECT id FROM BookList WHERE id = ? AND owner = ?', [list_id, user.id])
+                .then((results: any[]) => {
+                    if (results.length == 0) {
+                        throw new Forbidden(`You do not own book list ${list_id}`);
+                    }
+                })
+                .then(() => conn.query('DELETE FROM Contains WHERE book_id = ? AND book_list_id = ?', [book_id, list_id]))
+        );
+    },
+
     update(id: number, data: any, user: User) {
         if (!user) {
             throw new Forbidden("You must be logged in to view this page");
