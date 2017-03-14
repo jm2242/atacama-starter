@@ -46,7 +46,7 @@ app.use(passport.session());
 
 app.use('/api/books', books);
 app.use('/api/book-lists', bookLists);
-app.use('/api/lists', authors);
+app.use('/api/authors', authors);
 app.use('/auth', auth);
 
 app.use((err, req: express.Request, res: express.Response, next) => {
