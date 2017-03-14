@@ -94,7 +94,7 @@ route.post('/:id/books/:book', (req: express.Request, res: express.Response, nex
     }
 
     lists.addBookToList(id, bookId, req.user)
-        .then(() => res.status(200).end())
+        .then(() => res.status(204).end())
         .catch(err -> next(error));
 });
 
