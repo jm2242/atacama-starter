@@ -29,6 +29,18 @@ export function bookLists(state = [], action) {
           }
           else {
             const newState = state
+            newState[0].books.filter(book => book.id !== action.bookId)
+            console.log('newstate:')
+            console.log(newState)
+            return newState
+          }
+        case 'DELETE_BOOK_FROM_BOOK_LIST':
+          // this is hacky, we first need to get the book lists
+          if (!state) {
+            return state
+          }
+          else {
+            const newState = state
             newState[0].books.push(action.book)
             console.log('newstate:')
             console.log(newState)
@@ -39,7 +51,13 @@ export function bookLists(state = [], action) {
     }
 }
 
-// 
+
+
+
+
+
+
+//
 // export function postBookList(bookId) {
 //
 //   fetch(/api/, {

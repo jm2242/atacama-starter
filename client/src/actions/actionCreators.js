@@ -23,6 +23,9 @@ const ADD_BOOK_TO_BOOK_LIST_ERRORED = 'ADD_BOOK_TO_BOOK_LIST_ERRORED'
 const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
 
 
+const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
+const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
+const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
 
 // Book list actions
 export function addBookToBookList(book) {
@@ -106,6 +109,47 @@ export function postBookListName(listName, bookListId) {
           );
     };
 }
+
+
+// BEGIN POST DELETE BOOK
+
+export function deleteBookFromBookList(bookId) {
+  return {
+    type: DELETE_BOOK_FROM_BOOK_LIST,
+    bookId
+  }
+}
+
+
+// comment out dispatch delete book for now
+export function postDeleteBook(bookId, bookListId) {
+    return (dispatch) => {
+        console.log(bookListId)
+        //dispatch(deleteBookFromBookList(bookId));
+        const url = 'api/book-lists/' + bookListId + '/books/' + bookId
+        fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                //dispatch(booksIsLoading(false));
+                return response;
+            })
+            .then((response) => response.json())
+            //.then((res) => dispatch(addBookToBookListSuccess(res)))
+            .catch(function (err) {
+              console.log(err);
+              //dispatch(addBookToBookListErrored(true));
+            }
+          );
+    };
+}
+
 
 
 

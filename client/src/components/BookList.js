@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { connect } from 'react-redux'
+import { postDeleteBook } from '../actions/actionCreators'
 
 import BookListNameForm from './BookListNameForm'
 
@@ -8,17 +10,24 @@ import BookListNameForm from './BookListNameForm'
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import MobileTearSheet from './MobileTearSheet'
+import ContentClear from 'material-ui/svg-icons/content/clear'
+import { red500 } from 'material-ui/styles/colors';
+
 
 //import Divider from 'material-ui/Divider';
 //import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 
-class BookList extends React.Component {
+
+const BookList = React.createClass({
+
+  handleClick(bookId, bookListId) {
+    this.props.deleteBook(bookId, bookListId)
+  },
 
   render() {
 
     const bookList = this.props.bookLists[0]
-
 
     if (bookList) {
       return (
@@ -28,9 +37,11 @@ class BookList extends React.Component {
                 <Subheader>{bookList.name}</Subheader>
 
                 {/* List out the books in the book list  */}
-                {bookList.books.map((book,i) => <ListItem
+                {bookList.books.map((book,i) =>
+                  <ListItem
                     key={i}
                     primaryText={book.title}
+                    rightIconButton={<ContentClear onClick={() => this.handleClick(book.id, bookList.id)} hoverColor={red500} />}
                   />
                 )}
               </List>
@@ -47,12 +58,22 @@ class BookList extends React.Component {
       )
     }
     return <div></div>
-
-
-
   }
+})
 
 
-}
 
-export default BookList
+const mapStateToProps = (state) => {
+    return {
+        hasErrored: state.bookListsDeleteHasErrored,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      deleteBook: (bookId, bookListId) => dispatch(postDeleteBook(bookId, bookListId))
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
