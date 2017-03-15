@@ -58,9 +58,7 @@ export default {
         return Bluebird
             .using(connection(), conn => {
                 return conn.query('INSERT INTO BookList SET ?', params)
-                    .then((res: any) => conn.query('SELECT * FROM BookList WHERE id = ?', res.insertId))
-                    .then((results: any[]) => new BookList(results[0]))
-                    .then(list => addBooksToBookList(conn, list, user));
+                    .then((res: any) => _findOne(conn, res.insertId, user))
             });
     },
 
