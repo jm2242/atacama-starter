@@ -4,6 +4,7 @@ const BOOK_LISTS_IS_LOADING = 'BOOK_LISTS_IS_LOADING'
 const BOOK_LISTS_FETCH_DATA_SUCCESS = 'BOOK_LISTS_FETCH_DATA_SUCCESS'
 
 
+
 export function bookListsHasErrored(bool) {
   return {
     type: BOOK_LISTS_HAS_ERRORED,

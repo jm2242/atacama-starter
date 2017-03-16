@@ -5,7 +5,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducers/index';
-import bookLists from './data/bookLists';
 import thunk from 'redux-thunk'
 /*
   Store
@@ -14,9 +13,9 @@ import thunk from 'redux-thunk'
   1. All Reducers which we combined into `rootReducer`
   2. An optional starting state - similar to React's getInitialState
 */
-const defaultState = {
-  bookLists
-}
+// const defaultState = {
+//   bookLists
+// }
 
 // need this to use the redux devtools extension
 const enhancers = compose(

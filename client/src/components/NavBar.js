@@ -1,25 +1,25 @@
-import React, {Component} from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
+//import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import Toggle from 'material-ui/Toggle';
+//import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+//import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 
-
-class Login extends Component {
-  static muiName = 'FlatButton';
-
-  render() {
-    return (
-      <FlatButton {...this.props} href="/auth/google" label="Login" />
-    );
-  }
-}
+// may use this for login component later
+// class Login extends Component {
+//   static muiName = 'FlatButton';
+//
+//   render() {
+//     return (
+//       <FlatButton {...this.props} href="/auth/google" label="Login" />
+//     );
+//   }
+// }
 
 const Logged = (props) => (
   <IconMenu

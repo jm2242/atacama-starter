@@ -18,6 +18,142 @@ const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
+const ADD_BOOK_TO_BOOK_LIST_ERRORED = 'ADD_BOOK_TO_BOOK_LIST_ERRORED'
+const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
+
+
+const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
+const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
+const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
+
+// Book list actions
+export function addBookToBookList(book) {
+  return {
+    type: ADD_BOOK_TO_BOOK_LIST,
+    book
+  }
+}
+
+// export function addBookToBookListSuccess(res) {
+//   return {
+//     type: ADD_BOOK_TO_BOOK_LIST_SUCCESS,
+//     res
+//   }
+// }
+//
+// export function addBookToBookListErrored(bool) {
+//   return {
+//     type: ADD_BOOK_TO_BOOK_LIST_ERRORED,
+//     hasErrored: bool
+//   }
+// }
+
+export function postBooktoBookList(book, bookListId) {
+    return (dispatch) => {
+        console.log(bookListId)
+        dispatch(addBookToBookList(book));
+        const bookId = book.id
+        const url = 'api/book-lists/' + bookListId + '/books/' + bookId
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                //dispatch(booksIsLoading(false));
+                return response;
+            })
+            .then((response) => response.json())
+            //.then((res) => dispatch(addBookToBookListSuccess(res)))
+            .catch(function (err) {
+              console.log(err);
+              //dispatch(addBookToBookListErrored(true));
+            }
+          );
+    };
+}
+
+// BEGIN POST LIST name
+
+export function postBookListName(listName, bookListId) {
+    return (dispatch) => {
+        console.log(bookListId)
+        const url = 'api/book-lists/' + bookListId;
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'name': listName
+          })
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                //dispatch(booksIsLoading(false));
+                return response;
+            })
+            .then((response) => response.json())
+            //.then((res) => dispatch(addBookToBookListSuccess(res)))
+            .catch(function (err) {
+              console.log(err);
+              //dispatch(addBookToBookListErrored(true));
+            }
+          );
+    };
+}
+
+
+// BEGIN POST DELETE BOOK
+
+export function deleteBookFromBookList(bookId) {
+  return {
+    type: DELETE_BOOK_FROM_BOOK_LIST,
+    bookId
+  }
+}
+
+
+// comment out dispatch delete book for now
+export function postDeleteBook(bookId, bookListId) {
+    return (dispatch) => {
+        console.log(bookListId)
+        //dispatch(deleteBookFromBookList(bookId));
+        const url = 'api/book-lists/' + bookListId + '/books/' + bookId
+        fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                //dispatch(booksIsLoading(false));
+                return response;
+            })
+            .then((response) => response.json())
+            //.then((res) => dispatch(addBookToBookListSuccess(res)))
+            .catch(function (err) {
+              console.log(err);
+              //dispatch(addBookToBookListErrored(true));
+            }
+          );
+    };
+}
+
+
+
+
+
 
 //------- BEGIN GET BOOKS ACTION CREATORS --------
 
@@ -72,7 +208,11 @@ export function booksFetchData(url) {
             })
             .then((response) => response.json())
             .then((books) => dispatch(booksFetchDataSuccess(books)))
-            .catch(() => dispatch(booksHasErrored(true)));
+            .catch(function (err) {
+              console.log(err);
+              dispatch(booksHasErrored(true));
+            }
+          );
     };
 }
 //------- END GET BOOKS ACTION CREATORS --------
