@@ -21,6 +21,7 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
+    "redux-saga": "^0.14.3",
     "redux-thunk": "^2.2.0",
     "semantic-ui": "2.2.7",
     "whatwg-fetch": "^2.0.3"

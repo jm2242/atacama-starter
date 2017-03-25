@@ -6,6 +6,10 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import rootReducer from './reducers/index';
 import thunk from 'redux-thunk'
+import createSagaMiddleWare from 'redux-saga'
+import rootSaga from './sagas/sagas'
+
+
 /*
   Store
 
@@ -13,13 +17,12 @@ import thunk from 'redux-thunk'
   1. All Reducers which we combined into `rootReducer`
   2. An optional starting state - similar to React's getInitialState
 */
-// const defaultState = {
-//   bookLists
-// }
+
+const sagaMiddleware = createSagaMiddleWare()
 
 // need this to use the redux devtools extension
 const enhancers = compose(
-  applyMiddleware(thunk),
+  applyMiddleware(thunk, sagaMiddleware),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
@@ -41,5 +44,7 @@ if(module.hot) {
   });
 }
 
+// run the middleware
+sagaMiddleware.run(rootSaga)
 
 export default store;
