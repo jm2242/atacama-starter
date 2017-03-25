@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 //import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { postBookListName } from '../actions/actionCreators'
 
 
 // Material UI
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+// import TextField from 'material-ui/TextField';
+// import RaisedButton from 'material-ui/RaisedButton';
 
 const BookListNameForm = React.createClass({
 

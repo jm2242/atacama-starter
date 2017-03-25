@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
+//import { connect } from 'react-redux'
 import BookCard from './BookCard'
-import { booksFetchData } from '../actions/actionCreators'
+//import { booksFetchData } from '../actions/actionCreators'
 const BookGrid = React.createClass({
 
   // componentDidMount() {

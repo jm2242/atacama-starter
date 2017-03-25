@@ -10,7 +10,7 @@ const Main = React.createClass({
     // Then we go ahead and return some JSX
     return (
       <div>
-        <Header />
+        <Header {...this.props} />
         <div>
           {/* Do we need this?  */}
           {/* We use cloneElement here so we can auto pass down props */}

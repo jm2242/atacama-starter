@@ -10,6 +10,13 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 //import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 
+const styles = {
+  title: {
+    cursor: 'pointer',
+  },
+};
+
+
 // may use this for login component later
 // class Login extends Component {
 //   static muiName = 'FlatButton';
@@ -52,7 +59,8 @@ const Logged = (props) => (
 
 const NavBar = (props) => (
   <AppBar {...props}
-    title={<Link to="/">Atacama</Link>}
+    title={<span style={styles.title}>Atacama</span>}
+    //onTitleTouchTap={props.router.push('/')}
     iconElementRight={<Logged />}
   />
 );

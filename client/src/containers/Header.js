@@ -15,9 +15,14 @@ class Header extends Component {
     this.props.actions.ui.openNav();
   }
 
+  // route to home when clicking on the logo 
+  handleRouteToHome=() => {
+    this.props.router.push('/')
+  }
+
   render() {
     return (
-      <NavBar onLeftIconButtonTouchTap={this.handleToggle} />
+      <NavBar onTitleTouchTap={this.handleRouteToHome} onLeftIconButtonTouchTap={this.handleToggle} />
     )
   }
 }
