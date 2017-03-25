@@ -24,9 +24,15 @@ const BookGrid = React.createClass({
       // if (this.props.isLoading) {
       //   return <p> Loading... </p>
       // }
+
       return (
-      <div className="row">
-        {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
+        <div>
+          {this.props.books.length > 0 &&
+            <h2>Search Results</h2>
+          }
+          <div className="row">
+            {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
+          </div>
       </div>
     );
   }
