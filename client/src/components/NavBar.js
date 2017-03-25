@@ -50,8 +50,8 @@ const Logged = (props) => (
  */
 
 
-const NavBar = () => (
-  <AppBar
+const NavBar = (props) => (
+  <AppBar {...props}
     title={<Link to="/">Atacama</Link>}
     iconElementRight={<Logged />}
   />

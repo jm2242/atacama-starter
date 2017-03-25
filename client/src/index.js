@@ -17,7 +17,7 @@ import './styles/flexboxgrid.css'
 /*
   Import Components
 */
-import App from './components/App';
+import App from './containers/App';
 import Home from './components/Home'
 import NotFoundPage from './components/NotFoundPage'
 import BookLists from './containers/BookLists'
