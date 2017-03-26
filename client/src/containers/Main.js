@@ -4,14 +4,9 @@ import React from 'react';
 
 import Header from './Header'
 import LeftNavBar from './LeftNavBar'
+import Footer from './Footer'
 
 // styles
-
-const style = {
-  background: {
-    backgroundColor: '#f5f5f5',
-  }
-}
 
 
 
@@ -20,7 +15,7 @@ const Main = React.createClass({
   render() {
     // Then we go ahead and return some JSX
     return (
-      <div style={style.background}>
+      <div>
         <Header {...this.props} />
         <div>
           {/* Do we need this?  */}
@@ -28,7 +23,7 @@ const Main = React.createClass({
           { React.cloneElement(this.props.children, this.props) }
         </div>
         <LeftNavBar />
-
+        <Footer />
       </div>
     );
   }
