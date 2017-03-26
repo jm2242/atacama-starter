@@ -43,7 +43,7 @@ Promise.config({
 
 function mapStateToProps(state) {
   return {
-    books: state.books
+    books: state.books,
   };
 }
 

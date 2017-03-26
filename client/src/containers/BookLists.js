@@ -27,10 +27,12 @@ const BookLists = React.createClass({
     return (
       <div className="container">
         <h1 className="row center-xs">
-          Book Lists
+          My Book Lists
         </h1>
-        {/* For some reason we need the ...this.props to get book list  */}
-        <BookList {...this.props} />
+        <div className="row center-xs">
+          {/* For some reason we need the ...this.props to get book list  */}
+          {this.props.bookLists.map((bookList, i) => <BookList key={i} {...this.props} /> )}
+        </div>
       </div>
     );
   }

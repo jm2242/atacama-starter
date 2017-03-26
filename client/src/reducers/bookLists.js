@@ -18,22 +18,24 @@ export function bookLists(state = [], action) {
     switch (action.type) {
         case 'BOOK_LISTS_FETCH_DATA_SUCCESS':
             return action.bookLists;
-        case 'ADD_BOOK_TO_BOOK_LIST':
-          console.log("logging from book reducer");
-          console.log(state);
-          console.log(action);
+        case 'ADD_BOOK_TO_BOOK_LIST_SUCCESS':
+          const book = action.book
+          console.log('current state:')
+          console.log(state)
+          console.log(action.bookListId)
+          // we need to return a new state with object with the book appended
+          // to the book attribute of the correct booklist
+          return state.map( (bookList, index) => {
+            if (bookList.id === action.bookListId) {
+              return Object.assign({}, bookList, {
+                books: bookList.books.concat(book)
+              })
+            } else {
+              return bookList
+            }
 
-          // this is hacky, we first need to get the book lists
-          if (!state) {
-            return state
-          }
-          else {
-            const newState = state
-            newState[0].books.filter(book => book.id !== action.bookId)
-            console.log('newstate:')
-            console.log(newState)
-            return newState
-          }
+          })
+
         case 'DELETE_BOOK_FROM_BOOK_LIST':
           // this is hacky, we first need to get the book lists
           if (!state) {

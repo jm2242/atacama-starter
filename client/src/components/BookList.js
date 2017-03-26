@@ -31,7 +31,7 @@ const BookList = React.createClass({
 
     if (bookList) {
       return (
-          <div>
+          <div >
             <MobileTearSheet>
               <List>
                 <Subheader>{bookList.name}</Subheader>

@@ -1,5 +1,7 @@
 //@flow
 import React from 'react';
+import { connect } from 'react-redux'
+import * as BookListActionCreators from '../actions/bookListActions'
 //import { Link } from 'react-router';
 
 import Header from './Header'
@@ -11,6 +13,12 @@ import Footer from './Footer'
 
 
 const Main = React.createClass({
+  componentDidMount() {
+    let { dispatch } = this.props
+    const url = '/api/book-lists'
+    console.log("main has mounted")
+    dispatch(BookListActionCreators.bookListsFetchData(url))
+  },
 
   render() {
     // Then we go ahead and return some JSX
@@ -30,4 +38,6 @@ const Main = React.createClass({
 
 });
 
-export default Main;
+export default connect(
+  state => ({ bookLists: state.bookLists })
+)(Main)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { booksFetchData } from '../actions/actionCreators'
+import { getBookListNames } from '../selectors/index'
 
 // components
 import BookGrid from './BookGrid'
@@ -48,10 +49,6 @@ class Home extends Component {
 
   render() {
 
-    if (this.props.hasErrored) {
-      return <p> Sorry! There was an error getting items </p>
-    }
-
     return (
       <div className="center-xs">
          {/* <TextField hintText="Search For Books" /> */}
@@ -72,6 +69,7 @@ const mapStateToProps = (state) => {
     return {
         books: state.books,
         bookLists: state.bookLists,
+        bookListNames: getBookListNames(state),
         hasErrored: state.booksHasErrored,
         isLoading: state.booksIsLoading
     };

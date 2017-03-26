@@ -27,56 +27,14 @@ export const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
 export const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
 export const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
 
-// Book list actions
-export function addBookToBookList(book) {
+
+export function addBookToBookListSaga(book, bookListId) {
   console.log("addBookToBOOKList action")
   return {
     type: ADD_BOOK_TO_BOOK_LIST,
-    book
+    book,
+    bookListId
   }
-}
-
-// export function addBookToBookListSuccess(res) {
-//   return {
-//     type: ADD_BOOK_TO_BOOK_LIST_SUCCESS,
-//     res
-//   }
-// }
-//
-// export function addBookToBookListErrored(bool) {
-//   return {
-//     type: ADD_BOOK_TO_BOOK_LIST_ERRORED,
-//     hasErrored: bool
-//   }
-// }
-
-export function postBooktoBookList(book, bookListId) {
-    return (dispatch) => {
-        console.log(bookListId)
-        dispatch(addBookToBookList(book));
-        const bookId = book.id
-        const url = 'api/book-lists/' + bookListId + '/books/' + bookId
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          })
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                //dispatch(booksIsLoading(false));
-                return response;
-            })
-            .then((response) => response.json())
-            //.then((res) => dispatch(addBookToBookListSuccess(res)))
-            .catch(function (err) {
-              console.log(err);
-              //dispatch(addBookToBookListErrored(true));
-            }
-          );
-    };
 }
 
 // BEGIN POST LIST name

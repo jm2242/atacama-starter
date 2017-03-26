@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import book_stock_small from '../images/book_stock_small.jpeg'
 
-import { postBooktoBookList } from '../actions/actionCreators'
+import { postBooktoBookList, addBookToBookListSaga } from '../actions/actionCreators'
+
+// components
+import AddToBookListPopover from './AddToBookListPopover'
 
 // material ui
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -21,16 +24,19 @@ const styles = {
 }
 
 
-
-const BookCard = React.createClass({
-
+class BookCard extends Component {
+  handleAddToBookList = (bookListId) => {
+    const { book } = this.props
+    console.log('in the handleAddToBookList hander' )
+    console.log(bookListId)
+    this.props.postBookSaga(book, bookListId)
+  }
 
   render() {
     const { book } = this.props
     let bookListId = undefined
     if (this.props.bookLists && this.props.bookLists[0]) {
       bookListId = this.props.bookLists[0].id
-      console.log(bookListId)
     }
     //const bookId = book.id
     return (
@@ -61,20 +67,19 @@ const BookCard = React.createClass({
         <Divider />
 
         <CardActions>
-          <FlatButton
-            onClick={this.props.postBook.bind(null, book, bookListId)}
-            label="Save to booklist"
-            primary={true}
+           <AddToBookListPopover
+             handleAddToBookList={this.handleAddToBookList}
+             bookListNames={this.props.bookListNames}
            />
         </CardActions>
       </Card>
     )
   }
-})
+}
 
 const mapStateToProps = (state) => {
     return {
-        hasErrored: state.postBookHasErrored,
+        hasErrored: state.postBookHasErrored
     };
 };
 
@@ -82,6 +87,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     postBook: (book, bookListId) => dispatch(postBooktoBookList(book, bookListId)),
+    postBookSaga: (book, bookListId) => dispatch(addBookToBookListSaga(book, bookListId)),
+
   };
 };
 
