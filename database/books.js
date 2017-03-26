@@ -12,9 +12,9 @@ function populateTags(conn, book: Book) {
         "  INNER JOIN Tag ON HasTag.tag_id = Tag.id AND HasTag.book_id = '?'", [book.id])
         .then((results: any[]) => {
             let tags = results.map(res => new Tag(res));
-            let genres = tags.filter(tag => tag.type == 'genre');
-            let series = tags.filter(tag => tag.type == 'series');
-            let generic = tags.filter(tag => tag.type != 'genre' && tag.type != 'series');
+            let genres = tags.filter(tag => tag.type === 'genre');
+            let series = tags.filter(tag => tag.type === 'series');
+            let generic = tags.filter(tag => tag.type !== 'genre' && tag.type !== 'series');
             book.genres = genres.map(tag => tag.value);
             book.series = series.map(tag => tag.value);
             book.tags = generic;
@@ -33,7 +33,7 @@ function populateAuthors(conn, book: Book) {
 function validateBook(conn, book_id: number) {
     return conn.query('SELECT id, tag_id FROM Book LEFT JOIN HasTag ON Book.id = HasTag.book_id WHERE id = ?', [book_id])
         .then((results: any[]) => {
-            if (results.length == 0) {
+            if (results.length === 0) {
                 throw new NotFound(`Book id ${book_id} not found`);
             }
 
@@ -94,7 +94,7 @@ function _findAllInBookListWithConnection(conn: mysql.Connection, book_list_id: 
 export default {
     findAll(offset: number, count: number, user: User): Bluebird {
         return Bluebird.using(connection(), (conn) => {
-            const query = user == null ?
+            const query = user === null || user === undefined ?
                 // Query if anonymous access
                 'SELECT *, FALSE AS saved ' +
                 'FROM Book ' +
@@ -116,7 +116,7 @@ export default {
                 '  ) AS saved ON Book.id = saved.book_id ' +
                 'ORDER BY Book.publish_date ' +
                 'LIMIT ?,?';
-            const params = user == null ? [offset, count] : [user.id, user.id, offset, count];
+            const params = user === null || user === undefined ? [offset, count] : [user.id, user.id, offset, count];
             return conn.query(query, params)
                 .then((results: any[]) => {
                     return Bluebird.all(
@@ -145,7 +145,7 @@ export default {
     },
 
     findAllByAuthor(author_id: number, offset: number, count: number, user: User): Bluebird {
-        const query = user == null ?
+        const query = user === null || user === undefined ?
             // Query if anonymous access
             'SELECT *, FALSE AS saved ' +
             'FROM Book ' +
@@ -171,7 +171,7 @@ export default {
             'WHERE AuthoredBy.author_id = ? ' +
             'ORDER BY Book.publish_date ' +
             'LIMIT ?,?';
-        const params = user == null ? [author_id, offset, count] : [user.id, user.id, author_id, offset, count];
+        const params = user === null || user === undefined ? [author_id, offset, count] : [user.id, user.id, author_id, offset, count];
         return Bluebird.using(connection(), conn => {
             return conn.query(query, params)
                 .then((results: any[]) => {
@@ -195,7 +195,7 @@ export default {
 
     findOne(id: number, user: User): Bluebird {
         return Bluebird.using(connection(), (conn) => {
-            const query = user == null ?
+            const query = user === null || user === undefined ?
                 // Query if anonymous access
                 "SELECT *, FALSE AS saved" +
                 "FROM Book " +
@@ -215,10 +215,10 @@ export default {
                 "    LIMIT 1" +
                 "  ) AS viewed ON Book.id = viewed.book_id " +
                 "WHERE Book.id = ?";
-            const params = user == null ? [id] : [id, user.id, user.id, id];
+            const params = user === null || user === undefined ? [id] : [id, user.id, user.id, id];
             return conn.query(query, params)
                 .then((res: any[]) => {
-                    if (res.length != 1) {
+                    if (res.length !== 1) {
                         throw new NotFound(`Book id ${id} not found`);
                     }
                     return new Book(res[0])
@@ -240,7 +240,7 @@ export default {
             return validateBook(conn, book_id)
                 .then(() => conn.query('SELECT * FROM Tag WHERE type = ? AND value = ?', [tag.type, tag.value])
                     .then((results: any[]) => {
-                        if (results.length != 0) {
+                        if (results.length !== 0) {
                             return new Tag(results[0]);
                         } else {
                             return conn.query('INSERT INTO Tag SET ? ', {type: tag.type, value: tag.value})
@@ -250,7 +250,7 @@ export default {
                     .then((tag: Tag) => {
                         return conn.query('SELECT * FROM HasTag WHERE HasTag.book_id = ? AND HasTag.tag_id = ?', [book_id, tag.id])
                             .then((results: any[]) => {
-                                if (results.length != 0) {
+                                if (results.length !== 0) {
                                     return tag;
                                 } else {
                                     return conn.query('INSERT INTO HasTag SET ?', {
