@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux'
 import { booksFetchData } from '../actions/actionCreators'
 
@@ -19,7 +18,7 @@ const styles = {
 };
 
 
-class Home extends React.Component {
+class Home extends Component {
   constructor(props) {
     super(props)
     this.onNewRequest = this.onNewRequest.bind(this)

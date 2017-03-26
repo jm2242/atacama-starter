@@ -30,7 +30,7 @@ const BookGrid = React.createClass({
           {this.props.books.length > 0 &&
             <h2>Search Results</h2>
           }
-          <div className="row">
+          <div className="row center-xs">
             {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
           </div>
 
