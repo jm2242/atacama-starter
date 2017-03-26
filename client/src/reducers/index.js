@@ -4,7 +4,7 @@ import { reducer as formReducer } from 'redux-form'
 import { books, booksHasErrored, booksIsLoading } from './books'
 import { bookLists, bookListsHasErrored, bookListsIsLoading } from './bookLists'
 import { login, loginHasErrored, loginIsLoading } from './login'
-
+import { uiReducer } from './ui-reducers'
 
 /*
   Reducers
@@ -19,6 +19,6 @@ import { login, loginHasErrored, loginIsLoading } from './login'
 
 
 // ES6 shorthand when passing in reducers ex would be books: books, booksHasErrored: booksHasErrored
-const rootReducer = combineReducers({form: formReducer,login, loginHasErrored, loginIsLoading, books, booksHasErrored, booksIsLoading, bookLists, bookListsHasErrored, bookListsIsLoading, routing: routerReducer });
+const rootReducer = combineReducers({form: formReducer, ui: uiReducer, login, loginHasErrored, loginIsLoading, books, booksHasErrored, booksIsLoading, bookLists, bookListsHasErrored, bookListsIsLoading, routing: routerReducer });
 
 export default rootReducer;

@@ -6,18 +6,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, Redirect } from 'react-router'
+import 'babel-polyfill'
+
+// material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import 'babel-polyfill'
+
 
 // import flexboxgrid for all components to use
 import './styles/flexboxgrid.css'
+import './styles/index.css'
+
 
 
 /*
   Import Components
 */
-import App from './components/App';
+import App from './containers/App';
 import Home from './components/Home'
 import NotFoundPage from './components/NotFoundPage'
 import BookLists from './containers/BookLists'

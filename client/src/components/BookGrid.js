@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
+//import { connect } from 'react-redux'
 import BookCard from './BookCard'
-import { booksFetchData } from '../actions/actionCreators'
+//import { booksFetchData } from '../actions/actionCreators'
 const BookGrid = React.createClass({
 
   // componentDidMount() {
@@ -24,9 +24,22 @@ const BookGrid = React.createClass({
       // if (this.props.isLoading) {
       //   return <p> Loading... </p>
       // }
+
       return (
-      <div className="row">
-        {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
+        <div>
+          {this.props.books.length > 0 &&
+            <h2>Search Results</h2>
+          }
+          <div className="row center-xs">
+            {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
+          </div>
+
+          { this.props.hasErrored &&
+            <div>
+              <p> Our sincerest apologies. Something Has gone terribly wrong fetching
+              your books. </p>
+            </div>
+          }
       </div>
     );
   }
