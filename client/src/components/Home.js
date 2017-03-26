@@ -53,25 +53,6 @@ class Home extends React.Component {
       return <p> Sorry! There was an error getting items </p>
     }
 
-    // if (this.props.isLoading) {
-    //   return <p> Loading... </p>
-    // }
-
-    // return (
-    //   <div>
-    //     <h1 className="row center-xs">
-    //       <Link to="/">Atacama</Link>
-    //     </h1>
-    //
-    //     <form onSubmit={this.handleSubmit} ref="bookSearch">
-    //         {/* <input type="text" ref="queryText" placeholder="Search For Books"/> */}
-    //         <TextField ref="queryText" hintText="Search For Books" />
-    //         <input type="submit" hidden/>
-    //     </form>
-    //
-    //     <BookGrid {... this.props} />
-    //   </div>
-    // );
     return (
       <div className="center-xs">
          {/* <TextField hintText="Search For Books" /> */}

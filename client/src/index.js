@@ -12,6 +12,8 @@ import 'babel-polyfill'
 
 // import flexboxgrid for all components to use
 import './styles/flexboxgrid.css'
+import './styles/index.css'
+
 
 
 /*

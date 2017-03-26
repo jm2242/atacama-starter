@@ -33,6 +33,13 @@ const BookGrid = React.createClass({
           <div className="row">
             {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
           </div>
+
+          { this.props.hasErrored &&
+            <div>
+              <p> Our sincerest apologies. Something Has gone terribly wrong fetching
+              your books. </p>
+            </div>
+          }
       </div>
     );
   }

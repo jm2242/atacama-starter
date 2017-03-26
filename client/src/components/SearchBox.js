@@ -46,6 +46,7 @@ class SearchBox extends Component {
               onUpdateInput={this.onUpdateInput}
               onNewRequest={this.props.onNewRequest}
       />
+      {/* If we're loading, show the progress circle, otherwise show the button  */}
      {this.props.loading ? (
        <CircularProgress size={40} style={style.progress} />
      ) : (
