@@ -27,6 +27,7 @@ import Home from './components/Home'
 import NotFoundPage from './components/NotFoundPage'
 import BookLists from './containers/BookLists'
 import Login from './containers/Login'
+import Reader from './containers/Reader'
 
 /* Import CSS */
 // import css from  './styles/style.styl';
@@ -51,6 +52,7 @@ ReactDOM.render(
         <IndexRoute component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/booklist" component={BookLists} />
+        <Route path="/reader" component={Reader} />
         <Redirect from="/auth/google/*" to="/" />
         {/* Catch all routes that don't match  */}
 
