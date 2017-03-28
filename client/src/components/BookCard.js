@@ -8,8 +8,7 @@ import { postBooktoBookList, addBookToBookListSaga } from '../actions/actionCrea
 import AddToBookListPopover from './AddToBookListPopover'
 
 // material ui
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
 
@@ -34,10 +33,11 @@ class BookCard extends Component {
 
   render() {
     const { book } = this.props
-    let bookListId = undefined
-    if (this.props.bookLists && this.props.bookLists[0]) {
-      bookListId = this.props.bookLists[0].id
-    }
+    // old stuff that was needed before hack was fixed
+    // let bookListId = undefined
+    // if (this.props.bookLists && this.props.bookLists[0]) {
+    //   bookListId = this.props.bookLists[0].id
+    // }
     //const bookId = book.id
     return (
       <Card style={styles.card} className="col-xs-6 col-sm-4 col-md-3 col-lg-2">

@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+
+
+// components
+import MenuItemWrapper from './MenuItemWrapper'
+
+// material-ui
 import RaisedButton from 'material-ui/RaisedButton'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
-import MenuItem from 'material-ui/MenuItem'
-
 
 
 
@@ -35,8 +39,8 @@ class AddToBookListPopover extends Component {
     });
   };
 
-  // handle the add to book list 
-  handleAddtoBookList = (event, bookListId) => {
+  // handle the add to book list
+  handleAddToBookList = (event, bookListId) => {
     event.preventDefault()
     this.props.handleAddToBookList(bookListId)
   }
@@ -58,11 +62,14 @@ class AddToBookListPopover extends Component {
         >
           <Menu>
             {this.props.bookListNames.map(
-              (bl) => <MenuItem
-                onClick={(event) => this.handleAddtoBookList(event, bl.bookListId)}
+              (bl) => <MenuItemWrapper
+                handleAddToBookList={this.handleAddToBookList}
                 key={bl.bookListId}
-                primaryText={bl.bookListName} /> )
-            }
+                primaryText={bl.bookListName}
+                bl={bl}
+                loading={false}
+                />
+            )}
           </Menu>
         </Popover>
       </div>
