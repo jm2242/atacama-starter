@@ -90,7 +90,7 @@ route.get('/:id/full-text', (req: express.Request, res: express.Response, next) 
         return;
     }
 
-    res.status(204).end();
+    res.redirect('https://s3.amazonaws.com/atacama-books/' + id + '.epub');
 });
 
 route.get('/:id/tags', (req: express.Request, res: express.Response, next) => {
