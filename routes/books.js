@@ -39,6 +39,14 @@ route.get('/', (req: express.Request, res: express.Response, next) => {
         .catch(error => next(error));
 });
 
+route.get('/db-search', (req: express.Request, res: express.Response, next) => {
+    let title = req.query.q;
+
+    books.findByTitleLike(title, req.user)
+        .then(books => res.json(books))
+        .catch(err => next(err));
+});
+
 route.get('/search', (req: express.Request, res: express.Response, next) => {
     let query = client.query()
         .q(req.query.q)
