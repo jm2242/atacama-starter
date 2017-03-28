@@ -26,7 +26,19 @@ export function bookLists(state = [], action) {
           // we need to return a new state with object with the book appended
           // to the book attribute of the correct booklist
           return state.map( (bookList, index) => {
+
+            // match the correct book list
             if (bookList.id === action.bookListId) {
+
+              // first make sure the book isn't already in the list
+              for (let b of bookList.books) {
+                if (b.id === book.id) {
+                  console.log('this book is already in teh book list')
+                  return bookList
+                }
+              }
+
+              // otherwise return a new book list with book appended
               return Object.assign({}, bookList, {
                 books: bookList.books.concat(book)
               })
@@ -36,18 +48,23 @@ export function bookLists(state = [], action) {
 
           })
 
-        case 'DELETE_BOOK_FROM_BOOK_LIST':
-          // this is hacky, we first need to get the book lists
-          if (!state) {
-            return state
-          }
-          else {
-            const newState = state
-            newState[0].books.push(action.book)
-            console.log('newstate:')
-            console.log(newState)
-            return newState
-          }
+        case 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS':
+          console.log('in del suc reducer')
+          console.log(action.bookId)
+            // we need to return a new state with the book removed from the bookList
+            // with the specified id
+          return state.map( (bookList, index) => {
+            if (bookList.id === action.bookListId) {
+              return Object.assign({}, bookList, {
+
+                // we filter over the bookList's books, leaving the books
+                // that don't have a matching id
+                books: bookList.books.filter( book => book.id !== action.bookId)
+              })
+            } else {
+              return bookList
+            }
+          })
         default:
             return state;
     }

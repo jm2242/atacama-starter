@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux'
-import { postDeleteBook } from '../actions/actionCreators'
+import { deleteBookFromBookList } from '../actions/actionCreators'
 
 import BookListNameForm from './BookListNameForm'
 
@@ -9,6 +9,8 @@ import BookListNameForm from './BookListNameForm'
 //import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import IconButton from 'material-ui/IconButton';
+
 import MobileTearSheet from './MobileTearSheet'
 import ContentClear from 'material-ui/svg-icons/content/clear'
 import { red500 } from 'material-ui/styles/colors';
@@ -41,7 +43,12 @@ const BookList = React.createClass({
                   <ListItem
                     key={i}
                     primaryText={book.title}
-                    rightIconButton={<ContentClear onClick={() => this.handleClick(book.id, bookList.id)} hoverColor={red500} />}
+                    rightIconButton={ <IconButton>
+                      <ContentClear
+                        onClick={() => this.handleClick(book.id, bookList.id)}
+                        hoverColor={red500} />
+                      </IconButton>
+                    }
                   />
                 )}
               </List>
@@ -71,7 +78,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      deleteBook: (bookId, bookListId) => dispatch(postDeleteBook(bookId, bookListId))
+      deleteBook: (bookId, bookListId) => dispatch(deleteBookFromBookList(bookId, bookListId))
   };
 };
 

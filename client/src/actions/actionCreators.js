@@ -27,7 +27,7 @@ export const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
 export const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
 export const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
 
-
+// add a book to a book list action
 export function addBookToBookListSaga(book, bookListId) {
   console.log("addBookToBOOKList action")
   return {
@@ -36,6 +36,17 @@ export function addBookToBookListSaga(book, bookListId) {
     bookListId
   }
 }
+
+// delete a book from a book list action
+export function deleteBookFromBookList(bookId, bookListId) {
+  console.log('dispatching delete book from book list action')
+  return {
+    type: DELETE_BOOK_FROM_BOOK_LIST,
+    bookId,
+    bookListId
+  }
+}
+
 
 // BEGIN POST LIST name
 
@@ -70,14 +81,6 @@ export function postBookListName(listName, bookListId) {
 }
 
 
-// BEGIN POST DELETE BOOK
-
-export function deleteBookFromBookList(bookId) {
-  return {
-    type: DELETE_BOOK_FROM_BOOK_LIST,
-    bookId
-  }
-}
 
 
 // comment out dispatch delete book for now
