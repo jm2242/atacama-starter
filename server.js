@@ -13,6 +13,7 @@ import passport from 'passport'
 import {pool} from './database/mysql'
 import MySQLSessionStore from 'express-mysql-session'
 import {ensureAuthenticated} from './routes/auth'
+import cors from 'cors'
 
 const MySQLStore = MySQLSessionStore(session);
 const store = new MySQLStore({}, pool.pool);
@@ -21,6 +22,7 @@ const app = express();
 
 if (process.env.NODE_ENV !== "production") {
     app.set('json spaces', 2);
+    app.use(cors());
 }
 
 app.use(logger('dev'));
