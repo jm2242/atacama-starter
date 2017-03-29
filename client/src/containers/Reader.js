@@ -12,7 +12,7 @@ class Reader extends Component {
     return (
       <div style={{position: 'relative', height: '100%'}}>
         <ReactReader
-          url={'http://www.gutenberg.org/ebooks/28885.epub.noimages?session_id=b98a21d21d85c830500784758b51d7b29e49bd7d'}
+          url={'/api/books/12176/full-text'}
           title={'Alice in wonderland'}
           location={'epubcfi(/6/2[cover]!/6)'}
           locationChanged={(epubcifi) => console.log(epubcifi)}
