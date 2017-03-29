@@ -33,6 +33,7 @@ class BookCard extends Component {
 
   render() {
     const { book } = this.props
+
     // old stuff that was needed before hack was fixed
     // let bookListId = undefined
     // if (this.props.bookLists && this.props.bookLists[0]) {
@@ -51,7 +52,10 @@ class BookCard extends Component {
         >
           <img src={book_stock_small} alt="stock" />
         </CardMedia>
-        <CardTitle title={book.title} subtitle={book.authors[0].name} />
+        <CardTitle
+          title={book.title}
+          subtitle={book.authors[0] && book.authors[0].name}
+        />
         <CardText>
           A short description of the book. We can let this be shortened like...
         </CardText>
