@@ -3,8 +3,17 @@ import express from 'express'
 import books from '../database/books'
 import {Tag} from "../model";
 import {BadRequest} from "../errors";
+import SolrNode from 'solr-node';
+import Bluebird from 'bluebird';
 
 const route = express.Router();
+
+const client = new SolrNode({
+    host: '34.205.133.187',
+    port: '8983',
+    core: 'atacama',
+    protocol: 'http'
+});
 
 route.get('/', (req: express.Request, res: express.Response, next) => {
     const offset: number = parseInt(req.query.offset || 0);
@@ -30,12 +39,34 @@ route.get('/', (req: express.Request, res: express.Response, next) => {
         .catch(error => next(error));
 });
 
-route.get('/search', (req: express.Request, res: express.Response, next) => {
-    const title = req.query.q;
+route.get('/db-search', (req: express.Request, res: express.Response, next) => {
+    let title = req.query.q;
 
     books.findByTitleLike(title, req.user)
         .then(books => res.json(books))
         .catch(err => next(err));
+});
+
+route.get('/search', (req: express.Request, res: express.Response, next) => {
+    let query = client.query()
+        .q(req.query.q)
+        .addParams({
+            wt: 'json',
+            indent: true,
+            fl: 'id'
+        })
+        .start(0)
+        .rows(req.query.count ? req.query.count : 100);
+
+    client.search(query, function(err, result) {
+        if(err) {
+            return next(err);
+        }
+
+        Bluebird.all(result.response.docs.map(b => books.findOne(b.id, req.user)))
+            .then(books => res.json(books))
+            .catch(err => next(err));
+    });
 });
 
 route.get('/:id', (req: express.Request, res: express.Response, next) => {
@@ -59,7 +90,7 @@ route.get('/:id/full-text', (req: express.Request, res: express.Response, next) 
         return;
     }
 
-    res.status(204).end();
+    res.redirect('https://s3.amazonaws.com/atacama-books/' + id + '.epub');
 });
 
 route.get('/:id/tags', (req: express.Request, res: express.Response, next) => {

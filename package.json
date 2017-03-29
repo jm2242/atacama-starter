@@ -26,7 +26,8 @@
     "passport-http-bearer": "^1.0.1",
     "promise-mysql": "^3.0.0",
     "request": "^2.81.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "solr-node": "^1.0.13"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
