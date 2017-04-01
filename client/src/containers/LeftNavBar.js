@@ -50,6 +50,10 @@ class LeftNavBar extends Component {
             primaryText="Book Reader"
             containerElement={<Link to="/reader" />}
           />
+          <MenuItem onClick={this.closeNav}
+            primaryText="Visualization"
+            containerElement={<Link to="/vis" />}
+          />
         </Drawer>
       </div>
     );

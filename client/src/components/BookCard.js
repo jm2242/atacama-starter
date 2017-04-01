@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import book_stock_small from '../images/book_stock_small.jpeg'
 
@@ -9,6 +10,7 @@ import AddToBookListPopover from './AddToBookListPopover'
 
 // material ui
 import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
 
@@ -19,6 +21,9 @@ const styles = {
   },
   chip: {
     margin: 4,
+  },
+  actions: {
+    margin: 10
   }
 }
 
@@ -62,15 +67,22 @@ class BookCard extends Component {
         <Divider />
         <CardText>
           <b>Genres</b>:
-          <Chip
-            style={styles.chip}
-            >
-            Fiction
-          </Chip>
+          {book.genres.map(
+            (genre , i) => <Chip
+              style={styles.chip}
+              key={i}
+              >
+              <div style={{fontSize: 10}}>{genre} </div>
+            </Chip>
+          )}
         </CardText>
         <Divider />
 
         <CardActions>
+          <RaisedButton style={styles.actions}
+            containerElement={<Link to={`/reader/${book.id}`} />}
+            label="Read Book" />
+
            <AddToBookListPopover
              handleAddToBookList={this.handleAddToBookList}
              bookListNames={this.props.bookListNames}

@@ -23,13 +23,16 @@ class Reader extends Component {
   }
 
   render() {
+    const bookId = this.props.params.bookId
+    const url = 'https://s3.amazonaws.com/atacama-books/' + bookId + '.epub'
     const {fullscreen, location} = this.state
     return (
       <div className="container">
         <div className="readerHolder">
           <ReactReader
-            url={'https://s3-eu-west-1.amazonaws.com/react-reader/alice.epub'}
-            title={'Alice in wonderland'}
+            // url={'https://s3-eu-west-1.amazonaws.com/react-reader/alice.epub'}
+            url={url}
+            title={'Book Title'}
             location={location}
             locationChanged={this.onLocationChanged}
           />

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import MenuItem from 'material-ui/MenuItem'
 import CircularProgress from 'material-ui/CircularProgress'
-import FontIcon from 'material-ui/FontIcon';
 import NoteAdd from 'material-ui/svg-icons/action/note-add';
 
 
