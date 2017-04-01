@@ -1,0 +1,25 @@
+.readerHolder {
+  position: absolute;
+  top: 135px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
+  transition: all .6s ease;
+}
+@media screen and (max-width: 600px) {
+  .readerHolder {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+}
+.readerHolderFullscreen {
+  position: absolute;
+  transition: all .6s ease;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: none;
+}
