@@ -17,13 +17,26 @@ import Chip from 'material-ui/Chip';
 // styles
 const styles = {
   card: {
-    margin: 10
+    padding: 0,
+    margin: 10,
+    lineHeight: 0
   },
   chip: {
     margin: 4,
   },
   actions: {
     margin: 10
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  titleStyle: {
+    fontSize: '1.1rem'
+  },
+  chipText: {
+    fontSize: '.6rem',
+    textTransform: 'capitalize'
   }
 }
 
@@ -46,7 +59,7 @@ class BookCard extends Component {
     // }
     //const bookId = book.id
     return (
-      <Card style={styles.card} className="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+      <Card style={styles.card} className="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         {/* <CardHeader
           title="URL Avatar"
           subtitle="Subtitle"
@@ -57,36 +70,39 @@ class BookCard extends Component {
         >
           <img src={book_stock_small} alt="stock" />
         </CardMedia>
-        <CardTitle
+        <CardTitle titleStyle={styles.titleStyle}
           title={book.title}
           subtitle={book.authors[0] && book.authors[0].name}
         />
-        <CardText>
+        {/* <CardText>
           A short description of the book. We can let this be shortened like...
-        </CardText>
+        </CardText> */}
         <Divider />
         <CardText>
-          <b>Genres</b>:
-          {book.genres.map(
-            (genre , i) => <Chip
-              style={styles.chip}
-              key={i}
-              >
-              <div style={{fontSize: 10}}>{genre} </div>
-            </Chip>
-          )}
+          <div style={styles.wrapper}>
+            {book.genres.map(
+              (genre , i) => <Chip
+                style={styles.chip}
+                key={i}
+                >
+                <div style={styles.chipText}>{genre} </div>
+              </Chip>
+            )}
+            </div>
         </CardText>
         <Divider />
 
         <CardActions>
-          <RaisedButton style={styles.actions}
-            containerElement={<Link to={`/reader/${book.id}`} />}
-            label="Read Book" />
+          <div style={styles.wrapper}>
+            <RaisedButton style={styles.actions}
+              containerElement={<Link to={`/reader/${book.id}`} />}
+              label="Read Book" />
 
-           <AddToBookListPopover
-             handleAddToBookList={this.handleAddToBookList}
-             bookListNames={this.props.bookListNames}
-           />
+             <AddToBookListPopover
+               handleAddToBookList={this.handleAddToBookList}
+               bookListNames={this.props.bookListNames}
+             />
+         </div>
         </CardActions>
       </Card>
     )
