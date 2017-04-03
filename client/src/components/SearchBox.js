@@ -33,7 +33,7 @@ class SearchBox extends Component {
 
   onUpdateInput(inputValue) {
     this.setState({
-      inputValue: inputValue
+      inputValue
     })
   }
 

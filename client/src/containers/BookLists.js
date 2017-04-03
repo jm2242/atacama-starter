@@ -29,9 +29,8 @@ const BookLists = React.createClass({
         <h1 className="row center-xs">
           My Book Lists
         </h1>
-        <div className="row center-xs">
-          {/* For some reason we need the ...this.props to get book list  */}
-          {this.props.bookLists.map((bookList, i) => <BookList key={i} {...this.props} /> )}
+        <div>
+          {this.props.bookLists.map((bookList, i) => <BookList className="row center-xs" key={i} bookList={bookList} /> )}
         </div>
       </div>
     );
