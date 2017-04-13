@@ -12,12 +12,9 @@ import 'babel-polyfill'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-
 // import flexboxgrid for all components to use
 import './styles/flexboxgrid.css'
 import './styles/index.css'
-
-
 
 /*
   Import Components
@@ -30,8 +27,6 @@ import Login from './containers/Login'
 import Reader from './containers/Reader'
 import Vis from './containers/Vis/Vis'
 
-/* Import CSS */
-// import css from  './styles/style.styl';
 
 /* Import our data store */
 import store, { history } from './store';
@@ -55,9 +50,9 @@ ReactDOM.render(
         <Route path="/booklist" component={BookLists} />
         <Route path="/reader/:bookId" component={Reader} />
         <Route path="/vis" component={Vis} />
+        
         <Redirect from="/auth/google/*" to="/" />
         {/* Catch all routes that don't match  */}
-
         <Route path='*' component={NotFoundPage}/>
       </Route>
     </Router>
