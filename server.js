@@ -22,8 +22,9 @@ const app = express();
 
 if (process.env.NODE_ENV !== "production") {
     app.set('json spaces', 2);
-    app.use(cors());
 }
+
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(cookieParser());
