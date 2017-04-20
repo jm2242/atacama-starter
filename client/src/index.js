@@ -25,7 +25,6 @@ import NotFoundPage from './components/NotFoundPage'
 import BookLists from './containers/BookLists'
 import Login from './containers/Login'
 import Reader from './containers/Reader'
-import Vis from './containers/Vis/Vis'
 
 
 /* Import our data store */
@@ -49,8 +48,8 @@ ReactDOM.render(
         <Route path="/login" component={Login} />
         <Route path="/booklist" component={BookLists} />
         <Route path="/reader/:bookId" component={Reader} />
-        <Route path="/vis" component={Vis} />
-        
+        {/* <Route path="/vis" component={Vis} /> */}
+
         <Redirect from="/auth/google/*" to="/" />
         {/* Catch all routes that don't match  */}
         <Route path='*' component={NotFoundPage}/>
