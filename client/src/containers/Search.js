@@ -23,7 +23,6 @@ const Search = React.createClass({
 
 })
 
-
 const mapStateToProps = (state) => {
     return {
         hasErrored: state.searchHasErrored,

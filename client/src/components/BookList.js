@@ -3,14 +3,15 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { deleteBookFromBookList } from '../actions/actionCreators'
 
-import BookListNameForm from './BookListNameForm'
+import BookListButtonBar from '../containers/BookListButtonBar'
+
 
 // Material UI imports
 //import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
-
+import Divider from 'material-ui/Divider';
 import MobileTearSheet from './MobileTearSheet'
 import ContentClear from 'material-ui/svg-icons/content/clear'
 import { red500 } from 'material-ui/styles/colors';
@@ -29,11 +30,11 @@ const BookList = React.createClass({
 
   render() {
 
-    const bookList = this.props.bookLists[0]
+    const bookList = this.props.bookList
 
     if (bookList) {
       return (
-          <div >
+          <div className="center-xs">
             <MobileTearSheet>
               <List>
                 <Subheader>{bookList.name}</Subheader>
@@ -52,6 +53,10 @@ const BookList = React.createClass({
                   />
                 )}
               </List>
+              <Divider />
+              <BookListButtonBar bookList={bookList} />
+              <Divider />
+
             </MobileTearSheet>
             {/* <span>
               <TextField hintText="Change Book List Name" />
@@ -59,7 +64,7 @@ const BookList = React.createClass({
             <span>
               <RaisedButton label="save" primary={true}/>
             </span> */}
-            <BookListNameForm bookListId={bookList.id} />
+            {/* <BookListNameForm bookListId={bookList.id} /> */}
 
         </div>
       )

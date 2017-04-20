@@ -28,19 +28,6 @@ class Home extends Component {
     }
   }
 
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const url = '/api/books/search?q=' + this.refs.queryText.value
-  //   this.props.search(url);
-  //   this.refs.bookSearch.reset();
-  // }
-  //
-  // handleChange(event) {
-  //   this.setState({
-  //     queryText: event.target.value
-  //   })
-  // }
-
   // signature based on callback function documentation in material-ui
   onNewRequest(chosenRequest, index) {
     const url = '/api/books/search?q=' + chosenRequest

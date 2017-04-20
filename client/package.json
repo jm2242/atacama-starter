@@ -26,7 +26,6 @@
     "redux-saga": "^0.14.3",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.0",
-    "semantic-ui": "2.2.7",
     "whatwg-fetch": "^2.0.3"
   },
   "scripts": {

@@ -20,15 +20,16 @@ import rootSaga from './sagas/sagas'
 
 const sagaMiddleware = createSagaMiddleWare()
 
-// need this to use the redux devtools extension
 const enhancers = compose(
   applyMiddleware(thunk, sagaMiddleware),
+
+  // need this to use the redux devtools extension
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
 const store = createStore(rootReducer, enhancers);
 
-// we export history because we need it in `reduxstagram.js` to feed into <Router>
+// we export history because we need it in `index.js` to feed into <Router>
 export const history = syncHistoryWithStore(browserHistory, store);
 
 /*

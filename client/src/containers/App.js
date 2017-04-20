@@ -18,24 +18,6 @@ Promise.config({
     warnings: true // note, run node with --trace-warnings to see full stack traces for warnings
 })
 
-
-
-
-/*
-  Mapping
-
-  This is where the magic of redux comes in.
-
-  We need a way to make
-  1. our state (our data)
-  2. our 'dispatch' functions
-  available to the <Main /> component.
-
-  We will surface state and functions via props (this.props.whatever)
-
-*/
-
-
 /*
   Here we specify which state needs to be made available to the component
   our state.posts and state.comments will be available via this.props.posts and this.props.comments
