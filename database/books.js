@@ -96,12 +96,12 @@ export default {
         return Bluebird.using(connection(), (conn) => {
             const query = user === null || user === undefined ?
                 // Query if anonymous access
-                'SELECT *, FALSE AS saved ' +
+                'SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext ' +
                 'FROM Book ' +
                 'ORDER BY publish_date ' +
                 'LIMIT ?,?' :
                 // Query if logged in
-                'SELECT Book.*, saved, viewed.date ' +
+                'SELECT Book.*, saved, viewed.date, bucket IS NOT NULL AS has_fulltext ' +
                 'FROM Book ' +
                 '  LEFT JOIN (' +
                 '    SELECT book_id, date ' +
@@ -132,7 +132,7 @@ export default {
     findByTitleLike(title: string, user: User) {
         return Bluebird
             .using(connection(), conn =>
-                conn.query("SELECT *, FALSE AS saved FROM Book WHERE title LIKE ? ORDER BY title", [`%${title}%`])
+                conn.query("SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext FROM Book WHERE title LIKE ? ORDER BY title", [`%${title}%`])
                     .then((results: any[]) => {
                         return Bluebird.all(
                             results
@@ -147,14 +147,14 @@ export default {
     findAllByAuthor(author_id: number, offset: number, count: number, user: User): Bluebird {
         const query = user === null || user === undefined ?
             // Query if anonymous access
-            'SELECT *, FALSE AS saved ' +
+            'SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext ' +
             'FROM Book ' +
             '  INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id ' +
             'WHERE AuthoredBy.author_id = ? ' +
             'ORDER BY Book.publish_date ' +
             'LIMIT ?,?' :
             // Query if logged in
-            'SELECT Book.*, saved, viewed.date ' +
+            'SELECT Book.*, saved, viewed.date, bucket IS NOT NULL AS has_fulltext ' +
             'FROM Book ' +
             '  INNER JOIN AuthoredBy ON Book.id = AuthoredBy.book_id ' +
             '  LEFT JOIN (' +
@@ -197,7 +197,7 @@ export default {
         return Bluebird.using(connection(), (conn) => {
             const query = user === null || user === undefined ?
                 // Query if anonymous access
-                "SELECT *, FALSE AS saved" +
+                "SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext" +
                 "FROM Book " +
                 "WHERE id = ?" :
                 // Query if logged in
@@ -205,7 +205,7 @@ export default {
                 "    SELECT * " +
                 "    FROM Saved " +
                 "    WHERE book_id = ? AND user_id = ?" +
-                "  ) as saved " +
+                "  ) as saved, bucket IS NOT NULL AS has_fulltext " +
                 "FROM Book " +
                 "  LEFT JOIN (" +
                 "    SELECT book_id, date " +

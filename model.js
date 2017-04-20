@@ -37,6 +37,7 @@ export class Book {
     saved: boolean;
     tags: Tag[];
     authors: Author[];
+    hasFullText: boolean;
 
     constructor(db_data: any) {
         this.id = db_data.id;
@@ -44,6 +45,7 @@ export class Book {
         this.published = db_data.publish_date;
         this.viewed = db_data.date;
         this.saved = !!db_data.saved;
+        this.hasFullText = !!db_data.has_fulltext;
     }
 }
 
