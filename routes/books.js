@@ -63,6 +63,7 @@ route.get('/facet', (req: express.Request, res: express.Response, next) => {
 
     let query = client.query()
         .q(req.query.q)
+        .fq(getFacetQueries(req))
         .addParams({
             wt: 'json',
         })
@@ -89,18 +90,22 @@ function getAsArray(query) {
     if (!Array.isArray(values)) values = [values];
     return values;
 }
-route.get('/search', (req: express.Request, res: express.Response, next) => {
+function getFacetQueries(req) {
     let fq = flatten(Object.keys(req.query)
         .filter(key => key.match(/fq\..*/))
         .map(key => key.replace('fq.', ''))
         .map(field => {
             let values = getAsArray(req.query[`fq.${field}`]);
-            return values.map(value => { return {field, value}});
+            return values.map(value => {
+                return {field, value}
+            });
         }));
-
+    return fq;
+}
+route.get('/search', (req: express.Request, res: express.Response, next) => {
     let query = client.query()
         .q(req.query.q)
-        .fq(fq)
+        .fq(getFacetQueries(req))
         .addParams({
             wt: 'json',
             indent: true,
