@@ -103,6 +103,8 @@ function getFacetQueries(req) {
     return fq;
 }
 route.get('/search', (req: express.Request, res: express.Response, next) => {
+    let page = req.query.page || 0;
+    let count = req.query.count || 100;
     let query = client.query()
         .q(req.query.q)
         .fq(getFacetQueries(req))
@@ -111,8 +113,8 @@ route.get('/search', (req: express.Request, res: express.Response, next) => {
             indent: true,
             fl: 'id'
         })
-        .start(0)
-        .rows(req.query.count ? req.query.count : 100);
+        .start(count * page)
+        .rows(count);
 
     client.search(query, function (err, result) {
         if (err) {
