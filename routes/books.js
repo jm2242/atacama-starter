@@ -69,7 +69,8 @@ route.get('/facet', (req: express.Request, res: express.Response, next) => {
         })
         .facetQuery({
             on: true,
-            field: facetFields
+            field: facetFields,
+            mincount: 1
         })
         .start(0)
         .rows(0);
@@ -96,10 +97,9 @@ function getFacetQueries(req) {
         .map(key => key.replace('fq.', ''))
         .map(field => {
             let values = getAsArray(req.query[`fq.${field}`]);
-            return values.map(value => {
-                return {field, value}
-            });
+            return {field, value: values.join(' ')};
         }));
+    console.log(fq);
     return fq;
 }
 route.get('/search', (req: express.Request, res: express.Response, next) => {
