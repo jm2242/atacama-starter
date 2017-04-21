@@ -89,3 +89,28 @@ export class User {
         return other;
     }
 }
+
+export class Facet {
+    name: string;
+    values: FacetValue[];
+
+    constructor(name: string, data: any[]) {
+        this.name = name;
+
+        let cpy = data.slice();
+        let reshaped: any[][] = [];
+        while(cpy.length) reshaped.push(cpy.splice(0, 2));
+
+        this.values = reshaped.map((elem) => new FacetValue(elem));
+    }
+}
+
+export class FacetValue {
+    key: string;
+    count: number;
+
+    constructor(data: any[]) {
+        this.key = data[0];
+        this.count = data[1];
+    }
+}
