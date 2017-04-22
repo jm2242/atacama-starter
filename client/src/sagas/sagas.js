@@ -6,9 +6,13 @@ import {
   ADD_BOOK_TO_BOOK_LIST_ERRORED,
   DELETE_BOOK_FROM_BOOK_LIST,
   DELETE_BOOK_FROM_BOOK_LIST_ERRORED,
-  DELETE_BOOK_FROM_BOOK_LIST_SUCCESS
+  DELETE_BOOK_FROM_BOOK_LIST_SUCCESS,
+  FACETS_FETCH_DATA,
+  FACETS_FETCH_DATA_SUCCESS,
+  FACETS_FETCH_DATA_ERRORED
 } from '../actions/actionCreators'
 
+import { facetsApi } from './api'
 
 // General stuff about Sagas:
 // 1. worker saga - do the work, calling api , returning response
@@ -91,12 +95,36 @@ export function* deleteBookFromBookListAsync(action) {
   }
 }
 
+//--------BEGIN fetch search query facets------------//
+// watcher saga
+export function* watchGetFacets() {
+  yield takeEvery(FACETS_FETCH_DATA, getFacetsAsync)
+}
 
+// worker saga
+export function* getFacetsAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch facets')
+
+
+    const facets = yield facetsApi(action.url)
+    yield put({type: FACETS_FETCH_DATA_SUCCESS, facets })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not delete book from book list')
+    console.log(e)
+    yield put({type: FACETS_FETCH_DATA_ERRORED, message: e.message })
+
+  }
+}
 
 // single entry point to start sagas at once
 export default function* rootSaga() {
   yield [
     watchAddBookToBookList(),
-    watchDeleteBookFromBookList()
+    watchDeleteBookFromBookList(),
+    watchGetFacets(),
   ]
 }

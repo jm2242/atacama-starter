@@ -63,8 +63,8 @@ export default class EditBookListNameDialog extends React.Component {
           Change the name of your booklist:
 
           <TextField
-            hintText = "  Edit Booklist name"
-            onChange = {this.onUpdateInput}
+            hintText="  Edit Booklist name"
+            onChange={this.onUpdateInput}
            />
 
         </Dialog>

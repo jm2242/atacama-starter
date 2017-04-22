@@ -18,6 +18,12 @@ export const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+export const FACETS_FETCH_DATA = 'FACETS_FETCH_DATA'
+export const FACETS_FETCH_DATA_ERRORED = 'FACETS_FETCH_DATA_ERRORED'
+export const FACETS_FETCH_DATA_SUCCESS = 'FACETS_FETCH_DATA_SUCCESS'
+
+
+
 export const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
 export const ADD_BOOK_TO_BOOK_LIST_ERRORED = 'ADD_BOOK_TO_BOOK_LIST_ERRORED'
 export const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
@@ -26,6 +32,17 @@ export const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
 export const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
 export const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
 export const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
+
+
+// fetch the facet data for the query
+export function facetsFetchData(url) {
+  console.log("Fetch Facet Options action")
+  return {
+    type: FACETS_FETCH_DATA,
+    url
+  }
+}
+
 
 // add a book to a book list action
 export function addBookToBookListSaga(book, bookListId) {
