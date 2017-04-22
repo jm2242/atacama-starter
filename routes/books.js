@@ -96,7 +96,7 @@ function getFacetQueries(req) {
         .filter(key => key.match(/fq\..*/))
         .map(key => key.replace('fq.', ''))
         .map(field => {
-            let values = getAsArray(req.query[`fq.${field}`]);
+            let values = getAsArray(req.query[`fq.${field}`]).map(value => '"' + value + '"');
             return {field, value: values.join(' ')};
         }));
     console.log(fq);
