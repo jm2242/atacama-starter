@@ -96,13 +96,15 @@ function getFacetQueries(req) {
         .filter(key => key.match(/fq\..*/))
         .map(key => key.replace('fq.', ''))
         .map(field => {
-            let values = getAsArray(req.query[`fq.${field}`]);
+            let values = getAsArray(req.query[`fq.${field}`]).map(value => '"' + value + '"');
             return {field, value: values.join(' ')};
         }));
     console.log(fq);
     return fq;
 }
 route.get('/search', (req: express.Request, res: express.Response, next) => {
+    let page = req.query.page || 0;
+    let count = req.query.count || 100;
     let query = client.query()
         .q(req.query.q)
         .fq(getFacetQueries(req))
@@ -111,8 +113,8 @@ route.get('/search', (req: express.Request, res: express.Response, next) => {
             indent: true,
             fl: 'id'
         })
-        .start(0)
-        .rows(req.query.count ? req.query.count : 100);
+        .start(count * page)
+        .rows(count);
 
     client.search(query, function (err, result) {
         if (err) {
