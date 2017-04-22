@@ -1,5 +1,7 @@
 import {
-  FACETS_FETCH_DATA_SUCCESS
+  FACETS_FETCH_DATA_SUCCESS,
+  REMOVE_FACET,
+  ADD_FACET
 } from '../actions/actionCreators'
 
 export function booksHasErrored(state = false, action) {
@@ -32,6 +34,21 @@ export function facets(state = [], action) {
     switch (action.type) {
         case FACETS_FETCH_DATA_SUCCESS:
           return action.facets
+        default:
+            return state;
+    }
+}
+
+// update the selected facets
+export function selectedFacets(state = [], action) {
+    switch (action.type) {
+        case REMOVE_FACET:
+          return state.filter(facet => facet.facetName !== action.facetName && facet.facetValue !== action.facetValue)
+        case ADD_FACET:
+          return [...state, {
+            facetName: action.facetName,
+            facetValue: action.facetValue
+          }]
         default:
             return state;
     }

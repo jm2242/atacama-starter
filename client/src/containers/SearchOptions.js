@@ -11,7 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 const styles = {
   applyFilters: {
-    padding: 10
+    marginTop: 10
   }
 }
 
@@ -24,22 +24,12 @@ class SearchOptions extends Component {
 
        <div>
          <RaisedButton label="Apply Filters" secondary={true} style={styles.applyFilters}/>
-         {this.props.facets.map((facet) => <SearchOption key={facet.name} facet={facet} />)}
+         {this.props.facets.map((facet) => <SearchOption key={facet.name} facetName={facet.name} facet={facet} />)}
        </div>
       )
     } else {
       return <div></div>
     }
-    // if (this.props.facets) {
-    //   return (
-    //     <div>
-    //       {this.props.facets.map((facet) => <SearchOption key={facet.name} facet={facet} />)}
-    //     </div>
-    //   )
-    // }
-    // else {
-    //   return <div />
-    // }
   }
 }
 

@@ -22,6 +22,10 @@ export const FACETS_FETCH_DATA = 'FACETS_FETCH_DATA'
 export const FACETS_FETCH_DATA_ERRORED = 'FACETS_FETCH_DATA_ERRORED'
 export const FACETS_FETCH_DATA_SUCCESS = 'FACETS_FETCH_DATA_SUCCESS'
 
+export const ADD_FACET = 'ADD_FACET'
+export const REMOVE_FACET = 'REMOVE_FACET'
+
+
 
 
 export const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
@@ -43,6 +47,25 @@ export function facetsFetchData(url) {
   }
 }
 
+// keep track of checked facets
+export function addFacet(facetName, facetValue) {
+  console.log("Add facet action ")
+  return {
+    type: ADD_FACET,
+    facetName,
+    facetValue
+  }
+}
+
+// remove unchecked facet
+export function removeFacet(facetName, facetValue) {
+  console.log("remove facet action")
+  return {
+    type: REMOVE_FACET,
+    facetName,
+    facetValue
+  }
+}
 
 // add a book to a book list action
 export function addBookToBookListSaga(book, bookListId) {
