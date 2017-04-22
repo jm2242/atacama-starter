@@ -38,10 +38,6 @@ const Logged = (props) => (
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
   >
     <MenuItem
-      primaryText="Book List"
-      containerElement={<Link to="/booklist">Book List</Link>}
-    />
-    <MenuItem
       primaryText="Sign In"
       containerElement={<Link to="/auth/google">Book List</Link>}
     />

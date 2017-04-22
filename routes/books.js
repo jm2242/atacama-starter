@@ -104,7 +104,7 @@ function getFacetQueries(req) {
 }
 route.get('/search', (req: express.Request, res: express.Response, next) => {
     let page = req.query.page || 0;
-    let count = req.query.count || 100;
+    let count = req.query.count || 20;
     let query = client.query()
         .q(req.query.q)
         .fq(getFacetQueries(req))

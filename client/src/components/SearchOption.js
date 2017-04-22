@@ -55,10 +55,10 @@ class SearchOption extends Component {
     }
     return (
       <div>
-        <span><b style={styles.facetTitle}>{this.props.facet.name} </b></span>
+        <b style={styles.facetTitle}>{this.props.facet.name} </b>
 
         {allValues.length > 5 &&
-          <span>
+          <span style={{float: "right"}}>
           <Toggle
             label="Show all"
             style={styles.toggle}
