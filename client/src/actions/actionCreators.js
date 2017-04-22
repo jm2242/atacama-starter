@@ -18,6 +18,9 @@ export const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+export const STORE_QUERY = 'STORE_QUERY'
+
+
 export const FACETS_FETCH_DATA = 'FACETS_FETCH_DATA'
 export const FACETS_FETCH_DATA_ERRORED = 'FACETS_FETCH_DATA_ERRORED'
 export const FACETS_FETCH_DATA_SUCCESS = 'FACETS_FETCH_DATA_SUCCESS'
@@ -44,6 +47,14 @@ export function facetsFetchData(url) {
   return {
     type: FACETS_FETCH_DATA,
     url
+  }
+}
+
+// store the user query for later use
+export function storeQuery(query) {
+  return {
+    type: STORE_QUERY,
+    query
   }
 }
 

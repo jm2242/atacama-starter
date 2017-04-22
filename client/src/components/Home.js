@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { booksFetchData, facetsFetchData } from '../actions/actionCreators'
+import { booksFetchData, facetsFetchData, storeQuery } from '../actions/actionCreators'
 import { getBookListNames } from '../selectors/index'
 
 // components
@@ -35,6 +35,8 @@ class Home extends Component {
     // get the books for the book grid
     const query = '/api/books/search?q=' + chosenRequest
     this.props.search(query);
+
+    this.props.storeQuery(chosenRequest);
 
     // get the facet options for the facet nav section
     const facet = '/api/books/facet?q=' + chosenRequest
@@ -82,6 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+      storeQuery: (query) => dispatch(storeQuery(query)),
       search: (url) => dispatch(booksFetchData(url)),
       getFacets: (url) => dispatch(facetsFetchData(url))
 

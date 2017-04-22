@@ -1,7 +1,8 @@
 import {
   FACETS_FETCH_DATA_SUCCESS,
   REMOVE_FACET,
-  ADD_FACET
+  ADD_FACET,
+  STORE_QUERY
 } from '../actions/actionCreators'
 
 export function booksHasErrored(state = false, action) {
@@ -24,6 +25,15 @@ export function books(state = [], action) {
     switch (action.type) {
         case 'BOOKS_FETCH_DATA_SUCCESS':
             return action.books;
+        default:
+            return state;
+    }
+}
+
+export function storeQuery(state = [], action) {
+    switch (action.type) {
+        case STORE_QUERY:
+            return action.query
         default:
             return state;
     }
