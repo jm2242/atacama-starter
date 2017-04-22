@@ -122,7 +122,13 @@ route.get('/search', (req: express.Request, res: express.Response, next) => {
         }
 
         Bluebird.all(result.response.docs.map(b => books.findOne(b.id, req.user)))
-            .then(books => res.json(books))
+            .then(books => {
+                return {
+                    pages: Math.ceil(result.response.numFound / count),
+                    currentPageOffset: page,
+                    results: res.json(books)
+                }
+            })
             .catch(err => next(err));
     });
 });
