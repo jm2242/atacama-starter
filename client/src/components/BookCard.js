@@ -96,7 +96,9 @@ class BookCard extends Component {
           <div style={styles.wrapper}>
             <RaisedButton style={styles.actions}
               containerElement={<Link to={`/reader/${book.id}`} />}
-              label="Read Book" />
+              label="Read Book"
+              disabled={!book.hasFullText}
+            />
 
              <AddToBookListPopover
                handleAddToBookList={this.handleAddToBookList}
