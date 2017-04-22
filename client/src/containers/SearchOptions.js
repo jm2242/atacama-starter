@@ -12,7 +12,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 const styles = {
   applyFilters: {
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 10
   }
 }
 
