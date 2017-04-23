@@ -1,6 +1,7 @@
 import React from 'react'
 //import { connect } from 'react-redux'
 import BookCard from './BookCard'
+import Paginate from './Paginate'
 //import { booksFetchData } from '../actions/actionCreators'
 const BookGrid = React.createClass({
 
@@ -16,32 +17,38 @@ const BookGrid = React.createClass({
 
 
   render() {
+      if (this.props.books && this.props.books.results) {
 
-      // if (this.props.hasErrored) {
-      //   return <p> Sorry! There was an error getting items </p>
-      // }
-      //
-      // if (this.props.isLoading) {
-      //   return <p> Loading... </p>
-      // }
-
-      return (
-        <div>
-          {this.props.books.length > 0 &&
-            <h2>Search Results</h2>
-          }
-          <div className="row center-xs">
-            {this.props.books.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
-          </div>
-
-          { this.props.hasErrored &&
-            <div>
-              <p> Our sincerest apologies. Something Has gone terribly wrong fetching
-              your books. </p>
+        return (
+          <div>
+            {this.props.books.results.length > 0 &&
+              <h2>Search Results</h2>
+            }
+            <div className="row center-xs">
+              {this.props.books.results.map((book,i) => <BookCard key={i} book={book} {...this.props} addBookToBookList={this.props.addBookToBookList} />)}
             </div>
-          }
-      </div>
-    );
+
+            {/* Pagination  */}
+            <div className="row center-xs">
+              <Paginate
+                pages={this.props.books.pages}
+                currentPage={this.props.currentPage}
+                nextPage={this.props.nextPage}
+                prevPage={this.props.prevPage}
+              />
+            </div>
+
+            { this.props.hasErrored &&
+              <div>
+                <p> Our sincerest apologies. Something Has gone terribly wrong fetching
+                your books. </p>
+              </div>
+            }
+          </div>
+        )
+      } else {
+        return <div></div>
+      }
   }
 });
 

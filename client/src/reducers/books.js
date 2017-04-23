@@ -2,7 +2,9 @@ import {
   FACETS_FETCH_DATA_SUCCESS,
   REMOVE_FACET,
   ADD_FACET,
-  STORE_QUERY
+  STORE_QUERY,
+  STORE_FULL_QUERY,
+  INCREMENT_PAGE
 } from '../actions/actionCreators'
 
 export function booksHasErrored(state = false, action) {
@@ -30,9 +32,18 @@ export function books(state = [], action) {
     }
 }
 
-export function storeQuery(state = [], action) {
+export function storeQuery(state = '', action) {
     switch (action.type) {
         case STORE_QUERY:
+            return action.query
+        default:
+            return state;
+    }
+}
+
+export function storeFullQuery(state = '', action) {
+    switch (action.type) {
+        case STORE_FULL_QUERY:
             return action.query
         default:
             return state;
@@ -62,4 +73,16 @@ export function selectedFacets(state = [], action) {
         default:
             return state;
     }
+}
+
+export function currentPage(state = 0, action) {
+  switch (action.type) {
+    case INCREMENT_PAGE:
+      if (state + action < 0) {
+        return state
+      }
+      return (parseInt(state, 10) + parseInt(action.amount, 10))
+    default:
+      return state
+  }
 }

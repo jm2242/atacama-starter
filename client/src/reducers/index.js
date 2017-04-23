@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux'; // we need this for react-router
 import { reducer as formReducer } from 'redux-form'
-import { books, booksHasErrored, booksIsLoading, facets, selectedFacets, storeQuery } from './books'
+import { books, booksHasErrored, booksIsLoading, facets, selectedFacets, storeQuery, storeFullQuery, currentPage } from './books'
 import { bookLists, bookListsHasErrored, bookListsIsLoading } from './bookLists'
 import { login, loginHasErrored, loginIsLoading } from './login'
 import { uiReducer } from './ui-reducers'
@@ -19,6 +19,6 @@ import { uiReducer } from './ui-reducers'
 
 
 // ES6 shorthand when passing in reducers ex would be books: books, booksHasErrored: booksHasErrored
-const rootReducer = combineReducers({form: formReducer, ui: uiReducer, login, loginHasErrored, loginIsLoading, books, booksHasErrored, booksIsLoading, bookLists, bookListsHasErrored, bookListsIsLoading, facets, selectedFacets, storeQuery, routing: routerReducer });
+const rootReducer = combineReducers({form: formReducer, ui: uiReducer, login, loginHasErrored, loginIsLoading, books, booksHasErrored, booksIsLoading, bookLists, bookListsHasErrored, bookListsIsLoading, facets, selectedFacets, storeQuery, storeFullQuery, currentPage, routing: routerReducer });
 
 export default rootReducer;

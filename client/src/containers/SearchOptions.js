@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { booksFetchData, facetsFetchData } from '../actions/actionCreators'
+import { booksFetchData, facetsFetchData, storeFullQuery } from '../actions/actionCreators'
 import { constructFacetUrl } from '../selectors/index'
 
 // components
@@ -24,14 +24,16 @@ class SearchOptions extends Component {
 
     const { facetUrl } = this.props
     const { query } = this.props
-
-    console.log('calling apply filters')
+    const { fullQuery } = this.props
     const searchUrl = `/api/books/search?q=${query}${facetUrl}`
     const fullFacetUrl = `/api/books/facet?q=${query}${facetUrl}`
 
     // make new requests
     this.props.search(searchUrl);
     this.props.getFacets(fullFacetUrl);
+
+    // store full query for pagination
+    this.props.storeFullQuery(searchUrl)
 
 
   }
@@ -42,7 +44,7 @@ class SearchOptions extends Component {
 
        <div>
          <RaisedButton
-           onTouchTap = {this.applyFilters}
+           onTouchTap={this.applyFilters}
            label="Apply Filters"
            secondary={true}
            style={styles.applyFilters}
@@ -59,6 +61,7 @@ class SearchOptions extends Component {
 function mapStateToProps(state) {
   return {
     query: state.storeQuery,
+    fullQuery: state.storeFullQuery,
     facets: state.facets,
     facetUrl: constructFacetUrl(state)
   };
@@ -67,7 +70,10 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
   return {
       search: (url) => dispatch(booksFetchData(url)),
-      getFacets: (url) => dispatch(facetsFetchData(url))
+      getFacets: (url) => dispatch(facetsFetchData(url)),
+      storeFullQuery: (query) => dispatch(storeFullQuery(query)),
+
+
   };
 };
 

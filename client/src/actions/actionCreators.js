@@ -19,6 +19,9 @@ export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
 export const STORE_QUERY = 'STORE_QUERY'
+export const STORE_FULL_QUERY = 'STORE_FULL_QUERY'
+
+export const INCREMENT_PAGE = 'INCREMENT_PAGE'
 
 
 export const FACETS_FETCH_DATA = 'FACETS_FETCH_DATA'
@@ -58,6 +61,14 @@ export function storeQuery(query) {
   }
 }
 
+// store the full query for use with page offsets
+export function storeFullQuery(query) {
+  return {
+    type: STORE_FULL_QUERY,
+    query
+  }
+}
+
 // keep track of checked facets
 export function addFacet(facetName, facetValue) {
   console.log("Add facet action ")
@@ -75,6 +86,13 @@ export function removeFacet(facetName, facetValue) {
     type: REMOVE_FACET,
     facetName,
     facetValue
+  }
+}
+
+export function incrementCurrentPage(amount) {
+  return {
+    type: INCREMENT_PAGE,
+    amount
   }
 }
 

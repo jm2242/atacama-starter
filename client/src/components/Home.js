@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { booksFetchData, facetsFetchData, storeQuery } from '../actions/actionCreators'
+import { booksFetchData, facetsFetchData, storeQuery, storeFullQuery } from '../actions/actionCreators'
 import { getBookListNames } from '../selectors/index'
 
 // components
@@ -25,7 +25,8 @@ class Home extends Component {
     super(props)
     this.onNewRequest = this.onNewRequest.bind(this)
     this.state = {
-      queryText: ''
+      queryText: '',
+      currentPage: 0
     }
   }
 
@@ -38,10 +39,14 @@ class Home extends Component {
 
     this.props.storeQuery(chosenRequest);
 
+    // store the full query so we can use page offsets
+    this.props.storeFullQuery(query)
+
     // get the facet options for the facet nav section
     const facet = '/api/books/facet?q=' + chosenRequest
     this.props.getFacets(facet)
   }
+
 
   render() {
 
@@ -59,10 +64,16 @@ class Home extends Component {
            </div>
 
            <div className="col-xs-10">
-             <BookGrid {...this.props} />
+             <BookGrid
+               {...this.props}
+               currentPage={this.state.currentPage}
+               nextPage={this.nextPage}
+               prevPage={this.prevPage}
+              />
            </div>
 
          </div>
+
        </div>
       </div>
 
@@ -77,6 +88,8 @@ const mapStateToProps = (state) => {
         books: state.books,
         bookLists: state.bookLists,
         bookListNames: getBookListNames(state),
+        currentPage: state.currentPage,
+        fullQuery: state.storeFullQuery,
         hasErrored: state.booksHasErrored,
         isLoading: state.booksIsLoading
     };
@@ -85,6 +98,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       storeQuery: (query) => dispatch(storeQuery(query)),
+      storeFullQuery: (fullQuery) => dispatch(storeFullQuery(fullQuery)),
       search: (url) => dispatch(booksFetchData(url)),
       getFacets: (url) => dispatch(facetsFetchData(url))
 
