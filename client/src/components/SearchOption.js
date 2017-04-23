@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addFacet, removeFacet } from '../actions/actionCreators'
+import { toLanguageName } from './Languages'
 
 // material-ui
 import Checkbox from 'material-ui/Checkbox';
@@ -70,7 +71,7 @@ class SearchOption extends Component {
           <Checkbox
             key={value.key}
             onCheck={(event, isInputChecked) => this.checkboxChecked(isInputChecked, value.key)}
-            label={value.key + ` (` + value.count + `)` }
+            label={toLanguageName(value.key) + ` (` + value.count + `)` }
           />
         )}
         <Divider />
