@@ -7,6 +7,7 @@ import { getBookListNames } from '../selectors/index'
 import BookGrid from './BookGrid'
 import SearchBox from './SearchBox'
 import SearchOptions from '../containers/SearchOptions'
+import HeroSection from '../containers/HeroSection'
 
 // material UI
 import Divider from 'material-ui/Divider';
@@ -16,10 +17,7 @@ import Divider from 'material-ui/Divider';
 const styles = {
   divider: {
     marginTop: '30px',
-  },
-  // bookGrid: {
-  //   position: 'fixed'
-  // }
+  }
 }
 
 
@@ -55,14 +53,13 @@ class Home extends Component {
 
     return (
       <div className="center-xs">
-         {/* <TextField hintText="Search For Books" /> */}
-       <SearchBox loading={this.props.isLoading} onNewRequest={this.onNewRequest} />
 
+       <SearchBox loading={this.props.isLoading} onNewRequest={this.onNewRequest} />
        <Divider style={styles.divider} />
        <div className="container">
-         <div className="row">
+         <div className="row center-xs">
 
-           <div style={styles.bookGrid} className="col-xs-2">
+           <div className="col-xs-2">
              <SearchOptions />
            </div>
 
@@ -78,6 +75,11 @@ class Home extends Component {
          </div>
 
        </div>
+
+       { this.props.books.length == 0 &&
+        <HeroSection />
+       }
+
       </div>
 
     )

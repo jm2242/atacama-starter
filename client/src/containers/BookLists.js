@@ -26,7 +26,7 @@ const BookLists = React.createClass({
 
     return (
       <div className="container">
-        <h1 className="row center-xs">
+        <h1 className="row center-xs title">
           My Book Lists
         </h1>
 
