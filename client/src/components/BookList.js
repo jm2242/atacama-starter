@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux'
-import { deleteBookFromBookList } from '../actions/actionCreators'
+import { deleteBookFromBookList, editBookListName } from '../actions/actionCreators'
 
 import BookListButtonBar from '../containers/BookListButtonBar'
 
@@ -54,7 +54,10 @@ const BookList = React.createClass({
                 )}
               </List>
               <Divider />
-              <BookListButtonBar bookList={bookList} />
+              <BookListButtonBar
+                bookList={bookList}
+                postBookListName={this.props.postBookListName}
+              />
               <Divider />
 
             </MobileTearSheet>
@@ -83,7 +86,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      deleteBook: (bookId, bookListId) => dispatch(deleteBookFromBookList(bookId, bookListId))
+      deleteBook: (bookId, bookListId) => dispatch(deleteBookFromBookList(bookId, bookListId)),
+      postBookListName: (newListName, bookListId) => dispatch(editBookListName(newListName, bookListId)),
+
   };
 };
 

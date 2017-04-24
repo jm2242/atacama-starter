@@ -32,6 +32,9 @@ export const ADD_FACET = 'ADD_FACET'
 export const REMOVE_FACET = 'REMOVE_FACET'
 
 
+export const EDIT_BOOK_LIST_NAME = 'EDIT_BOOK_LIST_NAME'
+export const EDIT_BOOK_LIST_NAME_SUCCESS = 'EDIT_BOOK_LIST_NAME_SUCCESS'
+export const EDIT_BOOK_LIST_NAME_ERRORED = 'EDIT_BOOK_LIST_NAME_ERRORED'
 
 
 export const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
@@ -112,6 +115,16 @@ export function deleteBookFromBookList(bookId, bookListId) {
   return {
     type: DELETE_BOOK_FROM_BOOK_LIST,
     bookId,
+    bookListId
+  }
+}
+
+// edit the book list name
+export function editBookListName(newListName, bookListId) {
+  console.log('dispatching delete book from book list action')
+  return {
+    type: EDIT_BOOK_LIST_NAME,
+    newListName,
     bookListId
   }
 }

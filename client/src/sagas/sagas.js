@@ -1,6 +1,9 @@
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 import {
+  EDIT_BOOK_LIST_NAME,
+  EDIT_BOOK_LIST_NAME_SUCCESS,
+  EDIT_BOOK_LIST_NAME_ERRORED,
   ADD_BOOK_TO_BOOK_LIST,
   ADD_BOOK_TO_BOOK_LIST_SUCCESS,
   ADD_BOOK_TO_BOOK_LIST_ERRORED,
@@ -95,6 +98,48 @@ export function* deleteBookFromBookListAsync(action) {
   }
 }
 
+//--------BEGIN edit book list name------------//
+
+// watcher saga
+export function* watchEditBookListName() {
+  yield takeEvery(EDIT_BOOK_LIST_NAME, editBookListNameAsync)
+}
+
+// worker saga
+export function* editBookListNameAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+
+    // get parameters from action
+    const bookListId = action.bookListId
+    const newListName = action.newListName
+    const url = 'api/book-lists/' + bookListId;
+
+
+    const response = yield call(fetch, url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'name': newListName
+      })
+    })
+    console.log(response)
+
+    yield put({type: EDIT_BOOK_LIST_NAME_SUCCESS, newListName, bookListId })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: EDIT_BOOK_LIST_NAME_ERRORED, message: e.message })
+
+  }
+}
+//-------- END edit book list name
+
 //--------BEGIN fetch search query facets------------//
 // watcher saga
 export function* watchGetFacets() {
@@ -126,5 +171,6 @@ export default function* rootSaga() {
     watchAddBookToBookList(),
     watchDeleteBookFromBookList(),
     watchGetFacets(),
+    watchEditBookListName()
   ]
 }

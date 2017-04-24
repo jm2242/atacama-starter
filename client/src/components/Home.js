@@ -17,7 +17,10 @@ const styles = {
   divider: {
     marginTop: '30px',
   },
-};
+  // bookGrid: {
+  //   position: 'fixed'
+  // }
+}
 
 
 class Home extends Component {
@@ -59,11 +62,11 @@ class Home extends Component {
        <div className="container">
          <div className="row">
 
-           <div className="col-xs-2">
+           <div style={styles.bookGrid} className="col-xs-2">
              <SearchOptions />
            </div>
 
-           <div className="col-xs-10">
+           <div className="col-xs-10 cols-xs-offset-2">
              <BookGrid
                {...this.props}
                currentPage={this.state.currentPage}
