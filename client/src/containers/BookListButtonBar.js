@@ -13,7 +13,9 @@ export default class BookListButtonBar extends Component {
           bookList={bookList}
           postBookListName={this.props.postBookListName}
         />
-        <DeleteBookListDialog bookList={bookList} />
+        <DeleteBookListDialog
+          bookList={bookList}
+        />
       </div>
     )
   }

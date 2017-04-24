@@ -34,7 +34,7 @@ const BookList = React.createClass({
 
     if (bookList) {
       return (
-          <div className="center-xs">
+          <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3">
             <MobileTearSheet>
               <List>
                 <Subheader>{bookList.name}</Subheader>

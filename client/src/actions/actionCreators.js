@@ -37,6 +37,15 @@ export const EDIT_BOOK_LIST_NAME_SUCCESS = 'EDIT_BOOK_LIST_NAME_SUCCESS'
 export const EDIT_BOOK_LIST_NAME_ERRORED = 'EDIT_BOOK_LIST_NAME_ERRORED'
 
 
+export const DELETE_BOOK_LIST = 'DELETE_BOOK_LIST'
+export const DELETE_BOOK_LIST_SUCCESS = 'DELETE_BOOK_LIST_SUCCESS'
+export const DELETE_BOOK_LIST_ERRORED = 'DELETE_BOOK_LIST_ERRORED'
+
+export const CREATE_BOOK_LIST = 'CREATE_BOOK_LIST'
+export const CREATE_BOOK_LIST_SUCCESS = 'CREATE_BOOK_LIST_SUCCESS'
+export const CREATE_BOOK_LIST_ERRORED = 'CREATE_BOOK_LIST_ERRORED'
+
+
 export const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
 export const ADD_BOOK_TO_BOOK_LIST_ERRORED = 'ADD_BOOK_TO_BOOK_LIST_ERRORED'
 export const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
@@ -126,6 +135,23 @@ export function editBookListName(newListName, bookListId) {
     type: EDIT_BOOK_LIST_NAME,
     newListName,
     bookListId
+  }
+}
+
+// delete book list
+export function deleteBookList(bookListId) {
+  console.log('dispatching delete book list action')
+  return {
+    type: DELETE_BOOK_LIST,
+    bookListId
+  }
+}
+
+// edit the book list name
+export function createBookList() {
+  console.log('dispatching delete book from book list action')
+  return {
+    type: CREATE_BOOK_LIST,
   }
 }
 

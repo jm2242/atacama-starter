@@ -47,10 +47,6 @@ class LeftNavBar extends Component {
             containerElement={<Link to="/booklist" />}
           />
           <MenuItem onClick={this.closeNav}
-            primaryText="Book Reader"
-            containerElement={<Link to="/reader" />}
-          />
-          <MenuItem onClick={this.closeNav}
             primaryText="Visualization"
             containerElement={<Link to="/vis" />}
           />
