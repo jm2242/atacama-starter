@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { ReactReader } from 'react-reader'
 import 'babel-polyfill'
 
@@ -14,7 +15,26 @@ class Reader extends Component {
    super(props)
    this.state = {
      fullscreen: false,
+     bookName:  'Book Title',
      location: (storage && storage.getItem('epub-location')) ? storage.getItem('epub-location') : 0
+
+   }
+ }
+ componentDidMount() {
+   this.getBookName()
+ }
+
+ getBookName() {
+   try {
+
+     const bookName = this.props.books.find((book) => book.id === parseInt(this.props.params.bookId,10)).title
+     console.log(bookName)
+     this.setState({
+       bookName
+     })
+   }
+   catch (e) {
+     console.log(e)
    }
  }
 
@@ -32,7 +52,7 @@ class Reader extends Component {
           <ReactReader
             // url={'https://s3-eu-west-1.amazonaws.com/react-reader/alice.epub'}
             url={url}
-            title={'Book Title'}
+            title={this.state.bookName}
             location={location}
             locationChanged={this.onLocationChanged}
           />
@@ -42,5 +62,15 @@ class Reader extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        books: state.books.results
+    };
+};
 
-export default Reader
+const mapDispatchToProps = (state) => {
+    return {}
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reader);

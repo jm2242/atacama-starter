@@ -33,7 +33,7 @@ const BookLists = React.createClass({
         <div className="row center-xs">
           {this.props.bookLists.map((bookList, i) => <BookList key={i} bookList={bookList} /> )}
         </div>
-        { this.props.bookLists.length == 0 &&
+        { this.props.bookLists.length === 0 &&
           <div>
             <p>Create a book list to save your favorite books!</p>
           </div>

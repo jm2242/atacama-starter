@@ -24,7 +24,7 @@ class SearchOptions extends Component {
 
     const { facetUrl } = this.props
     const { query } = this.props
-    const { fullQuery } = this.props
+    //const { fullQuery } = this.props
     const searchUrl = `/api/books/search?q=${query}${facetUrl}`
     const fullFacetUrl = `/api/books/facet?q=${query}${facetUrl}`
 

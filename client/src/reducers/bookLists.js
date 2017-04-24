@@ -70,7 +70,7 @@ export function bookLists(state = [], action) {
 
         case EDIT_BOOK_LIST_NAME_SUCCESS:
           const newListName = action.newListName
-          const bookListId = action.bookListId
+          //const bookListId = action.bookListId
 
           return state.map( (bookList, index) => {
 

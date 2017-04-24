@@ -76,7 +76,7 @@ class Home extends Component {
 
        </div>
 
-       { this.props.books.length == 0 &&
+       { this.props.books.length === 0 &&
         <HeroSection />
        }
 

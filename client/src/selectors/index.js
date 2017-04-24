@@ -26,6 +26,7 @@ export const getBookListNames = createSelector(
   }
 )
 
+
 // get all of the facets to construct the new search url
 export const constructFacetUrl = createSelector(
   [ getSelectedFacets ],
