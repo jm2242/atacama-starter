@@ -147,10 +147,6 @@ route.get('/:id', (req: express.Request, res: express.Response, next) => {
     }
 
     books.findOne(id, req.user)
-        .then(results => {
-            console.log(results);
-            return results;
-        })
         .then(results => res.json(results))
         .catch(error => next(error));
 });

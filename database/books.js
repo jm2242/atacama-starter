@@ -57,7 +57,6 @@ function viewed(conn, book: Book, user: User) {
 }
 
 function findOneInternal(conn, id: number, user: User): Bluebird {
-    console.log(`Finding ${id} for ${user.id}`);
     const query = user === null || user === undefined ?
         // Query if anonymous access
         "SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext" +
