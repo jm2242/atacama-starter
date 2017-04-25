@@ -132,6 +132,12 @@ route.get('/search', (req: express.Request, res: express.Response, next) => {
     });
 });
 
+route.get('/recent', (req: express.Request, res: express.Response, next) => {
+    books.findRecent(req.user)
+        .then(results => res.json(results))
+        .catch(error => next(error));
+});
+
 route.get('/:id', (req: express.Request, res: express.Response, next) => {
     const id: number = parseInt(req.params.id);
 
