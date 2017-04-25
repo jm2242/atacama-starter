@@ -6,7 +6,7 @@
 
 # Important Links
 
-- Youtube Link to final project demo video: https://www.youtube.com/watch?v=TwttDNIZW50&feature=youtu.be
+- Youtube Link to final project demo video: https://youtu.be/g7ItB1HfyGo
 - Github Repo to code and db dump: https://github.com/jm2242/atacama-starter
 
 ## 1. Briefly describe what the project accomplished and 2. Discuss the usefulness of your project, i.e. what real problem you solved.
