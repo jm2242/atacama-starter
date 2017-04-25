@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { bookListsFetchData } from '../actions/bookListActions'
+import { fetchBookLists } from '../actions/bookListActions'
 import { createBookList } from '../actions/actionCreators'
 import BookList from '../components/BookList'
 
@@ -13,7 +13,7 @@ const BookLists = React.createClass({
       console.log('we already have a book list')
     } else {
       console.log('making an api call to get book lists')
-      this.props.fetchData('/api/book-lists')
+      this.props.fetchBookLists()
     }
   },
   render() {
@@ -67,7 +67,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchData: (url) => dispatch(bookListsFetchData(url)),
+      fetchBookLists: () => dispatch(fetchBookLists()),
       newBookList: () => dispatch(createBookList())
   };
 };

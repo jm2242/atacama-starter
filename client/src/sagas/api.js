@@ -16,3 +16,12 @@ export const recentBooksApi = (url) => {
       'Content-Type': 'application/json'
     }}).then((response) => response.json())
 }
+
+export const bookListsApi = (url) => {
+  return fetch(url, {
+    method: 'GET',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    }}).then((response) => response.json())
+}

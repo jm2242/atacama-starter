@@ -1,4 +1,10 @@
-import { EDIT_BOOK_LIST_NAME_SUCCESS } from '../actions/actionCreators'
+import {
+  EDIT_BOOK_LIST_NAME_SUCCESS,
+  DELETE_BOOK_LIST_SUCCESS
+ } from '../actions/actionCreators'
+import {
+  FETCH_BOOK_LISTS_SUCCESS,
+} from '../actions/bookListActions'
 
 export function bookListsHasErrored(state = false, action) {
     switch (action.type) {
@@ -18,13 +24,15 @@ export function bookListsIsLoading(state = false, action) {
 }
 export function bookLists(state = [], action) {
     switch (action.type) {
-        case 'BOOK_LISTS_FETCH_DATA_SUCCESS':
+        case FETCH_BOOK_LISTS_SUCCESS:
             return action.bookLists;
+
+        case DELETE_BOOK_LIST_SUCCESS:
+          const bookListId = action.bookListId
+          return state.filter( (bookList) => bookList.id !== bookListId )
+
         case 'ADD_BOOK_TO_BOOK_LIST_SUCCESS':
           const book = action.book
-          console.log('current state:')
-          console.log(state)
-          console.log(action.bookListId)
           // we need to return a new state with object with the book appended
           // to the book attribute of the correct booklist
           return state.map( (bookList, index) => {
@@ -86,7 +94,6 @@ export function bookLists(state = [], action) {
             }
 
           })
-
 
         default:
           return state

@@ -24,7 +24,13 @@ import {
   FETCH_RECENT_BOOKS_ERRORED
 } from '../actions/actionCreators'
 
-import { facetsApi, recentBooksApi } from './api'
+import {
+  FETCH_BOOK_LISTS,
+  FETCH_BOOK_LISTS_SUCCESS,
+  FETCH_BOOK_LISTS_ERRORED
+} from '../actions/bookListActions'
+
+import { facetsApi, recentBooksApi, bookListsApi } from './api'
 
 // General stuff about Sagas:
 // 1. worker saga - do the work, calling api , returning response
@@ -37,7 +43,7 @@ import { facetsApi, recentBooksApi } from './api'
 export function* addBookToBookListAsync(action) {
   try {
     // call api
-    console.log('SAGA: attempt to create a new book list via api')
+    console.log('SAGA: attempt to add book to book list')
     const bookListId = action.bookListId
     const bookId = action.book.id
     const url = 'api/book-lists/' + bookListId + '/books/' + bookId
@@ -177,7 +183,7 @@ export function* newBookListAsync(action) {
     })
     console.log(response)
 
-    yield put({type: CREATE_BOOK_LIST_SUCCESS})
+    yield put({type: FETCH_BOOK_LISTS})
 
   } catch (e) {
     // act on error
@@ -216,7 +222,7 @@ export function* deleteBookListAsync(action) {
     })
     console.log(response)
 
-    yield put({type: DELETE_BOOK_LIST_SUCCESS})
+    yield put({type: DELETE_BOOK_LIST_SUCCESS, bookListId})
 
   } catch (e) {
     // act on error
@@ -279,6 +285,32 @@ export function* getRecentBooksAsync(action) {
 }
 //------ END fetch recent books
 
+//--------BEGIN get book lists------------//
+// watcher saga
+export function* watchGetBookLists() {
+  yield takeEvery(FETCH_BOOK_LISTS, getBookListsAsync)
+}
+
+// worker saga
+export function* getBookListsAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch book lists')
+
+    const url = '/api/book-lists'
+    const bookLists = yield bookListsApi(url)
+    console.log(bookLists)
+    yield put({type: FETCH_BOOK_LISTS_SUCCESS, bookLists })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not get book lists')
+    console.log(e)
+    yield put({type: FETCH_BOOK_LISTS_ERRORED, message: e.message })
+
+  }
+}
+
 // single entry point to start sagas at once
 export default function* rootSaga() {
   yield [
@@ -288,6 +320,7 @@ export default function* rootSaga() {
     watchEditBookListName(),
     watchNewBookList(),
     watchDeleteBookList(),
-    watchGetRecentBooks()
+    watchGetRecentBooks(),
+    watchGetBookLists()
   ]
 }

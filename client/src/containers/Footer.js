@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 // material UI
 //import Divider from 'material-ui/Divider';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 
 const styles = {

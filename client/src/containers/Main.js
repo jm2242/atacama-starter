@@ -15,12 +15,10 @@ import Footer from './Footer'
 const Main = React.createClass({
   componentDidMount() {
     let { dispatch } = this.props
-    const url = '/api/book-lists'
-    console.log("main has mounted")
 
     // get book lists upon loading app
     // will give us the number of book lists the user has
-    dispatch(BookListActionCreators.bookListsFetchData(url))
+    dispatch(BookListActionCreators.fetchBookLists())
   },
 
   render() {

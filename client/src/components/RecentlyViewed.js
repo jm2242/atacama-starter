@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 
 import { getRecentBooks } from '../actions/actionCreators'
 
-import BookCard from './BookCard'
 import Chip from 'material-ui/Chip';
 import Divider from 'material-ui/Divider';
 
