@@ -21,6 +21,14 @@ export default class DeleteBookListDialog extends React.Component {
     this.setState({open: false});
   };
 
+  handleDelete = () => {
+    this.setState({open: false});
+
+    // fire off edit request
+    this.props.deleteBookList(this.props.bookList.id)
+
+  };
+
   render() {
     const actions = [
       <FlatButton
@@ -32,7 +40,7 @@ export default class DeleteBookListDialog extends React.Component {
         label="Delete"
         secondary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.handleDelete}
       />,
     ];
     const { bookList } = this.props

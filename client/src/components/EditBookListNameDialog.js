@@ -25,13 +25,18 @@ export default class EditBookListNameDialog extends React.Component {
     this.setState({open: true});
   };
 
-  handleClose = () => {
+  handleEdit = () => {
     this.setState({open: false});
 
     // fire off edit request
     this.props.postBookListName(this.state.inputValue, this.props.bookList.id)
 
   };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
 
   onUpdateInput = (event, inputValue) => {
     console.log('change')
@@ -51,7 +56,7 @@ export default class EditBookListNameDialog extends React.Component {
         label="Edit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.handleEdit}
       />,
     ];
     const { bookList } = this.props

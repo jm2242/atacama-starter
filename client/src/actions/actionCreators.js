@@ -152,6 +152,8 @@ export function createBookList() {
   console.log('dispatching delete book from book list action')
   return {
     type: CREATE_BOOK_LIST,
+    description: '',
+    name: "New Book List"
   }
 }
 

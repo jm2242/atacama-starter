@@ -48,7 +48,7 @@ class LeftNavBar extends Component {
           />
           <MenuItem
             // onClick={this.closeNav}
-            linkButton={true}
+            //linkButton={true}
             href="http://atacama411.web.engr.illinois.edu/viz.html"
             primaryText="Visualization"
             // containerElement={}

@@ -12,7 +12,13 @@ import {
   DELETE_BOOK_FROM_BOOK_LIST_SUCCESS,
   FACETS_FETCH_DATA,
   FACETS_FETCH_DATA_SUCCESS,
-  FACETS_FETCH_DATA_ERRORED
+  FACETS_FETCH_DATA_ERRORED,
+  CREATE_BOOK_LIST,
+  CREATE_BOOK_LIST_SUCCESS,
+  CREATE_BOOK_LIST_ERRORED,
+  DELETE_BOOK_LIST,
+  DELETE_BOOK_LIST_SUCCESS,
+  DELETE_BOOK_LIST_ERRORED
 } from '../actions/actionCreators'
 
 import { facetsApi } from './api'
@@ -140,6 +146,85 @@ export function* editBookListNameAsync(action) {
 }
 //-------- END edit book list name
 
+//--------BEGIN new book list------------//
+
+// watcher saga
+export function* watchNewBookList() {
+  yield takeEvery(CREATE_BOOK_LIST, newBookListAsync)
+}
+
+// worker saga
+export function* newBookListAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+
+    const url = 'api/book-lists/'
+
+
+    const response = yield call(fetch, url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'name': action.name,
+        'description': action.description
+      })
+    })
+    console.log(response)
+
+    yield put({type: CREATE_BOOK_LIST_SUCCESS})
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: CREATE_BOOK_LIST_ERRORED, message: e.message })
+
+  }
+}
+//-------- END new book list
+
+//-------- END edit book list name
+
+//--------BEGIN delete book list------------//
+
+// watcher saga
+export function* watchDeleteBookList() {
+  yield takeEvery(DELETE_BOOK_LIST, deleteBookListAsync)
+}
+
+// worker saga
+export function* deleteBookListAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+    const bookListId = action.bookListId
+    const url = 'api/book-lists/' + bookListId
+    console.log(url)
+
+
+    const response = yield call(fetch, url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(response)
+
+    yield put({type: DELETE_BOOK_LIST_SUCCESS})
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: DELETE_BOOK_LIST_ERRORED, message: e.message })
+
+  }
+}
+//-------- END delete book list
+
 //--------BEGIN fetch search query facets------------//
 // watcher saga
 export function* watchGetFacets() {
@@ -171,6 +256,8 @@ export default function* rootSaga() {
     watchAddBookToBookList(),
     watchDeleteBookFromBookList(),
     watchGetFacets(),
-    watchEditBookListName()
+    watchEditBookListName(),
+    watchNewBookList(),
+    watchDeleteBookList()
   ]
 }
