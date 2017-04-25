@@ -1,3 +1,5 @@
+import { EDIT_BOOK_LIST_NAME_SUCCESS } from '../actions/actionCreators'
+
 export function bookListsHasErrored(state = false, action) {
     switch (action.type) {
         case 'BOOK_LISTS_HAS_ERRORED':
@@ -65,8 +67,29 @@ export function bookLists(state = [], action) {
               return bookList
             }
           })
+
+        case EDIT_BOOK_LIST_NAME_SUCCESS:
+          const newListName = action.newListName
+          const bookListId = action.bookListId
+
+          return state.map( (bookList, index) => {
+
+            // match the correct book list
+            if (bookList.id === action.bookListId) {
+
+              //  return a new book list with new name
+              return Object.assign({}, bookList, {
+                name: newListName
+              })
+            } else {
+              return bookList
+            }
+
+          })
+
+
         default:
-            return state;
+          return state
     }
 }
 

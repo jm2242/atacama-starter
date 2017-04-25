@@ -8,6 +8,8 @@ Allows to compute derived data from redux store
 
 const getBookLists = (state) => state.bookLists
 
+const getSelectedFacets = (state) => state.selectedFacets
+
 
 // we need the book list names in a part of our app, so we use this selector
 // to efficeintly get the names
@@ -21,5 +23,15 @@ export const getBookListNames = createSelector(
       }
     }
   )
+  }
+)
+
+// get all of the facets to construct the new search url
+export const constructFacetUrl = createSelector(
+  [ getSelectedFacets ],
+  ( facets ) => {
+    return facets.map(
+      (facet) => '&fq.' + facet.facetName + '=' + facet.facetValue
+    ).join('')
   }
 )

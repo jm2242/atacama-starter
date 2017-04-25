@@ -9,8 +9,13 @@ export default class BookListButtonBar extends Component {
     const { bookList } = this.props
     return (
       <div className="row center-xs">
-        <EditBookListNameDialog bookList={bookList} />
-        <DeleteBookListDialog bookList={bookList} />
+        <EditBookListNameDialog
+          bookList={bookList}
+          postBookListName={this.props.postBookListName}
+        />
+        <DeleteBookListDialog
+          bookList={bookList}
+        />
       </div>
     )
   }

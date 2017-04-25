@@ -18,6 +18,34 @@ export const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+export const STORE_QUERY = 'STORE_QUERY'
+export const STORE_FULL_QUERY = 'STORE_FULL_QUERY'
+
+export const INCREMENT_PAGE = 'INCREMENT_PAGE'
+
+
+export const FACETS_FETCH_DATA = 'FACETS_FETCH_DATA'
+export const FACETS_FETCH_DATA_ERRORED = 'FACETS_FETCH_DATA_ERRORED'
+export const FACETS_FETCH_DATA_SUCCESS = 'FACETS_FETCH_DATA_SUCCESS'
+
+export const ADD_FACET = 'ADD_FACET'
+export const REMOVE_FACET = 'REMOVE_FACET'
+
+
+export const EDIT_BOOK_LIST_NAME = 'EDIT_BOOK_LIST_NAME'
+export const EDIT_BOOK_LIST_NAME_SUCCESS = 'EDIT_BOOK_LIST_NAME_SUCCESS'
+export const EDIT_BOOK_LIST_NAME_ERRORED = 'EDIT_BOOK_LIST_NAME_ERRORED'
+
+
+export const DELETE_BOOK_LIST = 'DELETE_BOOK_LIST'
+export const DELETE_BOOK_LIST_SUCCESS = 'DELETE_BOOK_LIST_SUCCESS'
+export const DELETE_BOOK_LIST_ERRORED = 'DELETE_BOOK_LIST_ERRORED'
+
+export const CREATE_BOOK_LIST = 'CREATE_BOOK_LIST'
+export const CREATE_BOOK_LIST_SUCCESS = 'CREATE_BOOK_LIST_SUCCESS'
+export const CREATE_BOOK_LIST_ERRORED = 'CREATE_BOOK_LIST_ERRORED'
+
+
 export const ADD_BOOK_TO_BOOK_LIST = 'ADD_BOOK_TO_BOOK_LIST'
 export const ADD_BOOK_TO_BOOK_LIST_ERRORED = 'ADD_BOOK_TO_BOOK_LIST_ERRORED'
 export const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
@@ -26,6 +54,59 @@ export const ADD_BOOK_TO_BOOK_LIST_SUCCESS = 'ADD_BOOK_TO_BOOK_LIST_SUCCESS'
 export const DELETE_BOOK_FROM_BOOK_LIST = 'DELETE_BOOK_FROM_BOOK_LIST'
 export const DELETE_BOOK_FROM_BOOK_LIST_ERRORED = 'DELETE_BOOK_FROM_BOOK_LIST_ERRORED'
 export const DELETE_BOOK_FROM_BOOK_LIST_SUCCESS = 'DELETE_BOOK_FROM_BOOK_LIST_SUCCESS'
+
+
+// fetch the facet data for the query
+export function facetsFetchData(url) {
+  console.log("Fetch Facet Options action")
+  return {
+    type: FACETS_FETCH_DATA,
+    url
+  }
+}
+
+// store the user query for later use
+export function storeQuery(query) {
+  return {
+    type: STORE_QUERY,
+    query
+  }
+}
+
+// store the full query for use with page offsets
+export function storeFullQuery(query) {
+  return {
+    type: STORE_FULL_QUERY,
+    query
+  }
+}
+
+// keep track of checked facets
+export function addFacet(facetName, facetValue) {
+  console.log("Add facet action ")
+  return {
+    type: ADD_FACET,
+    facetName,
+    facetValue
+  }
+}
+
+// remove unchecked facet
+export function removeFacet(facetName, facetValue) {
+  console.log("remove facet action")
+  return {
+    type: REMOVE_FACET,
+    facetName,
+    facetValue
+  }
+}
+
+export function incrementCurrentPage(amount) {
+  return {
+    type: INCREMENT_PAGE,
+    amount
+  }
+}
 
 // add a book to a book list action
 export function addBookToBookListSaga(book, bookListId) {
@@ -44,6 +125,33 @@ export function deleteBookFromBookList(bookId, bookListId) {
     type: DELETE_BOOK_FROM_BOOK_LIST,
     bookId,
     bookListId
+  }
+}
+
+// edit the book list name
+export function editBookListName(newListName, bookListId) {
+  console.log('dispatching delete book from book list action')
+  return {
+    type: EDIT_BOOK_LIST_NAME,
+    newListName,
+    bookListId
+  }
+}
+
+// delete book list
+export function deleteBookList(bookListId) {
+  console.log('dispatching delete book list action')
+  return {
+    type: DELETE_BOOK_LIST,
+    bookListId
+  }
+}
+
+// edit the book list name
+export function createBookList() {
+  console.log('dispatching delete book from book list action')
+  return {
+    type: CREATE_BOOK_LIST,
   }
 }
 

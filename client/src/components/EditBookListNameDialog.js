@@ -12,10 +12,14 @@ import TextField from 'material-ui/TextField'
  * You can also close this dialog by clicking outside the dialog, or with the 'Esc' key.
  */
 export default class EditBookListNameDialog extends React.Component {
-  state = {
-    open: false,
-    inputValue : ''
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false,
+      inputValue : ''
+    };
+  }
+
 
   handleOpen = () => {
     this.setState({open: true});
@@ -25,10 +29,12 @@ export default class EditBookListNameDialog extends React.Component {
     this.setState({open: false});
 
     // fire off edit request
+    this.props.postBookListName(this.state.inputValue, this.props.bookList.id)
 
   };
 
-  onUpdateInput = (inputValue) => {
+  onUpdateInput = (event, inputValue) => {
+    console.log('change')
     this.setState({
       inputValue
     })
@@ -63,8 +69,8 @@ export default class EditBookListNameDialog extends React.Component {
           Change the name of your booklist:
 
           <TextField
-            hintText = "  Edit Booklist name"
-            onChange = {this.onUpdateInput}
+            hintText="  Edit Booklist name"
+            onChange={this.onUpdateInput}
            />
 
         </Dialog>

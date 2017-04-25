@@ -35,18 +35,18 @@ export default class DeleteBookListDialog extends React.Component {
         onTouchTap={this.handleClose}
       />,
     ];
-
+    const { bookList } = this.props
     return (
       <div>
         <FlatButton label="Delete" onTouchTap={this.handleOpen} />
         <Dialog
-          title="Dialog With Actions"
+          title={`Delete Booklist ${ bookList.name} `}
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          The actions in this window were passed in as an array of React objects.
+          Your're about to delete this book list. Are you sure
         </Dialog>
       </div>
     );

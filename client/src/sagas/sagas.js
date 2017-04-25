@@ -1,14 +1,21 @@
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 import {
+  EDIT_BOOK_LIST_NAME,
+  EDIT_BOOK_LIST_NAME_SUCCESS,
+  EDIT_BOOK_LIST_NAME_ERRORED,
   ADD_BOOK_TO_BOOK_LIST,
   ADD_BOOK_TO_BOOK_LIST_SUCCESS,
   ADD_BOOK_TO_BOOK_LIST_ERRORED,
   DELETE_BOOK_FROM_BOOK_LIST,
   DELETE_BOOK_FROM_BOOK_LIST_ERRORED,
-  DELETE_BOOK_FROM_BOOK_LIST_SUCCESS
+  DELETE_BOOK_FROM_BOOK_LIST_SUCCESS,
+  FACETS_FETCH_DATA,
+  FACETS_FETCH_DATA_SUCCESS,
+  FACETS_FETCH_DATA_ERRORED
 } from '../actions/actionCreators'
 
+import { facetsApi } from './api'
 
 // General stuff about Sagas:
 // 1. worker saga - do the work, calling api , returning response
@@ -91,12 +98,79 @@ export function* deleteBookFromBookListAsync(action) {
   }
 }
 
+//--------BEGIN edit book list name------------//
 
+// watcher saga
+export function* watchEditBookListName() {
+  yield takeEvery(EDIT_BOOK_LIST_NAME, editBookListNameAsync)
+}
+
+// worker saga
+export function* editBookListNameAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+
+    // get parameters from action
+    const bookListId = action.bookListId
+    const newListName = action.newListName
+    const url = 'api/book-lists/' + bookListId;
+
+
+    const response = yield call(fetch, url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'name': newListName
+      })
+    })
+    console.log(response)
+
+    yield put({type: EDIT_BOOK_LIST_NAME_SUCCESS, newListName, bookListId })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: EDIT_BOOK_LIST_NAME_ERRORED, message: e.message })
+
+  }
+}
+//-------- END edit book list name
+
+//--------BEGIN fetch search query facets------------//
+// watcher saga
+export function* watchGetFacets() {
+  yield takeEvery(FACETS_FETCH_DATA, getFacetsAsync)
+}
+
+// worker saga
+export function* getFacetsAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch facets')
+
+
+    const facets = yield facetsApi(action.url)
+    yield put({type: FACETS_FETCH_DATA_SUCCESS, facets })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not delete book from book list')
+    console.log(e)
+    yield put({type: FACETS_FETCH_DATA_ERRORED, message: e.message })
+
+  }
+}
 
 // single entry point to start sagas at once
 export default function* rootSaga() {
   yield [
     watchAddBookToBookList(),
-    watchDeleteBookFromBookList()
+    watchDeleteBookFromBookList(),
+    watchGetFacets(),
+    watchEditBookListName()
   ]
 }

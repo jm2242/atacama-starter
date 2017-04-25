@@ -56,6 +56,39 @@ function viewed(conn, book: Book, user: User) {
     }
 }
 
+function findOneInternal(conn, id: number, user: User): Bluebird {
+    const query = user === null || user === undefined ?
+        // Query if anonymous access
+        "SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext" +
+        "FROM Book " +
+        "WHERE id = ?" :
+        // Query if logged in
+        "SELECT Book.*, viewed.date, EXISTS (" +
+        "    SELECT * " +
+        "    FROM Saved " +
+        "    WHERE book_id = ? AND user_id = ?" +
+        "  ) as saved, bucket IS NOT NULL AS has_fulltext " +
+        "FROM Book " +
+        "  LEFT JOIN (" +
+        "    SELECT book_id, date " +
+        "    FROM Viewed " +
+        "    WHERE user_id = ? " +
+        "    ORDER BY date DESC " +
+        "    LIMIT 1" +
+        "  ) AS viewed ON Book.id = viewed.book_id " +
+        "WHERE Book.id = ?";
+    const params = user === null || user === undefined ? [id] : [id, user.id, user.id, id];
+    return conn.query(query, params)
+        .then((res: any[]) => {
+            if (res.length !== 1) {
+                throw new NotFound(`Book id ${id} not found`);
+            }
+            return new Book(res[0])
+        })
+        .then(book => populateTags(conn, book))
+        .then(book => populateAuthors(conn, book));
+}
+
 function _findAllInBookListWithConnection(conn: mysql.Connection, book_list_id: number, user: User): Bluebird {
     if (!user) {
         throw new Forbidden("You must be logged in to view this");
@@ -129,6 +162,20 @@ export default {
         })
     },
 
+    findRecent(user: User): Bluebird {
+        return Bluebird.using(connection(), conn =>
+            conn.query("SELECT book_id, MAX(date) FROM Viewed WHERE user_id = ? GROUP BY book_id ORDER BY MAX(date) DESC LIMIT 5", [user.id])
+                .then((results: any[]) => {
+                        return Bluebird.all(
+                            results
+                                .map(res => res.book_id)
+                                .map(id => findOneInternal(conn, id, user))
+                        );
+                    }
+                )
+        );
+    },
+
     findByTitleLike(title: string, user: User) {
         return Bluebird
             .using(connection(), conn =>
@@ -194,39 +241,7 @@ export default {
     },
 
     findOne(id: number, user: User): Bluebird {
-        return Bluebird.using(connection(), (conn) => {
-            const query = user === null || user === undefined ?
-                // Query if anonymous access
-                "SELECT *, FALSE AS saved, bucket IS NOT NULL AS has_fulltext" +
-                "FROM Book " +
-                "WHERE id = ?" :
-                // Query if logged in
-                "SELECT Book.*, viewed.date, EXISTS (" +
-                "    SELECT * " +
-                "    FROM Saved " +
-                "    WHERE book_id = ? AND user_id = ?" +
-                "  ) as saved, bucket IS NOT NULL AS has_fulltext " +
-                "FROM Book " +
-                "  LEFT JOIN (" +
-                "    SELECT book_id, date " +
-                "    FROM Viewed " +
-                "    WHERE user_id = ? " +
-                "    ORDER BY date DESC " +
-                "    LIMIT 1" +
-                "  ) AS viewed ON Book.id = viewed.book_id " +
-                "WHERE Book.id = ?";
-            const params = user === null || user === undefined ? [id] : [id, user.id, user.id, id];
-            return conn.query(query, params)
-                .then((res: any[]) => {
-                    if (res.length !== 1) {
-                        throw new NotFound(`Book id ${id} not found`);
-                    }
-                    return new Book(res[0])
-                })
-                .then(book => viewed(conn, book, user))
-                .then(book => populateTags(conn, book))
-                .then(book => populateAuthors(conn, book));
-        });
+        return Bluebird.using(connection(), conn => findOneInternal(conn, id, user).then(book => viewed(conn, book, user)));
     },
 
     findTags(bookId: number): Bluebird {
