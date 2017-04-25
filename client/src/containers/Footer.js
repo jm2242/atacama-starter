@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 // material UI
 //import Divider from 'material-ui/Divider';
-
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 
 const styles = {
@@ -25,10 +25,11 @@ class Footer extends Component {
   render() {
     return (
       <div>
+
         <div className="center-xs" style={styles.footer}>
           <p style={styles.text}>Atacama Books </p>
         </div>
-        <div className="center-xs"></div>
+
       </div>
     )
   }

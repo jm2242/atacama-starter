@@ -18,10 +18,13 @@ import {
   CREATE_BOOK_LIST_ERRORED,
   DELETE_BOOK_LIST,
   DELETE_BOOK_LIST_SUCCESS,
-  DELETE_BOOK_LIST_ERRORED
+  DELETE_BOOK_LIST_ERRORED,
+  FETCH_RECENT_BOOKS,
+  FETCH_RECENT_BOOKS_SUCCESS,
+  FETCH_RECENT_BOOKS_ERRORED
 } from '../actions/actionCreators'
 
-import { facetsApi } from './api'
+import { facetsApi, recentBooksApi } from './api'
 
 // General stuff about Sagas:
 // 1. worker saga - do the work, calling api , returning response
@@ -250,6 +253,32 @@ export function* getFacetsAsync(action) {
   }
 }
 
+//--------BEGIN fetch recent books ------------//
+// watcher saga
+export function* watchGetRecentBooks() {
+  yield takeEvery(FETCH_RECENT_BOOKS, getRecentBooksAsync)
+}
+
+// worker saga
+export function* getRecentBooksAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch recent books')
+
+
+    const recentBooks = yield recentBooksApi(action.url)
+    yield put({type: FETCH_RECENT_BOOKS_SUCCESS, recentBooks })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not delete book from book list')
+    console.log(e)
+    yield put({type: FETCH_RECENT_BOOKS_ERRORED, message: e.message })
+
+  }
+}
+//------ END fetch recent books
+
 // single entry point to start sagas at once
 export default function* rootSaga() {
   yield [
@@ -258,6 +287,7 @@ export default function* rootSaga() {
     watchGetFacets(),
     watchEditBookListName(),
     watchNewBookList(),
-    watchDeleteBookList()
+    watchDeleteBookList(),
+    watchGetRecentBooks()
   ]
 }
