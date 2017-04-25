@@ -39,9 +39,16 @@ const Logged = (props) => (
   >
     <MenuItem
       primaryText="Sign In"
-      containerElement={<Link to="/auth/google">Book List</Link>}
+      linkButton={true}
+      href="http://atacama.lloydramey.com/auth/google"
+      // containerElement={<Link to="/auth/google">Book List</Link>}
     />
-    <MenuItem primaryText="Sign out" />
+    <MenuItem
+      primaryText="Sign Out"
+      linkButton={true}
+      href="http://atacama.lloydramey.com/auth/logout"
+      // containerElement={<Link to="/auth/google">Book List</Link>}
+    />
   </IconMenu>
 );
 
