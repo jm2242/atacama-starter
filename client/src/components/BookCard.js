@@ -100,6 +100,13 @@ class BookCard extends Component {
               disabled={!book.hasFullText}
             />
 
+            <RaisedButton style={styles.actions}
+              // containerElement={<Link to={`/reader/${book.id}`} />}
+              href={`http://atacama411.web.engr.illinois.edu/viz.html?q=` + book.id}
+              target="_blank"
+              label="Visualize"
+            />
+
              <AddToBookListPopover
                handleAddToBookList={this.handleAddToBookList}
                bookListNames={this.props.bookListNames}
