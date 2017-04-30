@@ -8,6 +8,7 @@ import BookGrid from './BookGrid'
 import SearchBox from './SearchBox'
 import SearchOptions from '../containers/SearchOptions'
 import HeroSection from '../containers/HeroSection'
+import RecentlyViewed from './RecentlyViewed'
 
 // material UI
 import Divider from 'material-ui/Divider';
@@ -76,9 +77,12 @@ class Home extends Component {
 
        </div>
 
-       { this.props.books.length == 0 &&
+       { this.props.books.length === 0 &&
         <HeroSection />
        }
+       <div className="center-xs">
+         <RecentlyViewed />
+       </div>
 
       </div>
 

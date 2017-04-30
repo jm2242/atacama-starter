@@ -43,6 +43,9 @@ class AddToBookListPopover extends Component {
   handleAddToBookList = (event, bookListId) => {
     event.preventDefault()
     this.props.handleAddToBookList(bookListId)
+
+    // close the popover
+    this.handleRequestClose()
   }
 
 

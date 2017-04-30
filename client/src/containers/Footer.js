@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 
 // material UI
-import Divider from 'material-ui/Divider';
-
+//import Divider from 'material-ui/Divider';
 
 
 const styles = {
@@ -24,8 +23,12 @@ const styles = {
 class Footer extends Component {
   render() {
     return (
-      <div className="center-xs" style={styles.footer}>
-        <p style={styles.text}>Atacama Books </p>
+      <div>
+
+        <div className="center-xs" style={styles.footer}>
+          <p style={styles.text}>Atacama Books </p>
+        </div>
+
       </div>
     )
   }

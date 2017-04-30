@@ -18,6 +18,11 @@ export const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED'
 export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING'
 export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS'
 
+export const FETCH_RECENT_BOOKS = 'FETCH_RECENT_BOOKS'
+export const FETCH_RECENT_BOOKS_SUCCESS = 'FETCH_RECENT_BOOKS_SUCCESS'
+export const FETCH_RECENT_BOOKS_ERRORED = 'FETCH_RECENT_BOOKS_ERRORED'
+
+
 export const STORE_QUERY = 'STORE_QUERY'
 export const STORE_FULL_QUERY = 'STORE_FULL_QUERY'
 
@@ -62,6 +67,13 @@ export function facetsFetchData(url) {
   return {
     type: FACETS_FETCH_DATA,
     url
+  }
+}
+
+export function getRecentBooks() {
+  return {
+    type: FETCH_RECENT_BOOKS,
+    url: 'api/books/recent'
   }
 }
 
@@ -152,6 +164,8 @@ export function createBookList() {
   console.log('dispatching delete book from book list action')
   return {
     type: CREATE_BOOK_LIST,
+    description: '',
+    name: "New Book List"
   }
 }
 

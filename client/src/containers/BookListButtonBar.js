@@ -15,6 +15,7 @@ export default class BookListButtonBar extends Component {
         />
         <DeleteBookListDialog
           bookList={bookList}
+          deleteBookList={this.props.deleteBookList}
         />
       </div>
     )

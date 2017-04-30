@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux'
-import { deleteBookFromBookList, editBookListName } from '../actions/actionCreators'
+import { deleteBookFromBookList, editBookListName, deleteBookList } from '../actions/actionCreators'
 
 import BookListButtonBar from '../containers/BookListButtonBar'
 
@@ -17,9 +17,11 @@ import ContentClear from 'material-ui/svg-icons/content/clear'
 import { red500 } from 'material-ui/styles/colors';
 
 
-//import Divider from 'material-ui/Divider';
-//import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-
+const styles = {
+  title: {
+    fontSize: 20
+  }
+}
 
 
 const BookList = React.createClass({
@@ -37,7 +39,7 @@ const BookList = React.createClass({
           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3">
             <MobileTearSheet>
               <List>
-                <Subheader>{bookList.name}</Subheader>
+                <Subheader style={styles.title}>{bookList.name}</Subheader>
 
                 {/* List out the books in the book list  */}
                 {bookList.books.map((book,i) =>
@@ -56,6 +58,7 @@ const BookList = React.createClass({
               <Divider />
               <BookListButtonBar
                 bookList={bookList}
+                deleteBookList={this.props.deleteBookList}
                 postBookListName={this.props.postBookListName}
               />
               <Divider />
@@ -88,7 +91,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       deleteBook: (bookId, bookListId) => dispatch(deleteBookFromBookList(bookId, bookListId)),
       postBookListName: (newListName, bookListId) => dispatch(editBookListName(newListName, bookListId)),
-
+      deleteBookList: (bookListId) => dispatch(deleteBookList(bookListId))
   };
 };
 

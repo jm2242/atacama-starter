@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { bookListsFetchData } from '../actions/bookListActions'
+import { fetchBookLists } from '../actions/bookListActions'
+import { createBookList } from '../actions/actionCreators'
 import BookList from '../components/BookList'
 
+import RaisedButton from 'material-ui/RaisedButton'
 
 const BookLists = React.createClass({
 
@@ -11,7 +13,7 @@ const BookLists = React.createClass({
       console.log('we already have a book list')
     } else {
       console.log('making an api call to get book lists')
-      this.props.fetchData('/api/book-lists')
+      this.props.fetchBookLists()
     }
   },
   render() {
@@ -26,14 +28,24 @@ const BookLists = React.createClass({
 
     return (
       <div className="container">
-        <h1 className="row center-xs title">
-          My Book Lists
-        </h1>
+        <div className="row center-xs">
+          <h1 className="title">
+            My Book Lists
+          </h1>
+        </div>
+
+        <div style={{marginBottom: 20}} className="row center-xs">
+           <RaisedButton
+             label="New Book List"
+             secondary={true}
+             onTouchTap={this.props.newBookList}
+           />
+       </div>
 
         <div className="row center-xs">
           {this.props.bookLists.map((bookList, i) => <BookList key={i} bookList={bookList} /> )}
         </div>
-        { this.props.bookLists.length == 0 &&
+        { this.props.bookLists.length === 0 &&
           <div>
             <p>Create a book list to save your favorite books!</p>
           </div>
@@ -55,7 +67,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      fetchData: (url) => dispatch(bookListsFetchData(url))
+      fetchBookLists: () => dispatch(fetchBookLists()),
+      newBookList: () => dispatch(createBookList())
   };
 };
 

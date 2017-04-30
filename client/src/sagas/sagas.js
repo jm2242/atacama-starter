@@ -12,10 +12,25 @@ import {
   DELETE_BOOK_FROM_BOOK_LIST_SUCCESS,
   FACETS_FETCH_DATA,
   FACETS_FETCH_DATA_SUCCESS,
-  FACETS_FETCH_DATA_ERRORED
+  FACETS_FETCH_DATA_ERRORED,
+  CREATE_BOOK_LIST,
+  CREATE_BOOK_LIST_SUCCESS,
+  CREATE_BOOK_LIST_ERRORED,
+  DELETE_BOOK_LIST,
+  DELETE_BOOK_LIST_SUCCESS,
+  DELETE_BOOK_LIST_ERRORED,
+  FETCH_RECENT_BOOKS,
+  FETCH_RECENT_BOOKS_SUCCESS,
+  FETCH_RECENT_BOOKS_ERRORED
 } from '../actions/actionCreators'
 
-import { facetsApi } from './api'
+import {
+  FETCH_BOOK_LISTS,
+  FETCH_BOOK_LISTS_SUCCESS,
+  FETCH_BOOK_LISTS_ERRORED
+} from '../actions/bookListActions'
+
+import { facetsApi, recentBooksApi, bookListsApi } from './api'
 
 // General stuff about Sagas:
 // 1. worker saga - do the work, calling api , returning response
@@ -28,7 +43,7 @@ import { facetsApi } from './api'
 export function* addBookToBookListAsync(action) {
   try {
     // call api
-    console.log('SAGA: attempt to create a new book list via api')
+    console.log('SAGA: attempt to add book to book list')
     const bookListId = action.bookListId
     const bookId = action.book.id
     const url = 'api/book-lists/' + bookListId + '/books/' + bookId
@@ -140,6 +155,85 @@ export function* editBookListNameAsync(action) {
 }
 //-------- END edit book list name
 
+//--------BEGIN new book list------------//
+
+// watcher saga
+export function* watchNewBookList() {
+  yield takeEvery(CREATE_BOOK_LIST, newBookListAsync)
+}
+
+// worker saga
+export function* newBookListAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+
+    const url = 'api/book-lists/'
+
+
+    const response = yield call(fetch, url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'name': action.name,
+        'description': action.description
+      })
+    })
+    console.log(response)
+
+    yield put({type: FETCH_BOOK_LISTS})
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: CREATE_BOOK_LIST_ERRORED, message: e.message })
+
+  }
+}
+//-------- END new book list
+
+//-------- END edit book list name
+
+//--------BEGIN delete book list------------//
+
+// watcher saga
+export function* watchDeleteBookList() {
+  yield takeEvery(DELETE_BOOK_LIST, deleteBookListAsync)
+}
+
+// worker saga
+export function* deleteBookListAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to edit a book list name')
+    const bookListId = action.bookListId
+    const url = 'api/book-lists/' + bookListId
+    console.log(url)
+
+
+    const response = yield call(fetch, url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(response)
+
+    yield put({type: DELETE_BOOK_LIST_SUCCESS, bookListId})
+
+  } catch (e) {
+    // act on error
+    console.log('Could not edit book list name')
+    console.log(e)
+    yield put({type: DELETE_BOOK_LIST_ERRORED, message: e.message })
+
+  }
+}
+//-------- END delete book list
+
 //--------BEGIN fetch search query facets------------//
 // watcher saga
 export function* watchGetFacets() {
@@ -165,12 +259,68 @@ export function* getFacetsAsync(action) {
   }
 }
 
+//--------BEGIN fetch recent books ------------//
+// watcher saga
+export function* watchGetRecentBooks() {
+  yield takeEvery(FETCH_RECENT_BOOKS, getRecentBooksAsync)
+}
+
+// worker saga
+export function* getRecentBooksAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch recent books')
+
+
+    const recentBooks = yield recentBooksApi(action.url)
+    yield put({type: FETCH_RECENT_BOOKS_SUCCESS, recentBooks })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not delete book from book list')
+    console.log(e)
+    yield put({type: FETCH_RECENT_BOOKS_ERRORED, message: e.message })
+
+  }
+}
+//------ END fetch recent books
+
+//--------BEGIN get book lists------------//
+// watcher saga
+export function* watchGetBookLists() {
+  yield takeEvery(FETCH_BOOK_LISTS, getBookListsAsync)
+}
+
+// worker saga
+export function* getBookListsAsync(action) {
+  try {
+    // call api
+    console.log('SAGA: attempt to fetch book lists')
+
+    const url = '/api/book-lists'
+    const bookLists = yield bookListsApi(url)
+    console.log(bookLists)
+    yield put({type: FETCH_BOOK_LISTS_SUCCESS, bookLists })
+
+  } catch (e) {
+    // act on error
+    console.log('Could not get book lists')
+    console.log(e)
+    yield put({type: FETCH_BOOK_LISTS_ERRORED, message: e.message })
+
+  }
+}
+
 // single entry point to start sagas at once
 export default function* rootSaga() {
   yield [
     watchAddBookToBookList(),
     watchDeleteBookFromBookList(),
     watchGetFacets(),
-    watchEditBookListName()
+    watchEditBookListName(),
+    watchNewBookList(),
+    watchDeleteBookList(),
+    watchGetRecentBooks(),
+    watchGetBookLists()
   ]
 }

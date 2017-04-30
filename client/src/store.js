@@ -27,6 +27,7 @@ const enhancers = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 
+
 const store = createStore(rootReducer, enhancers);
 
 // we export history because we need it in `index.js` to feed into <Router>

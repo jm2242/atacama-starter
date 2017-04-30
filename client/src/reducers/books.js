@@ -4,7 +4,8 @@ import {
   ADD_FACET,
   STORE_QUERY,
   STORE_FULL_QUERY,
-  INCREMENT_PAGE
+  INCREMENT_PAGE,
+  FETCH_RECENT_BOOKS_SUCCESS
 } from '../actions/actionCreators'
 
 export function booksHasErrored(state = false, action) {
@@ -27,6 +28,15 @@ export function books(state = [], action) {
     switch (action.type) {
         case 'BOOKS_FETCH_DATA_SUCCESS':
             return action.books;
+        default:
+            return state;
+    }
+}
+
+export function recentBooks(state = [], action) {
+    switch (action.type) {
+        case FETCH_RECENT_BOOKS_SUCCESS:
+            return action.recentBooks;
         default:
             return state;
     }

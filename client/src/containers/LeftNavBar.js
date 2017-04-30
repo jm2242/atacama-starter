@@ -43,12 +43,15 @@ class LeftNavBar extends Component {
             containerElement={<Link to="/" />}
           />
           <MenuItem onClick={this.closeNav}
-            primaryText="My Book Lists"
+            primaryText="Book Lists"
             containerElement={<Link to="/booklist" />}
           />
-          <MenuItem onClick={this.closeNav}
+          <MenuItem
+            // onClick={this.closeNav}
+            //linkButton={true}
+            href="http://atacama411.web.engr.illinois.edu/viz.html"
             primaryText="Visualization"
-            containerElement={<Link to="/vis" />}
+            // containerElement={}
           />
         </Drawer>
       </div>
